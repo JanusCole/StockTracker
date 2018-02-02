@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+        <TextView
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:textSize="40sp"
+            android:id="@+id/tickerSymbolTextView_RecyclerView"
+            android:layout_gravity="left"
+            android:textColor="@android:color/black"
+            android:paddingTop="15dp" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="right">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="15dp"
+            android:layout_gravity="right">
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/latestPriceTextView_RecyclerView"
+                    android:textSize="35sp"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="10dp"
+                    android:textColor="@android:color/black"
+                android:layout_gravity="right" />
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/priceChangeTextView_RecyclerView"
+                    android:textSize="35sp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                android:layout_gravity="right" />
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/priceChangePercentageTextView_RecyclerView"
+                    android:textSize="35sp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="15dp"
+                android:layout_gravity="right" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
+
+

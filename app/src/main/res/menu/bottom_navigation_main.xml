@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_splash_screen"
+        android:enabled="true"
+        android:icon="@drawable/ic_home_black_24dp"
+        android:title="Demo"/>
+    <item
+        android:id="@+id/action_portfolio"
+        android:enabled="true"
+        android:icon="@drawable/ic_list_black_24dp"
+        android:title="My Portfolio"/>
+    <item
+        android:id="@+id/action_search_ticker"
+        android:enabled="true"
+        android:icon="@drawable/ic_search_black_24dp"
+        android:title="Add Stocks"/>
+</menu>

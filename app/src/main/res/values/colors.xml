@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#669900</color>
+    <color name="colorPrimaryDark">#669900</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="accountingDebitRed">#FF0000</color>
+    <color name="accountingCreditGreen">#669900</color>
+</resources>
