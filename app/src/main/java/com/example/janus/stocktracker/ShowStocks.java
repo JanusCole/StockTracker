@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface ShowStocks {
 
-// Ths is Google's recommended method for facilitating communcation between Fragments
+// Ths is Google's recommended method for facilitating communcation between  Fragments
 // and Activities. https://developer.android.com/training/basics/fragments/communicating.html
     void showStocks(List<String> stockTickerArray, Fragment destinationFragment);
 

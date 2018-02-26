@@ -20,7 +20,7 @@ import java.util.List;
 
 public class DisplayOneStockFragment extends Fragment {
 
-// These are for communicating with the MainActivity
+// These are for communicating with the  MainActivity
     private AccessPortfolio accessPortfolio;
 
 // Only one of these buttons will be visible at a time depending on whether the current stock is in the portfolio database

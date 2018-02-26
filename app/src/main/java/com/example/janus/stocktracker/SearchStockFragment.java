@@ -48,7 +48,7 @@ public class SearchStockFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
 
-// For communicating with the MainActivity
+// For communicating with the  MainActivity
         searchStocks = (ShowStocks) context;
 
     }

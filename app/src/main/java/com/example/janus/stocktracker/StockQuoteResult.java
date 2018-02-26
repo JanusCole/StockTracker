@@ -7,6 +7,7 @@ import java.util.List;
 
 public class StockQuoteResult {
 
+// Class to pass back stock quote results
     private Fragment destinationFragment;
     private List <StockQuote> stockQuotes;
 

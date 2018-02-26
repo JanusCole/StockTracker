@@ -15,6 +15,7 @@ import java.util.List;
 
 public class StocksRecyclerViewAdapter extends RecyclerView.Adapter<StocksRecyclerViewAdapter.ViewHolder> {
 
+// Recycler View for the multiple stock display view
     private List<StockQuote> stockQuotes;
 
     private OnItemSelectedListener onItemSelectedListener;

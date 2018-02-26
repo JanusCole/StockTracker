@@ -7,6 +7,7 @@ import java.util.List;
 
 public class StockQuoteRequest {
 
+// Class to pass stock quote requests and the destination fragment
     private Fragment destinationFragment;
     private List <String> stocks;
 

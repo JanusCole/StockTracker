@@ -34,7 +34,7 @@ public class GetStockQuotes implements Runnable {
 
         }
 
-// Send the results back to the MainActivity using the Handler
+// Send the results back to the MainActivity using the  Handler
         Message returnStockQuote = Message.obtain();
 
         returnStockQuote.obj = new StockQuoteResult(stockQuotesArrayList, stockQuoteRequest.getDestinationFragment());
