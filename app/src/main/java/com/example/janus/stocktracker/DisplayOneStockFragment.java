@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class DisplayOneStockFragment extends Fragment {
@@ -34,7 +35,7 @@ public class DisplayOneStockFragment extends Fragment {
 
 // Get the search results
         Bundle stockQuoteBundle = getArguments();
-        ArrayList<StockQuote> stockQuotes = stockQuoteBundle.getParcelableArrayList(getActivity().getString(R.string.stock_search_list));
+        List<StockQuote> stockQuotes = stockQuoteBundle.getParcelableArrayList(getActivity().getString(R.string.stock_search_list));
 
         stockQuote = stockQuotes.get(0);
 

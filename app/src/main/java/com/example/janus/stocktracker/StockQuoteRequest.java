@@ -3,13 +3,14 @@ package com.example.janus.stocktracker;
 import android.support.v4.app.Fragment;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class StockQuoteRequest {
 
     private Fragment destinationFragment;
-    private ArrayList <String> stocks;
+    private List <String> stocks;
 
-    public StockQuoteRequest(ArrayList<String> stocks, Fragment destinationFragment) {
+    public StockQuoteRequest(List<String> stocks, Fragment destinationFragment) {
         this.stocks = stocks;
         this.destinationFragment = destinationFragment;
     }
@@ -18,7 +19,7 @@ public class StockQuoteRequest {
         return destinationFragment;
     }
 
-    public ArrayList<String> getStocks() {
+    public List<String> getStocks() {
         return stocks;
     }
 }

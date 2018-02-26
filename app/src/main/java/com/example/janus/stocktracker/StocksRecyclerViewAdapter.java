@@ -10,11 +10,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class StocksRecyclerViewAdapter extends RecyclerView.Adapter<StocksRecyclerViewAdapter.ViewHolder> {
 
-    private ArrayList<StockQuote> stockQuotes;
+    private List<StockQuote> stockQuotes;
 
     private OnItemSelectedListener onItemSelectedListener;
 
@@ -22,7 +23,7 @@ public class StocksRecyclerViewAdapter extends RecyclerView.Adapter<StocksRecycl
         public abstract void onItemSelected(String tickerSymbol);
     }
 
-    public StocksRecyclerViewAdapter(ArrayList<StockQuote> stockQuotes, OnItemSelectedListener onItemSelectedListener) {
+    public StocksRecyclerViewAdapter(List<StockQuote> stockQuotes, OnItemSelectedListener onItemSelectedListener) {
         this.stockQuotes = stockQuotes;
         this.onItemSelectedListener = onItemSelectedListener;
     }

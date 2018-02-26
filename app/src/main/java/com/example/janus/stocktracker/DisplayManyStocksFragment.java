@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class DisplayManyStocksFragment extends Fragment implements StocksRecyclerViewAdapter.OnItemSelectedListener {
@@ -23,7 +24,7 @@ public class DisplayManyStocksFragment extends Fragment implements StocksRecycle
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         Bundle stockQuoteBundle = getArguments();
-        ArrayList<StockQuote> stockQuotes = stockQuoteBundle.getParcelableArrayList(getActivity().getString(R.string.stock_search_list));
+        List<StockQuote> stockQuotes = stockQuoteBundle.getParcelableArrayList(getActivity().getString(R.string.stock_search_list));
 
         View v = inflater.inflate(R.layout.display_multiple_stocks_fragment, container, false);
 
@@ -47,7 +48,7 @@ public class DisplayManyStocksFragment extends Fragment implements StocksRecycle
     @Override
     public void onItemSelected(String tickerSymbol) {
 
-        ArrayList<String> stockTickerArray = new ArrayList <>();
+        List<String> stockTickerArray = new ArrayList <>();
         stockTickerArray.add(tickerSymbol);
 
 // Commuinicates with the MainActivity

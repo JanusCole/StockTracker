@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.support.test.espresso.IdlingResource;
 import com.example.janus.stocktracker.data.Portfolio;
 import java.util.ArrayList;
+import java.util.List;
 
 // So the obvious question is "Why run Retrofit in in a handlerThread instead of running it stand alone as an async?"
 // The answer is that the IEX stock quote API I'm using doesn't perform batch requests. So in order to search a whole portfolio,
@@ -139,7 +140,8 @@ public class MainActivity extends AppCompatActivity implements ShowStocks, Acces
 
                 StockQuoteResult stockQuoteResult = (StockQuoteResult) msg.obj;
 
-                ArrayList<StockQuote> stockQuotesArrayList = stockQuoteResult.getStockQuotes();
+// The putParcelable method below only accepts ArrayLists, not Lists
+                ArrayList<StockQuote> stockQuotesArrayList = (ArrayList) stockQuoteResult.getStockQuotes();
 
                 networkActivityDialog.dismiss();
 
@@ -167,7 +169,7 @@ public class MainActivity extends AppCompatActivity implements ShowStocks, Acces
 
 // This method kicks off the handlerthread that gets the stock quotes from the internet
     @Override
-    public void showStocks(ArrayList <String> stockTickerArray, Fragment destinationFragment) {
+    public void showStocks(List<String> stockTickerArray, Fragment destinationFragment) {
 
         if (stockTickerArray.size() == 0) {
             displayErrorMessageAlertDialog(getString(R.string.empty_portfolio_message));

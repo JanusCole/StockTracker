@@ -4,6 +4,7 @@ import android.os.Handler;
 import android.os.Message;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class GetStockQuotes implements Runnable {
 
@@ -21,7 +22,7 @@ public class GetStockQuotes implements Runnable {
     @Override
     public void run() {
 
-        ArrayList<StockQuote> stockQuotesArrayList = new ArrayList<>();
+        List<StockQuote> stockQuotesArrayList = new ArrayList<>();
 
         for (String stockTicker: stockQuoteRequest.getStocks()) {
 

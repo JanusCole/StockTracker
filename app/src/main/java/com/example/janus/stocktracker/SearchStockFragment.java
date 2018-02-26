@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class SearchStockFragment extends Fragment {
@@ -54,7 +55,7 @@ public class SearchStockFragment extends Fragment {
 
     private void searchStock (String  searchStockTicker) {
 
-        ArrayList<String> stockTickerArray = new ArrayList <>();
+        List<String> stockTickerArray = new ArrayList <>();
         stockTickerArray.add(searchStockTicker);
 
         searchStocks.showStocks(stockTickerArray, new DisplayOneStockFragment());
