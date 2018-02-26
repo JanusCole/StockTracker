@@ -150,6 +150,7 @@ public class MainActivity extends AppCompatActivity implements ShowStocks, Acces
                 } else {
 
                     Bundle args = new Bundle();
+// The putParcelable method below only accepts ArrayLists, not Lists
                     args.putParcelableArrayList(getString(R.string.stock_search_list), stockQuotesArrayList);
 
                     Fragment nextFragment = stockQuoteResult.getDestinationFragment();
