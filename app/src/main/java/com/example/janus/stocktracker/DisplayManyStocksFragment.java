@@ -39,7 +39,7 @@ public class DisplayManyStocksFragment extends Fragment implements StocksRecycle
     public void onAttach(Context context) {
         super.onAttach(context);
 
-// This is for communicating with the MainActivity
+// This is for communicating with the  MainActivity
         searchStocks = (ShowStocks) context;
 
     }
