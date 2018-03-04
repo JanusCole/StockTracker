@@ -22,6 +22,12 @@ import com.example.janus.stocktracker.data.Portfolio;
 import java.util.ArrayList;
 import java.util.List;
 
+// This app currently supports views for single stocks, multiple stocks (as a portfolio), and a single stock search screen.
+// It has one class that uses Retrofit to access a JSON stock search API from IEX. And it passes the stock search requests
+// using a class that contains both a List of stocks and a destination fragment.
+
+// The user's portfolio stocks are stored in an SQLite database
+
 // So the obvious question is "Why run Retrofit in in a handlerThread instead of running it stand alone as an async?"
 // The answer is that the IEX stock quote API I'm using doesn't perform batch requests. So in order to search a whole portfolio,
 // it runs in a loop and accumulates the results before returning them.
@@ -30,9 +36,11 @@ public class MainActivity extends AppCompatActivity implements ShowStocks, Acces
 
     private Portfolio userPortfolio;
 
+// Handles the async internet access to the IEX API
     private HandlerThread getStockQuotesHandlerThread;
     private Handler getStockQuotesThreadHandler;
 
+// Holds the URL for the IEX API
     private String baseURL;
 
     private AlertDialog networkActivityDialog;
@@ -141,7 +149,7 @@ public class MainActivity extends AppCompatActivity implements ShowStocks, Acces
                 StockQuoteResult stockQuoteResult = (StockQuoteResult) msg.obj;
 
 // The putParcelable method below only accepts ArrayLists, not Lists
-                ArrayList<StockQuote> stockQuotesArrayList = (ArrayList) stockQuoteResult.getStockQuotes();
+                List<StockQuote> stockQuotesArrayList = stockQuoteResult.getStockQuotes();
 
                 networkActivityDialog.dismiss();
 
@@ -151,7 +159,7 @@ public class MainActivity extends AppCompatActivity implements ShowStocks, Acces
 
                     Bundle args = new Bundle();
 // The putParcelable method below only accepts ArrayLists, not Lists
-                    args.putParcelableArrayList(getString(R.string.stock_search_list), stockQuotesArrayList);
+                    args.putParcelableArrayList(getString(R.string.stock_search_list),(ArrayList) stockQuotesArrayList);
 
                     Fragment nextFragment = stockQuoteResult.getDestinationFragment();
                     nextFragment.setArguments(args);
@@ -159,6 +167,7 @@ public class MainActivity extends AppCompatActivity implements ShowStocks, Acces
                     replaceFragment(nextFragment);
                 }
 
+// For Espresso Testing
                 EspressoIdlingResource.decrement();
 
         }
@@ -203,6 +212,13 @@ public class MainActivity extends AppCompatActivity implements ShowStocks, Acces
         userPortfolio.removeStockFromPortfolio(stockTicker);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        getStockQuotesHandlerThread.quitSafely();
+    }
+
+// Methods for testing
     @VisibleForTesting
     public void setBaseURL (String baseURL) {
         this.baseURL = baseURL;
@@ -213,9 +229,5 @@ public class MainActivity extends AppCompatActivity implements ShowStocks, Acces
         return EspressoIdlingResource.getIdlingResource();
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        getStockQuotesHandlerThread.quitSafely();
-    }
+
 }

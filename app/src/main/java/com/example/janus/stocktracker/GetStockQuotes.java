@@ -24,7 +24,7 @@ public class GetStockQuotes implements Runnable {
 
         List<StockQuote> stockQuotesArrayList = new ArrayList<>();
 
-        for (String stockTicker: stockQuoteRequest.getStocks()) {
+        for (String stockTicker: stockQuoteRequest.getStocksToBeSearched()) {
 
             StockQuote stockQuote = webStockQuote.getRetrofitStockQuote(stockTicker);
 

@@ -2,17 +2,18 @@ package com.example.janus.stocktracker;
 
 import android.support.v4.app.Fragment;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class StockQuoteRequest {
 
-// Class to pass stock quote requests and the destination fragment
-    private Fragment destinationFragment;
-    private List <String> stocks;
+// The app has just one class than handles all stock search requests. However, the results can be displayed by a number of
+// different kinds of fragments. So this class is used to combine a stock search request and its intended destination fragment.
 
-    public StockQuoteRequest(List<String> stocks, Fragment destinationFragment) {
-        this.stocks = stocks;
+    private List <String> stocksToBeSearched;
+    private Fragment destinationFragment;
+
+    public StockQuoteRequest(List<String> stocksToBeSearched, Fragment destinationFragment) {
+        this.stocksToBeSearched = stocksToBeSearched;
         this.destinationFragment = destinationFragment;
     }
 
@@ -20,7 +21,7 @@ public class StockQuoteRequest {
         return destinationFragment;
     }
 
-    public List<String> getStocks() {
-        return stocks;
+    public List<String> getStocksToBeSearched() {
+        return stocksToBeSearched;
     }
 }

@@ -10,6 +10,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitStockQuote implements WebStockQuote {
 
+// This is the class that actually implements Retrofit
     private String jsonBaseURL;
 
     public RetrofitStockQuote(String jsonBaseURL) {
@@ -34,7 +35,8 @@ public class RetrofitStockQuote implements WebStockQuote {
             stockQuote =  stockQuoteCall.execute().body();
 
         } catch (IOException e) {
-            Log.d("I/O ERROR", "Retrofit " + e.getMessage());
+// TODO Need to handle Retrofit errors elegantly. At present, the user will get a message indicating the stooc was not found for
+// TODO all errors. That works, but it would be betterif the error message was more helpful.
         }
 
         return stockQuote;

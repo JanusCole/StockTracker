@@ -8,6 +8,9 @@ package com.example.janus.stocktracker;
 
 public class StockQuote implements Parcelable {
 
+// This is the destination class for the IEX stock quote API.
+// Implementing Parelable allows the object to be passed in a List as part of a bundle to a fragment
+
     @SerializedName("symbol")
     @Expose
     private String symbol;
@@ -36,6 +39,7 @@ public class StockQuote implements Parcelable {
     @Expose
     private long latestVolume;
 
+// Getters
     public String getSymbol() {
         return symbol;
     }
@@ -64,7 +68,8 @@ public class StockQuote implements Parcelable {
         return latestVolume;
     }
 
- // Parcelable Implementation
+// Parcelable Implementation
+// This allows the object to be passed in a List as part of a bundle to a fragment
 
     public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
         @Override

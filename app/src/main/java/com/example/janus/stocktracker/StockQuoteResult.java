@@ -7,9 +7,11 @@ import java.util.List;
 
 public class StockQuoteResult {
 
-// Class to pass back stock quote results
-    private Fragment destinationFragment;
+// The app has just one class than handles all stock search requests. However, the results can be displayed by a number of
+// different kinds of fragments. So this class is used to combine a stock search results and their intended destination fragment.
+
     private List <StockQuote> stockQuotes;
+    private Fragment destinationFragment;
 
     public StockQuoteResult(List<StockQuote> stockList, Fragment destinationFragment) {
         this.stockQuotes = stockList;

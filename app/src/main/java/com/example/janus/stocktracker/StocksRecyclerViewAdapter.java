@@ -55,6 +55,7 @@ public class StocksRecyclerViewAdapter extends RecyclerView.Adapter<StocksRecycl
 
         View thisItemsView = inflater.inflate(R.layout.stock_recycler_item,parent, false);
 
+// This allows the user to select a stock from the RecyclerView by clicking it.
         thisItemsView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
