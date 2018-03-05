@@ -16,6 +16,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static android.support.test.espresso.intent.Checks.checkNotNull;
 import static org.junit.Assert.assertEquals;
@@ -25,6 +26,9 @@ import static org.junit.Assert.assertFalse;
 @RunWith(AndroidJUnit4.class)
 public class PortfolioTest {
 
+    PortfolioDBOpenHelper portfolioDBOpenHelper;
+    Portfolio userPortfolio;
+
     @Rule
     public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule<>(
             MainActivity.class);
@@ -33,13 +37,13 @@ public class PortfolioTest {
     public void setUp() throws Exception {
 
         mActivityRule.getActivity().deleteDatabase(PortfolioDBOpenHelper.DATABASE_NAME);
+        portfolioDBOpenHelper = new PortfolioDBOpenHelper(mActivityRule.getActivity());
+        userPortfolio = new Portfolio(mActivityRule.getActivity());
 
     }
 
     @Test
     public void testPortfolioCheckIBM() throws Exception {
-
-        Portfolio userPortfolio = new Portfolio(mActivityRule.getActivity());
 
         assertFalse(userPortfolio.stockInPortfolio("IBM"));
 
@@ -48,8 +52,6 @@ public class PortfolioTest {
     @Test
     public void testPortfolioCheckNullString() throws Exception {
 
-        Portfolio userPortfolio = new Portfolio(mActivityRule.getActivity());
-
         assertFalse(userPortfolio.stockInPortfolio(""));
 
     }
@@ -57,10 +59,6 @@ public class PortfolioTest {
 
     @Test
     public void testPortfolioAddNull() throws Exception {
-
-        PortfolioDBOpenHelper portfolioDBOpenHelper = new PortfolioDBOpenHelper(mActivityRule.getActivity());
-
-        Portfolio userPortfolio = new Portfolio(mActivityRule.getActivity());
 
         userPortfolio.addStockToPortfolio("");
 
@@ -78,10 +76,6 @@ public class PortfolioTest {
 
     @Test
     public void testPortfolioAddAAPL() throws Exception {
-
-        PortfolioDBOpenHelper portfolioDBOpenHelper = new PortfolioDBOpenHelper(mActivityRule.getActivity());
-
-        Portfolio userPortfolio = new Portfolio(mActivityRule.getActivity());
 
         userPortfolio.addStockToPortfolio("AAPL");
 
@@ -107,10 +101,6 @@ public class PortfolioTest {
     @Test
     public void testPortfolioRemoveAAPL() throws Exception {
 
-        Portfolio userPortfolio = new Portfolio(mActivityRule.getActivity());
-
-        PortfolioDBOpenHelper portfolioDBOpenHelper = new PortfolioDBOpenHelper(mActivityRule.getActivity());
-
         ContentValues contentValues = new ContentValues();
         contentValues.put(PortfolioDBContract.PortfolioEntry.COLUMN_NAME_STOCK, "AAPL");
 
@@ -135,12 +125,10 @@ public class PortfolioTest {
     @Test
     public void testPortfolioAddMultipleStocks() throws Exception {
 
-        Portfolio userPortfolio = new Portfolio(mActivityRule.getActivity());
-
         userPortfolio.addStockToPortfolio("AAPL");
         userPortfolio.addStockToPortfolio("IBM");
 
-        ArrayList<String> dbResults = userPortfolio.getPortfolio();
+        List<String> dbResults = userPortfolio.getPortfolio();
 
         assert (dbResults.size() == 2);
         assert (dbResults.get(0) == "AAPL");

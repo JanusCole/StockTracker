@@ -40,23 +40,24 @@ public class DataBaseTest {
     public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule<>(
             MainActivity.class);
 
+    PortfolioDBOpenHelper portfolioDBOpenHelper;
+
+
     @Before
     public void setUp() throws Exception {
         mActivityRule.getActivity().deleteDatabase(PortfolioDBOpenHelper.DATABASE_NAME);
+        portfolioDBOpenHelper = new PortfolioDBOpenHelper(mActivityRule.getActivity());
+
     }
 
     @Test
     public void testDatabaseCreation () {
-
-        PortfolioDBOpenHelper portfolioDBOpenHelper = new PortfolioDBOpenHelper(mActivityRule.getActivity());
 
         assert(portfolioDBOpenHelper.getReadableDatabase().isOpen());
     }
 
     @Test
     public void testDatabaseColumnCreation () {
-
-        PortfolioDBOpenHelper portfolioDBOpenHelper = new PortfolioDBOpenHelper(mActivityRule.getActivity());
 
         Cursor portfolioCursor = portfolioDBOpenHelper.getReadableDatabase().query(PortfolioDBContract.PortfolioEntry.TABLE_NAME,
                 new String [] {PortfolioDBContract.PortfolioEntry.COLUMN_NAME_STOCK},
@@ -74,8 +75,6 @@ public class DataBaseTest {
     @Test
     public void testPortfolioCheckIBM() throws Exception {
 
-        PortfolioDBOpenHelper portfolioDBOpenHelper = new PortfolioDBOpenHelper(mActivityRule.getActivity());
-
         Cursor portfolioCursor = portfolioDBOpenHelper.getReadableDatabase().query(PortfolioDBContract.PortfolioEntry.TABLE_NAME,
                 new String [] {PortfolioDBContract.PortfolioEntry.COLUMN_NAME_STOCK},
                 PortfolioDBContract.PortfolioEntry.COLUMN_NAME_STOCK + " = ?",
@@ -90,8 +89,6 @@ public class DataBaseTest {
 
     @Test
     public void testPortfolioAddAAPL() throws Exception {
-
-        PortfolioDBOpenHelper portfolioDBOpenHelper = new PortfolioDBOpenHelper(mActivityRule.getActivity());
 
         ContentValues contentValues = new ContentValues();
         contentValues.put(PortfolioDBContract.PortfolioEntry.COLUMN_NAME_STOCK, "AAPL");
@@ -120,8 +117,6 @@ public class DataBaseTest {
 
     @Test
     public void testPortfolioAddDupes() throws Exception {
-
-        PortfolioDBOpenHelper portfolioDBOpenHelper = new PortfolioDBOpenHelper(mActivityRule.getActivity());
 
         ContentValues contentValues = new ContentValues();
         contentValues.put(PortfolioDBContract.PortfolioEntry.COLUMN_NAME_STOCK, "AAPL");
@@ -152,8 +147,6 @@ public class DataBaseTest {
     @Test
     public void testPortfolioAddNull() throws Exception {
 
-        PortfolioDBOpenHelper portfolioDBOpenHelper = new PortfolioDBOpenHelper(mActivityRule.getActivity());
-
         ContentValues contentValues = new ContentValues();
         contentValues.put(PortfolioDBContract.PortfolioEntry.COLUMN_NAME_STOCK, "");
 
@@ -176,8 +169,6 @@ public class DataBaseTest {
     @Test
     public void testPortfolioDeleteAAPL() throws Exception {
 
-        PortfolioDBOpenHelper portfolioDBOpenHelper = new PortfolioDBOpenHelper(mActivityRule.getActivity());
-
         portfolioDBOpenHelper.getWritableDatabase().delete(PortfolioDBContract.PortfolioEntry.TABLE_NAME,
                 PortfolioDBContract.PortfolioEntry.COLUMN_NAME_STOCK + " = ?",
                 new String [] {"AAPL"});
@@ -196,8 +187,6 @@ public class DataBaseTest {
 
     @Test
     public void testPortfolioAddMultipleStocks() throws Exception {
-
-        PortfolioDBOpenHelper portfolioDBOpenHelper = new PortfolioDBOpenHelper(mActivityRule.getActivity());
 
         ContentValues aaplContentValues = new ContentValues();
         aaplContentValues.put(PortfolioDBContract.PortfolioEntry.COLUMN_NAME_STOCK, "AAPL");
