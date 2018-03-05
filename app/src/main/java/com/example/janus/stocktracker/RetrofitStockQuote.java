@@ -36,7 +36,7 @@ public class RetrofitStockQuote implements WebStockQuote {
 
         } catch (IOException e) {
 // TODO Need to handle Retrofit errors elegantly. At present, the user will get a message indicating the stooc was not found for
-// TODO all errors. That works, but it would be betterif the error message was more helpful.
+// TODO all errors. That works-ish, but it would be betterif the error message was more helpful.
         }
 
         return stockQuote;

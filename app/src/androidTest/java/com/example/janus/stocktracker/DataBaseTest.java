@@ -14,6 +14,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.intent.Checks.checkNotNull;
 
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -218,7 +219,7 @@ public class DataBaseTest {
 
     }
 
-    @After
+    @AfterClass
     public void tearDown() throws Exception {
         mActivityRule.getActivity().deleteDatabase(PortfolioDBOpenHelper.DATABASE_NAME);
 

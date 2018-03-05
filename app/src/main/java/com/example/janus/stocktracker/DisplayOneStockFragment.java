@@ -128,7 +128,7 @@ public class DisplayOneStockFragment extends Fragment {
 
     }
 
-// These are for communicating with the MainActivity
+// These are for communicating with the portfolio through the  MainActivity
     private boolean checkPortfolio (String  searchStockTicker) {
         return accessPortfolio.checkPortfolio(searchStockTicker);
     }
