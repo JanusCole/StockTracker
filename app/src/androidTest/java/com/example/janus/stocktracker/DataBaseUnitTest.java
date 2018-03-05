@@ -33,9 +33,12 @@ import com.example.janus.stocktracker.data.PortfolioDBOpenHelper;
 
 import java.math.BigDecimal;
 
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// THIS IS A UNIT TEST LOCATED IN THE ANDROID TEST FOLDER IN ORDER TO USE CONTEXT
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 @RunWith(AndroidJUnit4.class)
-public class DataBaseTest {
+public class DataBaseUnitTest {
 
     @Rule
     public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule<>(
@@ -219,7 +222,7 @@ public class DataBaseTest {
 
     }
 
-    @AfterClass
+    @After
     public void tearDown() throws Exception {
         mActivityRule.getActivity().deleteDatabase(PortfolioDBOpenHelper.DATABASE_NAME);
 

@@ -23,8 +23,12 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
 
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// THIS IS A UNIT TEST LOCATED IN THE ANDROID TEST FOLDER IN ORDER TO USE CONTEXT
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 @RunWith(AndroidJUnit4.class)
-public class PortfolioTest {
+public class PortfolioUnitTest {
 
     PortfolioDBOpenHelper portfolioDBOpenHelper;
     Portfolio userPortfolio;
