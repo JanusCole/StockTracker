@@ -4,6 +4,9 @@
     <string name="empty_portfolio_message">Your portfolio is empty</string>
     <string name="stock_not_found_message">Stock(s) not found</string>
     <string name="stock_quotes_thread_name">GetStockQuotes</string>
-    <string name="stock_search_list">stock_search_list</string>
+    <string name="stock_quote_list">stock_search_list</string>
+    <string name="stock_quote">stock_quote</string>
+    <string name="database_error_message">Database Error</string>
+    <string name="network_error_message">Network Error</string>
 
 </resources>

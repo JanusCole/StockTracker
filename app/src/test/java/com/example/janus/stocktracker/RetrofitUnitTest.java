@@ -6,6 +6,9 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+
+import com.example.janus.stocktracker.model.stockquotes.GetStockQuotesFromIEX;
+import com.example.janus.stocktracker.model.stockquotes.StockQuote;
 import com.squareup.okhttp.mockwebserver.MockResponse;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
 
@@ -28,8 +31,8 @@ public class RetrofitUnitTest {
 
         mockWebServer.enqueue(new MockResponse().setBody(""));
 
-        RetrofitStockQuote retrofitStockQuote = new RetrofitStockQuote(mockWebServer.url("").toString());
-        StockQuote stockQuote = retrofitStockQuote.getRetrofitStockQuote("IBM");
+        GetStockQuotesFromIEX retrofitStockQuote = new GetStockQuotesFromIEX(mockWebServer.url("").toString());
+        StockQuote stockQuote = retrofitStockQuote.getStockQuote("IBM");
 
         assertEquals(null, stockQuote);
 
@@ -42,8 +45,8 @@ public class RetrofitUnitTest {
 
         mockWebServer.enqueue(new MockResponse().setBody("{symbol:IBM"));
 
-        RetrofitStockQuote retrofitStockQuote = new RetrofitStockQuote(mockWebServer.url("").toString());
-        StockQuote stockQuote = retrofitStockQuote.getRetrofitStockQuote("IBM");
+        GetStockQuotesFromIEX retrofitStockQuote = new GetStockQuotesFromIEX(mockWebServer.url("").toString());
+        StockQuote stockQuote = retrofitStockQuote.getStockQuote("IBM");
 
         assertEquals(null, stockQuote);
 
@@ -56,8 +59,8 @@ public class RetrofitUnitTest {
 
         mockWebServer.enqueue(new MockResponse().setBody(retroFiteResponse));
 
-        RetrofitStockQuote retrofitStockQuote = new RetrofitStockQuote(mockWebServer.url("").toString());
-        StockQuote stockQuote = retrofitStockQuote.getRetrofitStockQuote("IBM");
+        GetStockQuotesFromIEX retrofitStockQuote = new GetStockQuotesFromIEX(mockWebServer.url("").toString());
+        StockQuote stockQuote = retrofitStockQuote.getStockQuote("IBM");
 
         assertFalse(stockQuote == null);
         assertEquals("IBM", stockQuote.getSymbol());

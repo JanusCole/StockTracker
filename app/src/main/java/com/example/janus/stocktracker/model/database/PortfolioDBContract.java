@@ -1,4 +1,4 @@
-package com.example.janus.stocktracker.data;
+package com.example.janus.stocktracker.model.database;
 
 import android.provider.BaseColumns;
 

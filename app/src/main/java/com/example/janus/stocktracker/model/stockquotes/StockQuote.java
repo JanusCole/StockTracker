@@ -1,4 +1,4 @@
-package com.example.janus.stocktracker;
+package com.example.janus.stocktracker.model.stockquotes;
 
         import android.os.Parcel;
         import android.os.Parcelable;

@@ -1,10 +1,8 @@
-package com.example.janus.stocktracker.data;
+package com.example.janus.stocktracker.model.database;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-
-import com.example.janus.stocktracker.data.PortfolioDBContract;
 
 
 public final class PortfolioDBOpenHelper extends SQLiteOpenHelper {

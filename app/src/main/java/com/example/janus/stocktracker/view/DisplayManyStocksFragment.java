@@ -1,4 +1,4 @@
-package com.example.janus.stocktracker;
+package com.example.janus.stocktracker.view;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -10,21 +10,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import com.example.janus.stocktracker.R;
+import com.example.janus.stocktracker.model.stockquotes.StockQuote;
+import com.example.janus.stocktracker.adapters.StocksRecyclerViewAdapter;
 
 
 public class DisplayManyStocksFragment extends Fragment implements StocksRecyclerViewAdapter.OnItemSelectedListener {
 
 // This is for communicating with the MainActivity
-    private ShowStocks searchStocks;
+    private ShowStock searchStocks;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         Bundle stockQuoteBundle = getArguments();
-        List<StockQuote> stockQuotes = stockQuoteBundle.getParcelableArrayList(getActivity().getString(R.string.stock_search_list));
+        List<StockQuote> stockQuotes = stockQuoteBundle.getParcelableArrayList(getActivity().getString(R.string.stock_quote_list));
 
         View v = inflater.inflate(R.layout.display_multiple_stocks_fragment, container, false);
 
@@ -40,7 +43,7 @@ public class DisplayManyStocksFragment extends Fragment implements StocksRecycle
         super.onAttach(context);
 
 // This is for communicating with the  MainActivity
-        searchStocks = (ShowStocks) context;
+        searchStocks = (ShowStock) context;
 
     }
 
@@ -48,11 +51,8 @@ public class DisplayManyStocksFragment extends Fragment implements StocksRecycle
     @Override
     public void onItemSelected(String tickerSymbol) {
 
-        List<String> stockTickerArray = new ArrayList <>();
-        stockTickerArray.add(tickerSymbol);
-
 // Commuinicates with the MainActivity
-        searchStocks.showStocks(stockTickerArray, new DisplayOneStockFragment());
+        searchStocks.showStock(tickerSymbol);
     }
 
 }

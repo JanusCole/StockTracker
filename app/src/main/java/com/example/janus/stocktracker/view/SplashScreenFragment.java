@@ -1,4 +1,4 @@
-package com.example.janus.stocktracker;
+package com.example.janus.stocktracker.view;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -11,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.example.janus.stocktracker.R;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;

@@ -2,20 +2,12 @@ package com.example.janus.stocktracker;
 
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.support.test.annotation.UiThreadTest;
-import android.support.test.espresso.action.ViewActions;
-import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.rule.ActivityTestRule;
 
-import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.intent.Checks.checkNotNull;
 
 import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -24,14 +16,11 @@ import org.junit.runner.RunWith;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
-import android.support.test.espresso.Espresso;
 import android.support.test.runner.AndroidJUnit4;
-import android.util.Log;
 
-import com.example.janus.stocktracker.data.PortfolioDBContract;
-import com.example.janus.stocktracker.data.PortfolioDBOpenHelper;
-
-import java.math.BigDecimal;
+import com.example.janus.stocktracker.model.database.PortfolioDBContract;
+import com.example.janus.stocktracker.model.database.PortfolioDBOpenHelper;
+import com.example.janus.stocktracker.view.MainActivity;
 
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 // THIS IS A UNIT TEST LOCATED IN THE ANDROID TEST FOLDER IN ORDER TO USE CONTEXT

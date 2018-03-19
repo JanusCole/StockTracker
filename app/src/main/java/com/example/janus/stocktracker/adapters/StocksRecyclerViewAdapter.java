@@ -1,4 +1,4 @@
-package com.example.janus.stocktracker;
+package com.example.janus.stocktracker.adapters;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -9,7 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.ArrayList;
+import com.example.janus.stocktracker.R;
+import com.example.janus.stocktracker.model.stockquotes.StockQuote;
+
 import java.util.List;
 
 
@@ -21,7 +23,7 @@ public class StocksRecyclerViewAdapter extends RecyclerView.Adapter<StocksRecycl
     private OnItemSelectedListener onItemSelectedListener;
 
     public interface OnItemSelectedListener {
-        public abstract void onItemSelected(String tickerSymbol);
+        void onItemSelected(String tickerSymbol);
     }
 
     public StocksRecyclerViewAdapter(List<StockQuote> stockQuotes, OnItemSelectedListener onItemSelectedListener) {

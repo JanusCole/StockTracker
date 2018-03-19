@@ -1,14 +1,14 @@
 package com.example.janus.stocktracker;
 
 import android.content.ContentValues;
-import android.support.test.espresso.Espresso;
 import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.example.janus.stocktracker.data.PortfolioDBContract;
-import com.example.janus.stocktracker.data.PortfolioDBOpenHelper;
+import com.example.janus.stocktracker.model.database.PortfolioDBContract;
+import com.example.janus.stocktracker.model.database.PortfolioDBOpenHelper;
+import com.example.janus.stocktracker.view.MainActivity;
 import com.squareup.okhttp.mockwebserver.MockResponse;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
 
@@ -51,9 +51,9 @@ public class SearchMultipleStockTest {
 
         mockWebServer.enqueue(new MockResponse().setBody(retroFitResponseIBM));
 
-        mActivityRule.getActivity().setBaseURL(mockWebServer.url("").toString());
+//        mActivityRule.getActivity().setBaseURL(mockWebServer.url("").toString());
 
-        Espresso.registerIdlingResources(mActivityRule.getActivity().getCountingIdlingResource());
+//        Espresso.registerIdlingResources(mActivityRule.getActivity().getCountingIdlingResource());
 
         onView(withId(R.id.action_portfolio)).perform(click());
         onView(withId(R.id.displayMultipleStocksFragment)).check(matches((isDisplayed())));
@@ -80,9 +80,9 @@ public class SearchMultipleStockTest {
         mockWebServer.enqueue(new MockResponse().setBody(retroFitResponseAAPL));
         mockWebServer.enqueue(new MockResponse().setBody(retroFitResponseIBM));
 
-        mActivityRule.getActivity().setBaseURL(mockWebServer.url("").toString());
+//        mActivityRule.getActivity().setBaseURL(mockWebServer.url("").toString());
 
-        Espresso.registerIdlingResources(mActivityRule.getActivity().getCountingIdlingResource());
+//        Espresso.registerIdlingResources(mActivityRule.getActivity().getCountingIdlingResource());
 
         onView(withId(R.id.action_portfolio)).perform(click());
         onView(withId(R.id.displayMultipleStocksFragment)).check(matches((isDisplayed())));
@@ -118,9 +118,9 @@ public class SearchMultipleStockTest {
         mockWebServer.enqueue(new MockResponse().setBody(retroFitResponseIBM));
         mockWebServer.enqueue(new MockResponse().setBody(retroFitResponseIBM));
 
-        mActivityRule.getActivity().setBaseURL(mockWebServer.url("").toString());
+//        mActivityRule.getActivity().setBaseURL(mockWebServer.url("").toString());
 
-        Espresso.registerIdlingResources(mActivityRule.getActivity().getCountingIdlingResource());
+//        Espresso.registerIdlingResources(mActivityRule.getActivity().getCountingIdlingResource());
 
         onView(withId(R.id.action_portfolio)).perform(click());
         onView(withId(R.id.displayMultipleStocksFragment)).check(matches((isDisplayed())));

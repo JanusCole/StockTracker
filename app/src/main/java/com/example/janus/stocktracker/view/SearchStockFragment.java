@@ -1,4 +1,4 @@
-package com.example.janus.stocktracker;
+package com.example.janus.stocktracker.view;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -11,13 +11,12 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.example.janus.stocktracker.R;
 
 
 public class SearchStockFragment extends Fragment {
 
-    private ShowStocks searchStocks;
+    private ShowStock stockSearcher;
 
     private EditText searchStockTicker;
 
@@ -49,16 +48,12 @@ public class SearchStockFragment extends Fragment {
         super.onAttach(context);
 
 // For communicating with the  MainActivity
-        searchStocks = (ShowStocks) context;
+        stockSearcher = (ShowStock) context;
 
     }
 
     private void searchStock (String  searchStockTicker) {
-
-        List<String> stockTickerArray = new ArrayList <>();
-        stockTickerArray.add(searchStockTicker);
-
-        searchStocks.showStocks(stockTickerArray, new DisplayOneStockFragment());
+        stockSearcher.showStock(searchStockTicker);
     }
 
 
