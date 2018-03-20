@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.janus.stocktracker.R;
-import com.example.janus.stocktracker.model.stockquotes.StockQuote;
+import com.example.janus.stocktracker.presenter.StockQuote;
 
 import java.util.List;
 

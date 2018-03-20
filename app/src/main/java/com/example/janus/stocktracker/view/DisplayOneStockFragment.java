@@ -17,11 +17,11 @@ import android.widget.TextView;
 import java.text.DecimalFormat;
 import java.util.List;
 
+import com.example.janus.stocktracker.model.database.DatabaseAccessAsync;
 import com.example.janus.stocktracker.presenter.PortfolioAccessContract;
 import com.example.janus.stocktracker.presenter.PortfolioAccessPresenter;
 import com.example.janus.stocktracker.R;
-import com.example.janus.stocktracker.model.stockquotes.StockQuote;
-import com.example.janus.stocktracker.model.codes.ResultCode;
+import com.example.janus.stocktracker.presenter.StockQuote;
 
 
 public class DisplayOneStockFragment extends Fragment implements PortfolioAccessContract.View {
@@ -42,7 +42,8 @@ public class DisplayOneStockFragment extends Fragment implements PortfolioAccess
 
 // Get the search results
         Bundle stockQuoteBundle = getArguments();
-        stockQuote = stockQuoteBundle.getParcelable(getActivity().getString(R.string.stock_quote));
+        List<StockQuote> stockQuotes = stockQuoteBundle.getParcelableArrayList(getActivity().getString(R.string.stock_quote_list));
+        stockQuote = stockQuotes.get(0);
 
 // Populate the view with values from the stock quote result
         View v = inflater.inflate(R.layout.display_one_stock_fragment, container, false);
@@ -112,7 +113,8 @@ public class DisplayOneStockFragment extends Fragment implements PortfolioAccess
     public void onAttach(Context context) {
         super.onAttach(context);
 // Get access to the portfolio database
-        portfolioAccessPresenter = new PortfolioAccessPresenter(context, this);
+        portfolioAccessPresenter = new PortfolioAccessPresenter(new DatabaseAccessAsync(context));
+        portfolioAccessPresenter.setPortfolioAccessView(this);
     }
 
 
@@ -147,17 +149,19 @@ public class DisplayOneStockFragment extends Fragment implements PortfolioAccess
     }
 
     @Override
-    public void portfolioAccessCompleted(List<String> stockTickers, ResultCode resultCode) {
+    public void portfolioAccessSuccess(List<String> stockTickers) {
 
-        if (resultCode == ResultCode.DATABASE_ERROR) {
-            displayErrorMessageAlertDialog(this.getString(R.string.database_error_message));
-        }
-        else if (refreshScreen) {
+        if (refreshScreen) {
             setButtons(stockTickers.isEmpty());
         }
         else {
             checkPortfolio(stockQuote.getSymbol());
         }
+    }
+
+    @Override
+    public void portfolioAccessFailure() {
+        displayErrorMessageAlertDialog(this.getString(R.string.database_error_message));
     }
 
     // Method for displaying custom error messages

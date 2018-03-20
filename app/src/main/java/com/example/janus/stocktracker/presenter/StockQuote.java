@@ -1,4 +1,4 @@
-package com.example.janus.stocktracker.model.stockquotes;
+package com.example.janus.stocktracker.presenter;
 
         import android.os.Parcel;
         import android.os.Parcelable;
@@ -8,38 +8,33 @@ package com.example.janus.stocktracker.model.stockquotes;
 
 public class StockQuote implements Parcelable {
 
-// This is the destination class for the IEX stock quote API.
-// Implementing Parelable allows the object to be passed in a List as part of a bundle to a fragment
+// This is a Parcelable class of StockQuote data that can be passed to a fragment in a bundle.
 
-    @SerializedName("symbol")
-    @Expose
     private String symbol;
 
-    @SerializedName("companyName")
-    @Expose
     private String companyName;
 
-    @SerializedName("sector")
-    @Expose
     private String sector;
 
-    @SerializedName("open")
-    @Expose
     private double open;
 
-    @SerializedName("close")
-    @Expose
     private double close;
 
-    @SerializedName("latestPrice")
-    @Expose
     private double latestPrice;
 
-    @SerializedName("latestVolume")
-    @Expose
     private long latestVolume;
 
-// Getters
+    public StockQuote(String symbol, String companyName, String sector, double open, double close, double latestPrice, long latestVolume) {
+        this.symbol = symbol;
+        this.companyName = companyName;
+        this.sector = sector;
+        this.open = open;
+        this.close = close;
+        this.latestPrice = latestPrice;
+        this.latestVolume = latestVolume;
+    }
+
+    // Getters
     public String getSymbol() {
         return symbol;
     }

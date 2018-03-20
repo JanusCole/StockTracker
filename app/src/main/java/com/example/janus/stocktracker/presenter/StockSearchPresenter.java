@@ -1,71 +1,71 @@
 package com.example.janus.stocktracker.presenter;
 
-import android.content.Context;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import com.example.janus.stocktracker.model.stockquotes.GetStockQuotes;
-import com.example.janus.stocktracker.model.stockquotes.GetStockQuotesFromIEX;
-import com.example.janus.stocktracker.model.codes.ResultCode;
-import com.example.janus.stocktracker.model.stockquotes.StockQuote;
 
 public class StockSearchPresenter implements StockSearchContract.Presenter, GetStockQuotes.ProcessStockQuoteResults, PortfolioAccessContract.View {
 
     private StockSearchContract.View stockSearchView;
-    private PortfolioAccessContract.Presenter portfolioAccessPresenter;
+    private PortfolioAccessContract.Presenter portfolioSource;
+    private GetStockQuotes stockQuoteSource;
 
-    public StockSearchPresenter(StockSearchContract.View stockSearchView, Context context) {
+    public StockSearchPresenter(StockSearchContract.View stockSearchView, PortfolioAccessContract.Presenter portfolioSource, GetStockQuotes stockQuoteSource) {
         this.stockSearchView = stockSearchView;
-        this.portfolioAccessPresenter = new PortfolioAccessPresenter(context, this);
+        this.portfolioSource = portfolioSource;
+        this.portfolioSource.setPortfolioAccessView(this);
+        this.stockQuoteSource = stockQuoteSource;
+        this.stockQuoteSource.setProcessStockQuoteResults(this);
+    }
+
+    public void setStockSearchView(StockSearchContract.View stockSearchView) {
+        this.stockSearchView = stockSearchView;
     }
 
     @Override
     public void searchPortfolio() {
-        portfolioAccessPresenter.getPortfolio();
+        portfolioSource.getPortfolio();
     }
 
     public void searchStocks(String stockSymbol) {
         List <String> stockSearchList = new ArrayList<>();
         stockSearchList.add(stockSymbol);
-        GetStockQuotes webStockQuote = new GetStockQuotesFromIEX(this);
-        webStockQuote.getStockQuotes(stockSearchList);
+        stockQuoteSource.getStockQuotes(stockSearchList);
     }
 
     public void searchStocks(List<String> stockSymbols) {
-        GetStockQuotes webStockQuote = new GetStockQuotesFromIEX(this);
-        webStockQuote.getStockQuotes(stockSymbols);
-    }
-
-
-    @Override
-    public void processStockQuoteResults(List<StockQuote> stockQuoteResults, ResultCode resultCode) {
-
-        if (resultCode == ResultCode.NETWORK_ERROR) {
-            stockSearchView.displayNetworkErrorMessage();
-        }
-        else if (resultCode == ResultCode.NOT_FOUND) {
-            stockSearchView.displayNotFoundErrorMessage();
-        }
-        else if (stockQuoteResults.size() == 1) {
-            stockSearchView.displayOneStock(stockQuoteResults.get(0));
-        } else {
-            stockSearchView.displayManyStocks(stockQuoteResults);
-        }
+        stockQuoteSource.getStockQuotes(stockSymbols);
     }
 
     @Override
-    public void portfolioAccessCompleted(List<String> stockTickers, ResultCode resultCode) {
+    public void processStockQuoteSuccess(List<StockQuote> stockQuoteResults) {
+        stockSearchView.displayStocks(stockQuoteResults);
+    }
 
-        if (resultCode == ResultCode.DATABASE_ERROR) {
-            stockSearchView.displayDatabaseErrorMessage();
-        }
-        else if (stockTickers.size() == 0) {
+    @Override
+    public void processStockQuoteFailure() {
+        stockSearchView.displayNetworkErrorMessage();
+    }
+
+    @Override
+    public void processStockQuoteNotFound() {
+        stockSearchView.displayNotFoundErrorMessage();
+    }
+
+    @Override
+    public void portfolioAccessSuccess(List<String> stockTickers) {
+
+        if (stockTickers.size() == 0) {
             stockSearchView.displayEmptyPortfolioErrorMessage();
 
         } else {
             searchStocks(stockTickers);
         }
+    }
 
+    @Override
+    public void portfolioAccessFailure() {
+        stockSearchView.displayDatabaseErrorMessage();
     }
 }

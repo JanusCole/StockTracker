@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import com.example.janus.stocktracker.R;
-import com.example.janus.stocktracker.model.stockquotes.StockQuote;
+import com.example.janus.stocktracker.presenter.StockQuote;
 import com.example.janus.stocktracker.adapters.StocksRecyclerViewAdapter;
 
 

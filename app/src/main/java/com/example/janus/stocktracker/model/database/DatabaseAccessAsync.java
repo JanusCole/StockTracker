@@ -9,8 +9,6 @@ import android.os.AsyncTask;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.example.janus.stocktracker.model.codes.ResultCode;
-
 public class DatabaseAccessAsync {
 
     private PortfolioDBOpenHelper portfolioDBOpenHelper;
@@ -19,13 +17,18 @@ public class DatabaseAccessAsync {
 
 
     public interface OnPortfolioDBAccessCompletion {
-        public abstract void portfolioDBAccessCompleted(ResultCode resultCode, List<String> stockSymbols);
+        void portfolioDBAccessSuccess(List<String> stockSymbols);
+        void portfolioDBAccessFailure();
+
     }
 
 
-    public DatabaseAccessAsync(Context context, OnPortfolioDBAccessCompletion onPortfolioAccessCompletion) {
+    public DatabaseAccessAsync(Context context) {
         portfolioDBOpenHelper = new PortfolioDBOpenHelper(context);
-        this.onPortfolioDBAccessCompletion = onPortfolioAccessCompletion;
+    }
+
+    public void setOnPortfolioDBAccessCompletion(OnPortfolioDBAccessCompletion onPortfolioDBAccessCompletion) {
+        this.onPortfolioDBAccessCompletion = onPortfolioDBAccessCompletion;
     }
 
     public void getAllStocksPortfolioDBAsync() {
@@ -53,7 +56,12 @@ public class DatabaseAccessAsync {
 
         @Override
         protected void onPostExecute(DatabaseAccessResult databaseResult) {
-            onPortfolioDBAccessCompletion.portfolioDBAccessCompleted(databaseResult.getResultCode(), databaseResult.getStockSymbols());
+
+            if (databaseResult.getResultCode() == DatabaseAccessResult.ResultCode.SUCCESS) {
+                onPortfolioDBAccessCompletion.portfolioDBAccessSuccess(databaseResult.getStockSymbols());
+            } else {
+                onPortfolioDBAccessCompletion.portfolioDBAccessFailure();
+            }
         }
     }
 
@@ -69,8 +77,8 @@ public class DatabaseAccessAsync {
         public GetAllStocks () {}
 
         public DatabaseAccessResult getResult() {
-            ArrayList<String> stockList = new ArrayList<>();
-            ResultCode result;
+            List<String> stockList = new ArrayList<>();
+            DatabaseAccessResult.ResultCode result;
 
             Cursor portfolioCursor = null;
 
@@ -83,9 +91,9 @@ public class DatabaseAccessAsync {
                         null,
                         PortfolioDBContract.PortfolioEntry.COLUMN_NAME_STOCK);
 
-                result = ResultCode.SUCCESS;
+                result = DatabaseAccessResult.ResultCode.SUCCESS;
             } catch (SQLException e) {
-                result = ResultCode.DATABASE_ERROR;
+                result = DatabaseAccessResult.ResultCode.FAILURE;
             }
 
             if ((portfolioCursor != null) && (portfolioCursor.getCount() != 0)) {
@@ -111,8 +119,8 @@ public class DatabaseAccessAsync {
         }
 
         public DatabaseAccessResult getResult() {
-            ArrayList<String> stockList = new ArrayList<>();
-            ResultCode result;
+            List<String> stockList = new ArrayList<>();
+            DatabaseAccessResult.ResultCode result;
 
             Cursor portfolioCursor = null;
             try {
@@ -124,9 +132,9 @@ public class DatabaseAccessAsync {
                         null,
                         null);
 
-                result = ResultCode.SUCCESS;
+                result = DatabaseAccessResult.ResultCode.SUCCESS;
             } catch (SQLException e) {
-                result = ResultCode.DATABASE_ERROR;
+                result = DatabaseAccessResult.ResultCode.FAILURE;
             }
 
             if ((portfolioCursor != null) && (portfolioCursor.getCount() != 0)) {
@@ -152,17 +160,17 @@ public class DatabaseAccessAsync {
         }
         public DatabaseAccessResult getResult() {
 
-            ArrayList<String> stockList = new ArrayList<>();
-            ResultCode result;
+            List<String> stockList = new ArrayList<>();
+            DatabaseAccessResult.ResultCode result;
 
             ContentValues contentValues = new ContentValues();
             contentValues.put(PortfolioDBContract.PortfolioEntry.COLUMN_NAME_STOCK, requestStock);
 
             try {
                 portfolioDBOpenHelper.getWritableDatabase().insertOrThrow(PortfolioDBContract.PortfolioEntry.TABLE_NAME, null, contentValues);
-                result = ResultCode.SUCCESS;
+                result = DatabaseAccessResult.ResultCode.SUCCESS;
             } catch (SQLException e) {
-                result = ResultCode.DATABASE_ERROR;
+                result = DatabaseAccessResult.ResultCode.FAILURE;
             }
 
             return new DatabaseAccessResult(result, stockList);
@@ -179,8 +187,8 @@ public class DatabaseAccessAsync {
 
         public DatabaseAccessResult getResult() {
 
-            ArrayList<String> stockList = new ArrayList<>();
-            ResultCode result;
+            List<String> stockList = new ArrayList<>();
+            DatabaseAccessResult.ResultCode result;
 
             try {
                 int deletionResult = portfolioDBOpenHelper.getWritableDatabase().delete(PortfolioDBContract.PortfolioEntry.TABLE_NAME,
@@ -188,16 +196,43 @@ public class DatabaseAccessAsync {
                 new String [] {requestStock});
 
                 if (deletionResult == 1) {
-                    result = ResultCode.SUCCESS;
+                    result = DatabaseAccessResult.ResultCode.SUCCESS;
                 } else {
-                    result = ResultCode.DATABASE_ERROR;
+                    result = DatabaseAccessResult.ResultCode.FAILURE;
                 }
 
             } catch (SQLException e) {
-                result = ResultCode.DATABASE_ERROR;
+                result = DatabaseAccessResult.ResultCode.FAILURE;
             }
 
             return new DatabaseAccessResult(result, stockList);
         }
+    }
+
+    public static class DatabaseAccessResult {
+
+    //    DatabaseRequest request;
+        ResultCode resultCode;
+        List<String> stockSymbols;
+
+        public DatabaseAccessResult(ResultCode resultCode, List<String> stockSymbols) {
+            this.resultCode = resultCode;
+            this.stockSymbols = stockSymbols;
+        }
+
+        public ResultCode getResultCode() {
+            return resultCode;
+        }
+
+        public List<String> getStockSymbols() {
+            return stockSymbols;
+        }
+
+        public enum ResultCode {
+
+            SUCCESS, FAILURE;
+
+        }
+
     }
 }

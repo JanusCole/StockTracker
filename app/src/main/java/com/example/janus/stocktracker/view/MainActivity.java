@@ -1,25 +1,30 @@
 package com.example.janus.stocktracker.view;
 
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.example.janus.stocktracker.R;
-import com.example.janus.stocktracker.model.stockquotes.StockQuote;
+import com.example.janus.stocktracker.model.database.DatabaseAccessAsync;
+import com.example.janus.stocktracker.model.stockquotes.GetStockQuotes;
+import com.example.janus.stocktracker.model.stockquotes.GetStockQuotesAPI;
+import com.example.janus.stocktracker.model.stockquotes.GetStockQuotesWithRetrofit;
+import com.example.janus.stocktracker.presenter.PortfolioAccessPresenter;
+import com.example.janus.stocktracker.presenter.StockQuote;
 import com.example.janus.stocktracker.presenter.StockSearchContract;
 import com.example.janus.stocktracker.presenter.StockSearchPresenter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 // This app currently supports views for single stocks, multiple stocks (as a portfolio), and a single stock search screen.
 // It uses Retrofit to access a JSON stock search API from IEX.
@@ -31,13 +36,16 @@ public class MainActivity extends AppCompatActivity implements ShowStock, StockS
     private StockSearchPresenter stockSearchPresenter;
 
     private AlertDialog networkActivityDialog;
+    private Fragment destinationFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        stockSearchPresenter = new StockSearchPresenter(this, this);
+        GetStockQuotes stockQuoteSource = new GetStockQuotesWithRetrofit(new GetStockQuotesAPI());
+        PortfolioAccessPresenter portfolioSource = new PortfolioAccessPresenter(new DatabaseAccessAsync(this));
+        stockSearchPresenter = new StockSearchPresenter(this, portfolioSource, stockQuoteSource);
 
 // Set up the bottom navigation bar
         BottomNavigationView bottomNavigationView = (BottomNavigationView)
@@ -79,6 +87,7 @@ public class MainActivity extends AppCompatActivity implements ShowStock, StockS
 
     public void displayPortfolio () {
 
+        destinationFragment = new DisplayManyStocksFragment();
         stockSearchPresenter.searchPortfolio();
         networkActivityDialog.show();
 
@@ -92,6 +101,7 @@ public class MainActivity extends AppCompatActivity implements ShowStock, StockS
     @Override
     public void showStock(String stockTicker) {
 
+       destinationFragment = new DisplayOneStockFragment();
        stockSearchPresenter.searchStocks(stockTicker);
        networkActivityDialog.show();
 
@@ -102,22 +112,7 @@ public class MainActivity extends AppCompatActivity implements ShowStock, StockS
 // ************************************************************
 
     @Override
-    public void displayOneStock(StockQuote quote) {
-
-        networkActivityDialog.dismiss();
-
-        Bundle args = new Bundle();
-        args.putParcelable(getString(R.string.stock_quote), quote);
-
-        Fragment nextFragment = new DisplayOneStockFragment();
-        nextFragment.setArguments(args);
-
-        replaceFragment(nextFragment);
-
-    }
-
-    @Override
-    public void displayManyStocks(List<StockQuote> quotes) {
+    public void displayStocks(List<StockQuote> quotes) {
 
         networkActivityDialog.dismiss();
 
@@ -125,10 +120,9 @@ public class MainActivity extends AppCompatActivity implements ShowStock, StockS
 // The putParcelable method below only accepts ArrayLists, not Lists
         args.putParcelableArrayList(getString(R.string.stock_quote_list), (ArrayList) quotes);
 
-        Fragment nextFragment = new DisplayManyStocksFragment();
-        nextFragment.setArguments(args);
+        destinationFragment.setArguments(args);
 
-        replaceFragment(nextFragment);
+        replaceFragment(destinationFragment);
 
     }
     // Method for displaying custom error messages
