@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements ShowStock, StockS
         PortfolioAccessPresenter portfolioSource = new PortfolioAccessPresenter(new DatabaseAccessAsync(this));
         stockSearchPresenter = new StockSearchPresenter(this, portfolioSource, stockQuoteSource);
 
-// Set up the bottom navigation bar
+// Set up the bottom navigation  bar
         BottomNavigationView bottomNavigationView = (BottomNavigationView)
                 findViewById(R.id.bottom_navigation);
 
