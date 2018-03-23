@@ -125,8 +125,9 @@ public class MainActivity extends AppCompatActivity implements ShowStock, StockS
         replaceFragment(destinationFragment);
 
     }
+
     // Method for displaying custom error messages
-    public void displayErrorMessageAlertDialog(String alertMessage) {
+    private void displayErrorMessageAlertDialog(String alertMessage) {
 
         LayoutInflater inflater = this.getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.custom_alert_dialog, null);
@@ -187,12 +188,6 @@ public class MainActivity extends AppCompatActivity implements ShowStock, StockS
     @Override
     public void displayNetworkErrorMessage() {
         displayErrorMessageAlertDialog(getString(R.string.network_error_message));
-    }
-
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
     }
 
 }

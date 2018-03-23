@@ -120,7 +120,7 @@ public class DisplayOneStockFragment extends Fragment implements PortfolioAccess
 
 
 // Decide whether the "add" or "remove" button should be displayed
-    private void setButtons (Boolean stockIsInPortfolio) {
+    private void setButtons (Boolean stockIsInPortfolio, Button addStockButton, Button removeStockButton) {
 
         if (stockIsInPortfolio) {
             addStockButton.setVisibility(View.VISIBLE);
@@ -152,7 +152,7 @@ public class DisplayOneStockFragment extends Fragment implements PortfolioAccess
     public void portfolioAccessSuccess(List<String> stockTickers) {
 
         if (refreshScreen) {
-            setButtons(stockTickers.isEmpty());
+            setButtons(stockTickers.isEmpty(), addStockButton, removeStockButton);
         }
         else {
             checkPortfolio(stockQuote.getSymbol());
@@ -165,7 +165,7 @@ public class DisplayOneStockFragment extends Fragment implements PortfolioAccess
     }
 
     // Method for displaying custom error messages
-    public void displayErrorMessageAlertDialog(String alertMessage) {
+    private void displayErrorMessageAlertDialog(String alertMessage) {
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.custom_alert_dialog, null);

@@ -2,6 +2,7 @@ package com.example.janus.stocktracker.model.database;
 
 import android.provider.BaseColumns;
 
+// Not to be confused with an MVP View/Presenter contract. This 'contract' defines the database name and columns for the portfolio database.
 
 public final class PortfolioDBContract {
 
