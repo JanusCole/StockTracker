@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.janus.stocktracker.R;
-import com.example.janus.stocktracker.presenter.StockQuote;
+import com.example.janus.stocktracker.model.stockquotes.StockQuote;
 
 import java.util.List;
 
@@ -23,7 +23,7 @@ public class StocksRecyclerViewAdapter extends RecyclerView.Adapter<StocksRecycl
     private OnItemSelectedListener onItemSelectedListener;
 
     public interface OnItemSelectedListener {
-        void onItemSelected(String tickerSymbol);
+        void onItemSelected(StockQuote stockQuote);
     }
 
     public StocksRecyclerViewAdapter(List<StockQuote> stockQuotes, OnItemSelectedListener onItemSelectedListener) {
@@ -46,6 +46,13 @@ public class StocksRecyclerViewAdapter extends RecyclerView.Adapter<StocksRecycl
             priceChange = (TextView) itemView.findViewById(R.id.priceChangeTextView_RecyclerView);
             priceChangePercent = (TextView) itemView.findViewById(R.id.priceChangePercentageTextView_RecyclerView);
 
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onItemSelectedListener.onItemSelected(stockQuotes.get(getAdapterPosition()));
+                }
+            });
+
         }
     }
 
@@ -58,12 +65,12 @@ public class StocksRecyclerViewAdapter extends RecyclerView.Adapter<StocksRecycl
         View thisItemsView = inflater.inflate(R.layout.stock_recycler_item,parent, false);
 
 // This allows the user to select a stock from the RecyclerView by clicking it.
-        thisItemsView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onItemSelectedListener.onItemSelected(((TextView) v.findViewById(R.id.tickerSymbolTextView_RecyclerView)).getText().toString());
-            }
-        });
+//        thisItemsView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                onItemSelectedListener.onItemSelected(((TextView) v.findViewById(R.id.tickerSymbolTextView_RecyclerView)).getText().toString());
+//            }
+//        });
 
         return new ViewHolder(thisItemsView);
 

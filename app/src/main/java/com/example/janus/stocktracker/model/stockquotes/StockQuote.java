@@ -1,12 +1,11 @@
-package com.example.janus.stocktracker.presenter;
+package com.example.janus.stocktracker.model.stockquotes;
 
         import android.os.Parcel;
         import android.os.Parcelable;
 
-        import com.google.gson.annotations.Expose;
-        import com.google.gson.annotations.SerializedName;
+        import java.io.Serializable;
 
-public class StockQuote implements Parcelable {
+public class StockQuote implements Parcelable, Serializable {
 
 // This is a Parcelable class of StockQuote data that can be passed to a fragment in a bundle.
 

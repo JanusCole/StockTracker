@@ -8,5 +8,6 @@
     <string name="stock_quote">stock_quote</string>
     <string name="database_error_message">Database Error</string>
     <string name="network_error_message">Network Error</string>
+    <string name="portfolio_loading_error_message">Portfolio Loading Error</string>
 
 </resources>

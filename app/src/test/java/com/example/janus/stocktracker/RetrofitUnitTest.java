@@ -2,15 +2,10 @@ package com.example.janus.stocktracker;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
-import com.example.janus.stocktracker.model.stockquotes.DeserializedIEXData;
-import com.example.janus.stocktracker.model.stockquotes.GetStockQuotesAPI;
-import com.example.janus.stocktracker.presenter.StockQuote;
-import com.squareup.okhttp.mockwebserver.MockResponse;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
 
 public class RetrofitUnitTest {
@@ -34,7 +29,7 @@ public class RetrofitUnitTest {
         mockWebServer.enqueue(new MockResponse().setBody(""));
 
         GetStockQuotesAPI retrofitStockQuote = new GetStockQuotesAPI();
-        retrofitStockQuote.setIEXBaseURL(mockWebServer.url("").toString());
+        retrofitStockQuote.setBASE_URL(mockWebServer.url("").toString());
         DeserializedIEXData stockQuote = retrofitStockQuote.getIEXStockQuote("IBM");
 
         assertEquals(null, stockQuote);

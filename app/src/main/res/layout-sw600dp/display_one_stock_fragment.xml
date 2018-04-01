@@ -58,7 +58,8 @@
                 android:id="@+id/priceChangeTextView_OneStockDisplay"
                 android:textSize="35sp"
                 android:paddingLeft="10dp"
-                android:paddingRight="10dp" />
+                android:paddingRight="10dp"
+                android:textColor="@android:color/holo_green_dark"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -66,7 +67,8 @@
                 android:id="@+id/priceChangePercentageTextView_OneStockDisplay"
                 android:textSize="35sp"
                 android:paddingLeft="10dp"
-                android:paddingRight="15dp"/>
+                android:paddingRight="15dp"
+                android:textColor="@android:color/holo_green_dark"/>
 
         </LinearLayout>
 

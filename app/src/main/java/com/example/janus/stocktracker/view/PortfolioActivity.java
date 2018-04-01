@@ -9,25 +9,45 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import com.example.janus.stocktracker.R;
+import com.example.janus.stocktracker.model.database.AsyncTickerSymbolsDataSource;
+import com.example.janus.stocktracker.model.database.PortfolioDBOpenHelper;
+import com.example.janus.stocktracker.model.stockquotes.AsyncStockQuoteDataSource;
+import com.example.janus.stocktracker.model.stockquotes.StockQuoteDataSource;
+import com.example.janus.stocktracker.model.stockquotes.StockQuotesAPI;
+import com.example.janus.stocktracker.model.database.TickerSymbolsRepository;
+import com.example.janus.stocktracker.presenter.PortfolioPresenter;
 
 // This app currently supports views for single stocks, multiple stocks (as a portfolio), and a single stock search screen.
 // It uses Retrofit to access a JSON stock search API from IEX.
 
 // The user's portfolio stocks are stored in an SQLite database
 
-public class MainActivity extends AppCompatActivity{
+public class PortfolioActivity extends AppCompatActivity {
+
+    private PortfolioPresenter portfolioPresenter;
+
+    BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.portfolio_activity);
 
-        FragmentTransaction splashFragmentTransaction = getSupportFragmentManager().beginTransaction();
-        splashFragmentTransaction.replace(R.id.mainDisplayFrameLaout, new SplashScreenFragment());
-        splashFragmentTransaction.commit();
+// Create the Portfolio Fragment
+        PortfolioFragment portfolioFragment = new PortfolioFragment();
+
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.portfolioFrameLaout, portfolioFragment);
+        fragmentTransaction.commit();
+
+// Set up the PortfolioPresenter
+        PortfolioDBOpenHelper portfolioDBOpenHelper = new PortfolioDBOpenHelper(this);
+        TickerSymbolsRepository portfolioSource = new TickerSymbolsRepository(new AsyncTickerSymbolsDataSource(portfolioDBOpenHelper));
+        StockQuoteDataSource stockQuoteDataSource = new AsyncStockQuoteDataSource(new StockQuotesAPI());
+        portfolioPresenter = new PortfolioPresenter(portfolioFragment, portfolioSource, stockQuoteDataSource);
 
 // Set up the bottom navigation bar
-        BottomNavigationView bottomNavigationView = (BottomNavigationView)
+        bottomNavigationView = (BottomNavigationView)
                 findViewById(R.id.bottom_navigation);
 
         bottomNavigationView.setOnNavigationItemSelectedListener(
@@ -53,4 +73,5 @@ public class MainActivity extends AppCompatActivity{
                 });
 
     }
+
 }

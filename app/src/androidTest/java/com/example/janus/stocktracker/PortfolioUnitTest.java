@@ -3,7 +3,6 @@ package com.example.janus.stocktracker;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.example.janus.stocktracker.model.database.DatabaseAccessAsync;
 import com.example.janus.stocktracker.model.database.PortfolioDBOpenHelper;
 import com.example.janus.stocktracker.view.MainActivity;
 
