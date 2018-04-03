@@ -17,6 +17,7 @@ import com.example.janus.stocktracker.data.stockquotes.StockQuote;
 import com.example.janus.stocktracker.stockquote.StockQuoteActivity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -25,9 +26,16 @@ public class PortfolioFragment extends Fragment implements StocksRecyclerViewAda
     private PortfolioContract.Presenter portfolioPresenter;
 
     private RecyclerView stockRecyclerView;
+    private StocksRecyclerViewAdapter stocksRecyclerViewAdapter;
 
     private AlertDialog networkActivityDialog;
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        stocksRecyclerViewAdapter = new StocksRecyclerViewAdapter(new ArrayList<StockQuote>(), this);
+    }
 
     @Nullable
     @Override
@@ -36,6 +44,8 @@ public class PortfolioFragment extends Fragment implements StocksRecyclerViewAda
         View rootView = inflater.inflate(R.layout.display_multiple_stocks_fragment, container, false);
 
         stockRecyclerView = (RecyclerView) rootView.findViewById(R.id.displayStocksRecyclerView);
+        stockRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        stockRecyclerView.setAdapter(stocksRecyclerViewAdapter);
 
         networkActivityDialog = DisplayFormattedMessages.showNetworkActivityAlert(inflater, getContext());
 
@@ -43,7 +53,6 @@ public class PortfolioFragment extends Fragment implements StocksRecyclerViewAda
     }
 
 
-// This will display new data when the fragment is first displayed and refresh the data after pausing
     @Override
     public void onResume() {
         super.onResume();
@@ -58,8 +67,8 @@ public class PortfolioFragment extends Fragment implements StocksRecyclerViewAda
     @Override
     public void showStocks(List<StockQuote> stockQuotes) {
         networkActivityDialog.dismiss();
-        stockRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        stockRecyclerView.setAdapter(new StocksRecyclerViewAdapter(stockQuotes, this));
+        stocksRecyclerViewAdapter = new StocksRecyclerViewAdapter(stockQuotes, this);
+        stockRecyclerView.setAdapter(stocksRecyclerViewAdapter);
     }
 
     @Override
