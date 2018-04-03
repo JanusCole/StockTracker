@@ -1,8 +1,9 @@
-package com.example.janus.stocktracker.presenter;
+package com.example.janus.stocktracker.portfolio;
 
-import com.example.janus.stocktracker.model.database.TickerSymbolsDataSource;
-import com.example.janus.stocktracker.model.stockquotes.StockQuote;
-import com.example.janus.stocktracker.model.stockquotes.StockQuoteDataSource;
+import com.example.janus.stocktracker.data.database.TickerSymbolsDataSource;
+import com.example.janus.stocktracker.data.stockquotes.StockQuote;
+import com.example.janus.stocktracker.data.stockquotes.StockQuoteDataSource;
+import com.example.janus.stocktracker.portfolio.PortfolioContract;
 
 import java.util.List;
 

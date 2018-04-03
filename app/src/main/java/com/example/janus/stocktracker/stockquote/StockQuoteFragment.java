@@ -1,10 +1,8 @@
-package com.example.janus.stocktracker.view;
+package com.example.janus.stocktracker.stockquote;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,15 +10,14 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.janus.stocktracker.R;
-import com.example.janus.stocktracker.presenter.StockQuoteContract;
-import com.example.janus.stocktracker.presenter.StockQuotePresenter;
+import com.example.janus.stocktracker.util.DisplayFormattedMessages;
 
 import java.text.DecimalFormat;
 
 
 public class StockQuoteFragment extends Fragment implements StockQuoteContract.View {
 
-    private StockQuotePresenter stockQuotePresenter;
+    private StockQuoteContract.Presenter stockQuotePresenter;
 
     private TextView tickerDisplay;
     private TextView companyNameDisplay;
@@ -44,20 +41,17 @@ public class StockQuoteFragment extends Fragment implements StockQuoteContract.V
 // Populate the view with values from the stock quote result
         View rootView = inflater.inflate(R.layout.display_one_stock_fragment, container, false);
 
-        tickerDisplay = (TextView) rootView.findViewById(R.id.tickerSymbolTextView_OneStockDisplay);
-        companyNameDisplay = (TextView) rootView.findViewById(R.id.companyNameTextView_OneStockDisplay);
-        sectorDisplay = (TextView) rootView.findViewById(R.id.sectorTextView_OneStockDisplay);
+        findTextFields(rootView);
 
-        latestPriceDisplay = (TextView) rootView.findViewById(R.id.latestPriceTextView_OneStockDisplay);
-        priceChangeDisplay = (TextView) rootView.findViewById(R.id.priceChangeTextView_OneStockDisplay);
-        openPriceDisplay = (TextView) rootView.findViewById(R.id.openPriceTextView_OneStockDisplay);
-        closePriceDisplay = (TextView) rootView.findViewById(R.id.closePriceTextView_OneStockDisplay);
+        findNumericFields(rootView);
 
-        latestVolumeDisplay = (TextView) rootView.findViewById(R.id.latestVolumeTextView_OneStockDisplay);
+        findPortfolioButtons(rootView);
 
-        priceChangePercentageDisplay = (TextView) rootView.findViewById(R.id.priceChangePercentageTextView_OneStockDisplay);
+        return rootView;
+    }
 
-// Set up the add and remove buttons. Only one will be displayed at a time.
+    private void findPortfolioButtons(View rootView) {
+        // Set up the add and remove buttons. Only one will be displayed at a time.
         removeStockButton = (Button) rootView.findViewById(R.id.removeStockButton);
         addStockButton = (Button) rootView.findViewById(R.id.addStockButton);
 
@@ -74,8 +68,23 @@ public class StockQuoteFragment extends Fragment implements StockQuoteContract.V
                     stockQuotePresenter.addStock(tickerDisplay.getText().toString());
             }
             });
+    }
 
-        return rootView;
+    private void findNumericFields(View rootView) {
+        latestPriceDisplay = (TextView) rootView.findViewById(R.id.latestPriceTextView_OneStockDisplay);
+        priceChangeDisplay = (TextView) rootView.findViewById(R.id.priceChangeTextView_OneStockDisplay);
+        openPriceDisplay = (TextView) rootView.findViewById(R.id.openPriceTextView_OneStockDisplay);
+        closePriceDisplay = (TextView) rootView.findViewById(R.id.closePriceTextView_OneStockDisplay);
+
+        latestVolumeDisplay = (TextView) rootView.findViewById(R.id.latestVolumeTextView_OneStockDisplay);
+
+        priceChangePercentageDisplay = (TextView) rootView.findViewById(R.id.priceChangePercentageTextView_OneStockDisplay);
+    }
+
+    private void findTextFields(View rootView) {
+        tickerDisplay = (TextView) rootView.findViewById(R.id.tickerSymbolTextView_OneStockDisplay);
+        companyNameDisplay = (TextView) rootView.findViewById(R.id.companyNameTextView_OneStockDisplay);
+        sectorDisplay = (TextView) rootView.findViewById(R.id.sectorTextView_OneStockDisplay);
     }
 
     @Override
@@ -85,7 +94,7 @@ public class StockQuoteFragment extends Fragment implements StockQuoteContract.V
     }
 
     @Override
-    public void setPresenter(StockQuotePresenter stockQuotePresenter) {
+    public void setPresenter(StockQuoteContract.Presenter stockQuotePresenter) {
         this.stockQuotePresenter = stockQuotePresenter;
     }
 
@@ -154,4 +163,8 @@ public class StockQuoteFragment extends Fragment implements StockQuoteContract.V
         removeStockButton.setVisibility(View.VISIBLE);
     }
 
+    @Override
+    public void showDatabaseError() {
+        DisplayFormattedMessages.displayErrorMessageAlertDialog(getString(R.string.database_error_message), getActivity(), getContext());
+    }
 }

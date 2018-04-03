@@ -1,14 +1,11 @@
-package com.example.janus.stocktracker.presenter;
+package com.example.janus.stocktracker.stockquote;
 
-import android.content.res.ColorStateList;
-import android.view.View;
-
-import java.text.DecimalFormat;
+import com.example.janus.stocktracker.stockquote.StockQuotePresenter;
 
 public interface StockQuoteContract {
 
     public interface View {
-        void setPresenter(StockQuotePresenter stockQuotePresenter);
+        void setPresenter(StockQuoteContract.Presenter stockQuotePresenter);
 
         void setTickerSymbol(String tickerSymbol);
         void setCompanyName (String companyName);
@@ -23,6 +20,8 @@ public interface StockQuoteContract {
 
         void showStockNotInPortfolio();
         void showStockInPortfolio();
+
+        void showDatabaseError();
 
     }
 

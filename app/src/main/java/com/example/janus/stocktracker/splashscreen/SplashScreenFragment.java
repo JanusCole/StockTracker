@@ -1,4 +1,4 @@
-package com.example.janus.stocktracker.view;
+package com.example.janus.stocktracker.splashscreen;
 
 import android.content.Context;
 import android.graphics.Color;

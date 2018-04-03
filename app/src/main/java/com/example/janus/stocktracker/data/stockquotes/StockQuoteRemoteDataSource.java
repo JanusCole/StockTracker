@@ -1,4 +1,4 @@
-package com.example.janus.stocktracker.model.stockquotes;
+package com.example.janus.stocktracker.data.stockquotes;
 
 import android.os.AsyncTask;
 
@@ -11,12 +11,22 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class AsyncStockQuoteDataSource implements StockQuoteDataSource {
+public class StockQuoteRemoteDataSource implements StockQuoteDataSource {
+
+    private static StockQuoteRemoteDataSource INSTANCE = null;
 
     protected StockQuotesAPI stockQuotesAPI;
 
-    public AsyncStockQuoteDataSource(StockQuotesAPI stockQuotesAPI) {
+    private StockQuoteRemoteDataSource(StockQuotesAPI stockQuotesAPI) {
         this.stockQuotesAPI = stockQuotesAPI;
+    }
+
+    public static StockQuoteRemoteDataSource getInstance (StockQuotesAPI stockQuotesAPI) {
+        if (INSTANCE == null) {
+            INSTANCE = new StockQuoteRemoteDataSource(stockQuotesAPI);
+        }
+
+        return INSTANCE;
     }
 
     @Override

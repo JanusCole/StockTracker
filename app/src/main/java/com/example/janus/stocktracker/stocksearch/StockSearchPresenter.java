@@ -1,9 +1,9 @@
-package com.example.janus.stocktracker.presenter;
+package com.example.janus.stocktracker.stocksearch;
 
-import com.example.janus.stocktracker.model.stockquotes.StockQuote;
-import com.example.janus.stocktracker.model.stockquotes.StockQuoteDataSource;
+import com.example.janus.stocktracker.data.stockquotes.StockQuote;
+import com.example.janus.stocktracker.data.stockquotes.StockQuoteDataSource;
 
-public class StockSearchPresenter implements StockSearchContract.Presenter  {
+public class StockSearchPresenter implements StockSearchContract.Presenter {
 
     private StockSearchContract.View stockSearchView;
     private StockQuoteDataSource stockQuoteDataSource;

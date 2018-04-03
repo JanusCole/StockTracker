@@ -10,7 +10,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.MainActivity"
+        <activity android:name=".splashscreen.SplashScreen"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -18,9 +18,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.example.janus.stocktracker.view.PortfolioActivity" />
-        <activity android:name="com.example.janus.stocktracker.view.StockSearchActivity" />
-        <activity android:name="com.example.janus.stocktracker.view.StockQuoteActivity" />
+        <activity android:name=".portfolio.PortfolioActivity" />
+        <activity android:name=".stocksearch.StockSearchActivity" />
+        <activity android:name="com.example.janus.stocktracker.stockquote.StockQuoteActivity" />
     </application>
 
 </manifest>

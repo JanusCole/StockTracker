@@ -18,9 +18,9 @@ import static org.junit.Assert.assertFalse;
 
 import android.support.test.runner.AndroidJUnit4;
 
-import com.example.janus.stocktracker.model.database.PortfolioDBContract;
-import com.example.janus.stocktracker.model.database.PortfolioDBOpenHelper;
-import com.example.janus.stocktracker.view.MainActivity;
+import com.example.janus.stocktracker.data.database.PortfolioDBContract;
+import com.example.janus.stocktracker.data.database.PortfolioDBOpenHelper;
+import com.example.janus.stocktracker.splashscreen.SplashScreen;
 
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 // THIS IS A UNIT TEST LOCATED IN THE ANDROID TEST FOLDER IN ORDER TO USE CONTEXT
@@ -30,8 +30,8 @@ import com.example.janus.stocktracker.view.MainActivity;
 public class DataBaseUnitTest {
 
     @Rule
-    public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule<>(
-            MainActivity.class);
+    public ActivityTestRule<SplashScreen> mActivityRule = new ActivityTestRule<>(
+            SplashScreen.class);
 
     PortfolioDBOpenHelper portfolioDBOpenHelper;
 

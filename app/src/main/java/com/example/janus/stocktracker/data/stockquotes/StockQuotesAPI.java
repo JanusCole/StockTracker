@@ -1,4 +1,4 @@
-package com.example.janus.stocktracker.model.stockquotes;
+package com.example.janus.stocktracker.data.stockquotes;
 
 import android.support.annotation.VisibleForTesting;
 

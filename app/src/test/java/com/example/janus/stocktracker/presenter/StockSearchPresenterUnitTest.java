@@ -1,21 +1,6 @@
 package com.example.janus.stocktracker.presenter;
 
-import com.example.janus.stocktracker.model.database.TickerSymbolsRepository;
-
 import org.junit.After;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnit;
-import org.mockito.junit.MockitoRule;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.mockito.Mockito.*;
 
 import static org.junit.Assert.assertEquals;
 

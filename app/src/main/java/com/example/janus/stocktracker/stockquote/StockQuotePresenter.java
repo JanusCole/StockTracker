@@ -1,12 +1,11 @@
-package com.example.janus.stocktracker.presenter;
+package com.example.janus.stocktracker.stockquote;
 
 import android.graphics.Color;
-import android.text.AndroidCharacter;
 
-import com.example.janus.stocktracker.model.database.TickerSymbolsDataSource;
-import com.example.janus.stocktracker.model.stockquotes.StockQuote;
+import com.example.janus.stocktracker.data.database.TickerSymbolsDataSource;
+import com.example.janus.stocktracker.data.stockquotes.StockQuote;
 
-public class StockQuotePresenter implements StockQuoteContract.Presenter  {
+public class StockQuotePresenter implements StockQuoteContract.Presenter {
 
     private StockQuoteContract.View stockQuoteView;
     private TickerSymbolsDataSource tickerSymbolDataSource;
@@ -46,15 +45,33 @@ public class StockQuotePresenter implements StockQuoteContract.Presenter  {
 
     @Override
     public void addStock(String tickerSymbol) {
-        tickerSymbolDataSource.addTickerSymbol(tickerSymbol);
-        stockQuoteView.showStockInPortfolio();
+        tickerSymbolDataSource.addTickerSymbol(tickerSymbol, new TickerSymbolsDataSource.AddTickerSymbolCallback() {
+            @Override
+            public void onTickerSymbolAdded() {
+                stockQuoteView.showStockInPortfolio();
+            }
+
+            @Override
+            public void onDataBaseError() {
+                stockQuoteView.showDatabaseError();
+            }
+        });
 
     }
 
     @Override
     public void deleteStock(String tickerSymbol) {
-        tickerSymbolDataSource.deleteTickerSymbol(tickerSymbol);
-        stockQuoteView.showStockNotInPortfolio();
+        tickerSymbolDataSource.deleteTickerSymbol(tickerSymbol, new TickerSymbolsDataSource.DeleteTickerSymbolCallback() {
+            @Override
+            public void onTickerSymbolDeleted() {
+                stockQuoteView.showStockNotInPortfolio();
+            }
+
+            @Override
+            public void onDataBaseError() {
+                stockQuoteView.showDatabaseError();
+            }
+        });
     }
 
     private void checkStock(String tickerSymbol) {

@@ -1,4 +1,4 @@
-package com.example.janus.stocktracker.adapters;
+package com.example.janus.stocktracker.portfolio;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.janus.stocktracker.R;
-import com.example.janus.stocktracker.model.stockquotes.StockQuote;
+import com.example.janus.stocktracker.data.stockquotes.StockQuote;
 
 import java.util.List;
 
@@ -64,14 +64,6 @@ public class StocksRecyclerViewAdapter extends RecyclerView.Adapter<StocksRecycl
 
         View thisItemsView = inflater.inflate(R.layout.stock_recycler_item,parent, false);
 
-// This allows the user to select a stock from the RecyclerView by clicking it.
-//        thisItemsView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                onItemSelectedListener.onItemSelected(((TextView) v.findViewById(R.id.tickerSymbolTextView_RecyclerView)).getText().toString());
-//            }
-//        });
-
         return new ViewHolder(thisItemsView);
 
     }
@@ -87,10 +79,6 @@ public class StocksRecyclerViewAdapter extends RecyclerView.Adapter<StocksRecycl
         if (stockQuotes.get(position).getLatestPrice()  < stockQuotes.get(position).getOpen()) {
             holder.priceChange.setTextColor(Color.RED);
             holder.priceChangePercent.setTextColor(Color.RED);
-        } else {
-            holder.priceChangePercent.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.accountingCreditGreen));
-            holder.priceChange.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.accountingCreditGreen));
-
         }
 
     }

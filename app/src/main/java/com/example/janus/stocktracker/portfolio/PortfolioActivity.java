@@ -1,4 +1,4 @@
-package com.example.janus.stocktracker.view;
+package com.example.janus.stocktracker.portfolio;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,42 +9,42 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import com.example.janus.stocktracker.R;
-import com.example.janus.stocktracker.model.database.AsyncTickerSymbolsDataSource;
-import com.example.janus.stocktracker.model.database.PortfolioDBOpenHelper;
-import com.example.janus.stocktracker.model.stockquotes.StockQuote;
-import com.example.janus.stocktracker.presenter.StockQuotePresenter;
-import com.example.janus.stocktracker.model.database.TickerSymbolsRepository;
+import com.example.janus.stocktracker.data.database.TickerSymbolsLocalDataSource;
+import com.example.janus.stocktracker.data.database.PortfolioDBOpenHelper;
+import com.example.janus.stocktracker.data.stockquotes.StockQuoteRemoteDataSource;
+import com.example.janus.stocktracker.data.stockquotes.StockQuoteDataSource;
+import com.example.janus.stocktracker.data.stockquotes.StockQuotesAPI;
+import com.example.janus.stocktracker.data.database.TickerSymbolsRepository;
+import com.example.janus.stocktracker.splashscreen.SplashScreen;
+import com.example.janus.stocktracker.stocksearch.StockSearchActivity;
 
-public class StockQuoteActivity extends AppCompatActivity {
+public class PortfolioActivity extends AppCompatActivity {
 
-    public static final String STOCK_QUOTE = "stock_quote";
-
-    private StockQuotePresenter stockQuotePresenter;
+    private PortfolioContract.Presenter portfolioPresenter;
 
     BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.stock_quote_activity);
+        setContentView(R.layout.portfolio_activity);
 
-        // Get the requested stock quote
-        StockQuote stockQuote = (StockQuote) getIntent().getSerializableExtra(STOCK_QUOTE);
-
-// Create the StockSearch Fragment
-        StockQuoteFragment stockQuoteFragment = new StockQuoteFragment();
+// Create the Portfolio Fragment
+        PortfolioFragment portfolioFragment = new PortfolioFragment();
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.stockQuoteFrameLaout, stockQuoteFragment);
+        fragmentTransaction.replace(R.id.portfolioFrameLaout, portfolioFragment);
         fragmentTransaction.commit();
 
-// Set up the StockSearchPresenter
+// Set up the PortfolioPresenter
         PortfolioDBOpenHelper portfolioDBOpenHelper = new PortfolioDBOpenHelper(this);
-        TickerSymbolsRepository portfolioSource = new TickerSymbolsRepository(new AsyncTickerSymbolsDataSource(portfolioDBOpenHelper));
-        stockQuotePresenter = new StockQuotePresenter(stockQuoteFragment, stockQuote, portfolioSource);
+        TickerSymbolsRepository portfolioSource = TickerSymbolsRepository.getInstance(TickerSymbolsLocalDataSource.getInstance(portfolioDBOpenHelper));
+        StockQuoteDataSource stockQuoteDataSource = StockQuoteRemoteDataSource.getInstance(new StockQuotesAPI());
+        portfolioPresenter = new PortfolioPresenter(portfolioFragment, portfolioSource, stockQuoteDataSource);
 
 // Set up the bottom navigation bar
-        bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+        bottomNavigationView = (BottomNavigationView)
+                findViewById(R.id.bottom_navigation);
 
         bottomNavigationView.setOnNavigationItemSelectedListener(
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -56,7 +56,7 @@ public class StockQuoteActivity extends AppCompatActivity {
                                 startActivity(stockSearchIntent);
                                 break;
                             case R.id.action_splash_screen:
-                                Intent mainActivityIntent = new Intent(getApplicationContext(), MainActivity.class);
+                                Intent mainActivityIntent = new Intent(getApplicationContext(), SplashScreen.class);
                                 startActivity(mainActivityIntent);
                                 break;
                             case R.id.action_portfolio:

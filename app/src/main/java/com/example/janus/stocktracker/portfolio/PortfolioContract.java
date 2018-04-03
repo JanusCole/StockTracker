@@ -1,13 +1,13 @@
-package com.example.janus.stocktracker.presenter;
+package com.example.janus.stocktracker.portfolio;
 
-import com.example.janus.stocktracker.model.stockquotes.StockQuote;
+import com.example.janus.stocktracker.data.stockquotes.StockQuote;
 
 import java.util.List;
 
 public interface PortfolioContract {
 
     public interface View {
-        void setPresenter(PortfolioPresenter portfolioPresenter);
+        void setPresenter(PortfolioContract.Presenter portfolioPresenter);
         void showStocks(List<StockQuote> stockQuotes);
         void showLoadingIndicator();
         void showLoadingError();

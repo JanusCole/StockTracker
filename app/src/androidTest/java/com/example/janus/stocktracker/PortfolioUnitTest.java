@@ -3,8 +3,8 @@ package com.example.janus.stocktracker;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.example.janus.stocktracker.model.database.PortfolioDBOpenHelper;
-import com.example.janus.stocktracker.view.MainActivity;
+import com.example.janus.stocktracker.data.database.PortfolioDBOpenHelper;
+import com.example.janus.stocktracker.splashscreen.SplashScreen;
 
 import org.junit.After;
 import org.junit.Rule;
@@ -26,8 +26,8 @@ public class PortfolioUnitTest {
     DatabaseAccessAsync userPortfolio;
 
     @Rule
-    public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule<>(
-            MainActivity.class);
+    public ActivityTestRule<SplashScreen> mActivityRule = new ActivityTestRule<>(
+            SplashScreen.class);
 
 /*
     @Before

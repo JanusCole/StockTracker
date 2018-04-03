@@ -1,4 +1,4 @@
-package com.example.janus.stocktracker.view;
+package com.example.janus.stocktracker.stocksearch;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,19 +12,18 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
+import com.example.janus.stocktracker.util.DisplayFormattedMessages;
 import com.example.janus.stocktracker.R;
-import com.example.janus.stocktracker.model.stockquotes.StockQuote;
-import com.example.janus.stocktracker.presenter.StockSearchContract;
-import com.example.janus.stocktracker.presenter.StockSearchPresenter;
+import com.example.janus.stocktracker.data.stockquotes.StockQuote;
+import com.example.janus.stocktracker.stockquote.StockQuoteActivity;
 
 import java.io.Serializable;
 
 
 public class StockSearchFragment extends Fragment implements StockSearchContract.View {
 
-    private StockSearchPresenter stockSearchPresenter;
+    private StockSearchContract.Presenter stockSearchPresenter;
 
     private AlertDialog networkActivityDialog;
 
@@ -48,13 +47,13 @@ public class StockSearchFragment extends Fragment implements StockSearchContract
             }
         });
 
-        networkActivityDialog = showNetworkActivityAlert(inflater);
+        networkActivityDialog = DisplayFormattedMessages.showNetworkActivityAlert(inflater, getContext());
 
         return rootView;
     }
 
     @Override
-    public void setPresenter(StockSearchPresenter stockSearchPresenter) {
+    public void setPresenter(StockSearchContract.Presenter stockSearchPresenter) {
         this.stockSearchPresenter = stockSearchPresenter;
     }
 
@@ -77,56 +76,12 @@ public class StockSearchFragment extends Fragment implements StockSearchContract
     @Override
     public void showNotFoundError() {
         networkActivityDialog.dismiss();
-        displayErrorMessageAlertDialog(getString(R.string.stock_not_found_message));
+        DisplayFormattedMessages.displayErrorMessageAlertDialog(getString(R.string.stock_not_found_message), getActivity(), getContext());
     }
 
     @Override
     public void showLoadingError() {
         networkActivityDialog.dismiss();
-        displayErrorMessageAlertDialog(getString(R.string.network_error_message));
-    }
-
-// Maybe put these in to a separate utility class
-
-    // Method for setting up the network busy message
-    private AlertDialog showNetworkActivityAlert(LayoutInflater inflater) {
-
-        View dialogView = inflater.inflate(R.layout.busy_dialog, null);
-
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext())
-                .setCancelable(false)
-                .setView(dialogView);
-
-        return alertDialogBuilder.create();
-
-    }
-
-    // Method for displaying custom error messages
-    private void displayErrorMessageAlertDialog(String alertMessage) {
-
-        LayoutInflater inflater = getActivity().getLayoutInflater();
-        View dialogView = inflater.inflate(R.layout.custom_alert_dialog, null);
-
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext())
-                .setCancelable(false)
-                .setView(dialogView);
-
-        TextView alertDialogMessage = (TextView) dialogView.findViewById(R.id.messageTextView_AlertDialog);
-        alertDialogMessage.setText(alertMessage);
-
-        final AlertDialog errorMessageAlertDialog = alertDialogBuilder.create();
-        errorMessageAlertDialog.setCanceledOnTouchOutside(true);
-
-        Button dialogButton = (Button) dialogView.findViewById(R.id.okButton_AlertDialog);
-        dialogButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                errorMessageAlertDialog.dismiss();
-            }
-        });
-
-        networkActivityDialog.dismiss();
-
-        errorMessageAlertDialog.show();
+        DisplayFormattedMessages.displayErrorMessageAlertDialog(getString(R.string.network_error_message), getActivity(), getContext());
     }
 }

@@ -3,9 +3,9 @@ package com.example.janus.stocktracker;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.example.janus.stocktracker.model.database.PortfolioDBContract;
-import com.example.janus.stocktracker.model.database.PortfolioDBOpenHelper;
-import com.example.janus.stocktracker.view.MainActivity;
+import com.example.janus.stocktracker.data.database.PortfolioDBContract;
+import com.example.janus.stocktracker.data.database.PortfolioDBOpenHelper;
+import com.example.janus.stocktracker.splashscreen.SplashScreen;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
@@ -29,8 +29,8 @@ import static org.junit.Assert.assertFalse;
 public class ActivityMainTest {
 
     @Rule
-    public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule<>(
-            MainActivity.class);
+    public ActivityTestRule<SplashScreen> mActivityRule = new ActivityTestRule<>(
+            SplashScreen.class);
 
     @Before
     public void setUp() throws Exception {

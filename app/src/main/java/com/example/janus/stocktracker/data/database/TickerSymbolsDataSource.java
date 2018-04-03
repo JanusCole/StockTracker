@@ -1,4 +1,4 @@
-package com.example.janus.stocktracker.model.database;
+package com.example.janus.stocktracker.data.database;
 
 import java.util.List;
 
@@ -18,9 +18,23 @@ public interface TickerSymbolsDataSource {
         void onDataNotAvailable();
     }
 
+    interface DeleteTickerSymbolCallback {
+
+        void onTickerSymbolDeleted();
+
+        void onDataBaseError();
+    }
+
+    interface AddTickerSymbolCallback {
+
+        void onTickerSymbolAdded();
+
+        void onDataBaseError();
+    }
+
     void getAllTickerSymbols(LoadTickerSymbolsCallback loadTickerSymbolsCallback);
-    void addTickerSymbol(String tickerSymbol);
-    void deleteTickerSymbol(String tickerSymbol);
+    void addTickerSymbol(String tickerSymbol, AddTickerSymbolCallback addTickerSymbolCallback);
+    void deleteTickerSymbol(String tickerSymbol, DeleteTickerSymbolCallback deleteTickerSymbolCallback);
     void getTickerSymbol(String tickerSymbol, GetTickerSymbolCallback getTickerSymbolCallback);
 
 }
