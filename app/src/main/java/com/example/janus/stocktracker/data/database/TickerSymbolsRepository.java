@@ -9,7 +9,7 @@ public class TickerSymbolsRepository implements TickerSymbolsDataSource {
     private TickerSymbolsDataSource tickerSymbolsDataSource;
 
     private TickerSymbolsRepository(TickerSymbolsDataSource tickerSymbolsDataSource) {
-        this.tickerSymbolsDataSource = tickerSymbolsDataSource;
+        this.tickerSymbolsDataSource =  tickerSymbolsDataSource;
     }
 
     public static TickerSymbolsRepository getInstance (TickerSymbolsDataSource tickerSymbolsDataSource) {
