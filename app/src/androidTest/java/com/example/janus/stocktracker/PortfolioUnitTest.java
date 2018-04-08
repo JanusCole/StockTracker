@@ -23,7 +23,7 @@ import static org.junit.Assert.assertFalse;
 public class PortfolioUnitTest {
 
     PortfolioDBOpenHelper portfolioDBOpenHelper;
-    DatabaseAccessAsync userPortfolio;
+//    DatabaseAccessAsync userPortfolio;
 
     @Rule
     public ActivityTestRule<SplashScreen> mActivityRule = new ActivityTestRule<>(

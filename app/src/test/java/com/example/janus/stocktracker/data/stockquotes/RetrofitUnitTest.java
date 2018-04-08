@@ -1,4 +1,4 @@
-package com.example.janus.stocktracker;
+package com.example.janus.stocktracker.data.stockquotes;
 
 import org.junit.After;
 import org.junit.Before;

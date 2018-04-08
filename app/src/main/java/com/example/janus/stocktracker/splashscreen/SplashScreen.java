@@ -32,6 +32,7 @@ public class SplashScreen extends AppCompatActivity{
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
                         switch (item.getItemId()) {
                             case R.id.action_search_ticker:
                                 Intent stockSearchIntent = new Intent(getApplicationContext(), StockSearchActivity.class);
@@ -51,4 +52,5 @@ public class SplashScreen extends AppCompatActivity{
                 });
 
     }
+
 }

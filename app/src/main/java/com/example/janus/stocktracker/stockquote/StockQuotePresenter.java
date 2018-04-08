@@ -74,7 +74,7 @@ public class StockQuotePresenter implements StockQuoteContract.Presenter {
         });
     }
 
-    private void checkStock(String tickerSymbol) {
+    public void checkStock(String tickerSymbol) {
 
         tickerSymbolDataSource.getTickerSymbol(tickerSymbol, new TickerSymbolsDataSource.GetTickerSymbolCallback() {
             @Override

@@ -29,6 +29,7 @@ public interface StockQuoteContract {
         void loadStock();
         void addStock(String tickerSymbol);
         void deleteStock(String tickerSymbol);
+        void checkStock(String tickerSymbol);
     }
 
 }
