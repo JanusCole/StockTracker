@@ -19,7 +19,7 @@ import java.text.DecimalFormat;
 
 public class StockQuoteFragment extends Fragment implements StockQuoteContract.View {
 
-    private StockQuoteContract.Presenter stockQuotePresenter;
+    private StockQuoteContract.Presenter  stockQuotePresenter;
 
     private TextView tickerDisplay;
     private TextView companyNameDisplay;

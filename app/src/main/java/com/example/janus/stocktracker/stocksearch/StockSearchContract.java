@@ -5,7 +5,7 @@ import com.example.janus.stocktracker.stocksearch.StockSearchPresenter;
 
 public interface StockSearchContract {
 
-    public interface View {
+    interface View {
         void setPresenter(StockSearchContract.Presenter stockSearchPresenter);
         void showStockQuoteUI(StockQuote stockQuote);
         void showLoadingIndicator();
@@ -13,7 +13,7 @@ public interface StockSearchContract {
         void showLoadingError();
     }
 
-    public interface Presenter {
+    interface Presenter {
         void searchStock(String tickerSymbol);
     }
 

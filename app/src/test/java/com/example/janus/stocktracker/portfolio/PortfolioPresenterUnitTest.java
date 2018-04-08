@@ -33,7 +33,7 @@ public class PortfolioPresenterUnitTest {
     private StockQuote mockStockQuote;
 
     @Mock
-    private PortfolioContract.View mockPortfolioView;
+    private PortfolioContract.View  mockPortfolioView;
 
     @Mock
     private TickerSymbolsDataSource mockTickerSymbolsRepository;

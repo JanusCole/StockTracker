@@ -33,7 +33,7 @@ public class DataBaseUnitTest {
     public ActivityTestRule<SplashScreen> mActivityRule = new ActivityTestRule<>(
             SplashScreen.class);
 
-    PortfolioDBOpenHelper portfolioDBOpenHelper;
+    PortfolioDBOpenHelper  portfolioDBOpenHelper;
 
 
     @Before

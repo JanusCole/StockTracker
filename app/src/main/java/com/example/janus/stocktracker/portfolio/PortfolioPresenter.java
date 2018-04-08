@@ -17,7 +17,7 @@ public class PortfolioPresenter implements PortfolioContract.Presenter  {
         this.portfolioView = portfolioView;
         this.portfolioView.setPresenter(this);
 
-        this.tickerSymbolDataSource = tickerSymbolDataSource;
+        this.tickerSymbolDataSource =  tickerSymbolDataSource;
 
         this.stockQuoteDataSource = stockQuoteDataSource;
 

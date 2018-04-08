@@ -26,13 +26,13 @@ public class StockSearchFragment extends Fragment implements StockSearchContract
 
     private StockSearchContract.Presenter stockSearchPresenter;
 
-    private AlertDialog networkActivityDialog;
+    private AlertDialog  networkActivityDialog;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.search_stocks_fragment, container, false);
+        View rootView =  inflater.inflate(R.layout.search_stocks_fragment, container, false);
 
         Button searchButton = (Button) rootView.findViewById (R.id.stockSearchButton);
 

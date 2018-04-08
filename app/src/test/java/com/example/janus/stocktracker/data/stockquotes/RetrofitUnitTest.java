@@ -16,7 +16,7 @@ public class RetrofitUnitTest {
 
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() throws  Exception {
         mockWebServer = new MockWebServer();
     }
 
