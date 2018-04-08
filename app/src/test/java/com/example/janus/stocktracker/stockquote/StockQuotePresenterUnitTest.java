@@ -35,7 +35,7 @@ public class StockQuotePresenterUnitTest {
     private StockQuoteContract.View mockStockQuoteView;
 
     @Mock
-    private TickerSymbolsDataSource  mockTickerSymbolsRepository;
+    private TickerSymbolsDataSource mockTickerSymbolsRepository;
 
     @Captor
     private ArgumentCaptor<List<String>> stockListCaptor;

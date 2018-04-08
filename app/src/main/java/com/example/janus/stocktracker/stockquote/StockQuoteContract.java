@@ -4,7 +4,7 @@ import com.example.janus.stocktracker.stockquote.StockQuotePresenter;
 
 public interface StockQuoteContract {
 
-    public interface View {
+    interface View {
         void setPresenter(StockQuoteContract.Presenter stockQuotePresenter);
 
         void setTickerSymbol(String tickerSymbol);
@@ -25,7 +25,7 @@ public interface StockQuoteContract {
 
     }
 
-    public interface Presenter {
+    interface Presenter {
         void loadStock();
         void addStock(String tickerSymbol);
         void deleteStock(String tickerSymbol);

@@ -13,7 +13,7 @@ public class StockSearchPresenter implements StockSearchContract.Presenter {
         this.stockSearchView = stockSearchView;
         this.stockSearchView.setPresenter(this);
 
-        this.stockQuoteDataSource =  stockQuoteDataSource;
+        this.stockQuoteDataSource = stockQuoteDataSource;
 
     }
 

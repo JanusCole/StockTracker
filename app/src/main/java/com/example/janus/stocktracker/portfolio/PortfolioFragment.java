@@ -26,7 +26,7 @@ import java.util.List;
 
 public class PortfolioFragment extends Fragment implements StocksRecyclerViewAdapter.OnItemSelectedListener, PortfolioContract.View {
 
-    private PortfolioContract.Presenter  portfolioPresenter;
+    private PortfolioContract.Presenter portfolioPresenter;
 
     private RecyclerView stockRecyclerView;
     private StocksRecyclerViewAdapter stocksRecyclerViewAdapter;

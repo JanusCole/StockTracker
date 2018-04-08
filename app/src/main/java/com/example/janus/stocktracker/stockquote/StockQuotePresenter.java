@@ -41,6 +41,7 @@ public class StockQuotePresenter implements StockQuoteContract.Presenter {
         }
 
         checkStock(stockQuote.getSymbol());
+
     }
 
     @Override

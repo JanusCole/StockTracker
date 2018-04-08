@@ -26,7 +26,7 @@ public class StockSearchFragment extends Fragment implements StockSearchContract
 
     private StockSearchContract.Presenter stockSearchPresenter;
 
-    private AlertDialog  networkActivityDialog;
+    private AlertDialog networkActivityDialog;
 
     @Nullable
     @Override

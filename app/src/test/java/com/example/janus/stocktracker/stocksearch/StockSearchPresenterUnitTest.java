@@ -45,7 +45,7 @@ public class StockSearchPresenterUnitTest {
     @Before
     public void setUp() throws Exception {
 
-        mockStockSearchView =  mock(StockSearchContract.View.class);
+        mockStockSearchView = mock(StockSearchContract.View.class);
         mockStockQuoteDataSource = mock(StockQuoteDataSource.class);
 
         mockStockQuote = mock(StockQuote.class);

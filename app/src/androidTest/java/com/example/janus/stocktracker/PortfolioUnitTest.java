@@ -26,7 +26,7 @@ public class PortfolioUnitTest {
 //    DatabaseAccessAsync userPortfolio;
 
     @Rule
-    public ActivityTestRule<SplashScreen> mActivityRule = new ActivityTestRule<>(
+    public ActivityTestRule<SplashScreen> mActivityRule =  new ActivityTestRule<>(
             SplashScreen.class);
 
 /*
