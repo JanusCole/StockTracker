@@ -56,7 +56,6 @@ public class StockQuotesAPIUnitTest {
             stockQuote = stockQuoteCall.execute();
 
         } catch (Exception e) {
-        // This is what we expect to happen
         }
 
         assertEquals(null, stockQuote);
@@ -88,7 +87,6 @@ public class StockQuotesAPIUnitTest {
             stockQuote = stockQuoteCall.execute();
 
         } catch (Exception e) {
-            // This is what we expect to happen
         }
 
         assertEquals(null, stockQuote);
@@ -120,7 +118,6 @@ public class StockQuotesAPIUnitTest {
             stockQuote = stockQuoteCall.execute();
 
         } catch (Exception e) {
-            // This is what we expect to happen
         }
 
         assertFalse(stockQuote == null);

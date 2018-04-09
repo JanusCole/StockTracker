@@ -26,7 +26,7 @@ import static org.junit.Assert.assertFalse;
 
 
 @RunWith(AndroidJUnit4.class)
-public class ActivityMainTest {
+public class SplashScreenActivityTest {
 
     @Rule
     public ActivityTestRule<SplashScreen> mActivityRule = new ActivityTestRule<>(
@@ -67,38 +67,6 @@ public class ActivityMainTest {
 
     }
 
-/*
-    @Test
-    public void testPortfolioCheckIBM() throws Exception {
-        assertFalse(mActivityRule.getActivity().checkPortfolio("IBM"));
-
-    }
-
-    @Test
-    public void testPortfolioCheckNullString() throws Exception {
-        assertFalse(mActivityRule.getActivity().checkPortfolio(""));
-
-    }
-
-    @Test
-    public void testPortfolioAddAAPL() throws Exception {
-
-        mActivityRule.getActivity().addToPortfolio("AAPL");
-
-        assert(mActivityRule.getActivity().checkPortfolio("AAPL"));
-
-    }
-
-
-    @Test
-    public void testPortfolioRemoveAAPL() throws Exception {
-        mActivityRule.getActivity().removeFromPortfolio("AAPL");
-
-        assertFalse(mActivityRule.getActivity().checkPortfolio("AAPL"));
-
-    }
-
-*/
       @Test
       public void testEmptyPortfolio() throws Exception {
 
