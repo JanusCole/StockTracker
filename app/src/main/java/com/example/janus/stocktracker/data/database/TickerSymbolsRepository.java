@@ -1,5 +1,7 @@
 package com.example.janus.stocktracker.data.database;
 
+import android.support.annotation.VisibleForTesting;
+
 import java.util.List;
 
 public class TickerSymbolsRepository implements TickerSymbolsDataSource {
@@ -83,5 +85,10 @@ public class TickerSymbolsRepository implements TickerSymbolsDataSource {
                 getTickerSymbolCallback.onDataNotAvailable();
             }
         });
+    }
+
+    @VisibleForTesting
+    public static void deleteInstance () {
+        INSTANCE = null;
     }
 }
