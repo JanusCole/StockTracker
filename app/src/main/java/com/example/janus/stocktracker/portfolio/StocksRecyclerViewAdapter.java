@@ -79,6 +79,9 @@ public class StocksRecyclerViewAdapter extends RecyclerView.Adapter<StocksRecycl
         if (stockQuotes.get(position).getLatestPrice()  < stockQuotes.get(position).getOpen()) {
             holder.priceChange.setTextColor(Color.RED);
             holder.priceChangePercent.setTextColor(Color.RED);
+        } else {
+            holder.priceChange.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.accountingCreditGreen));
+            holder.priceChangePercent.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.accountingCreditGreen));
         }
 
     }

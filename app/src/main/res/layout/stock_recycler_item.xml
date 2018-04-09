@@ -44,8 +44,7 @@
                     android:textSize="15sp"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
-                android:layout_gravity="right"
-                android:textColor="@android:color/holo_green_dark" />
+                android:layout_gravity="right"/>
 
             <TextView
                     android:layout_width="wrap_content"
@@ -54,8 +53,7 @@
                     android:textSize="15sp"
                     android:paddingLeft="10dp"
                     android:paddingRight="15dp"
-                android:layout_gravity="right"
-                android:textColor="@android:color/holo_green_dark" />
+                android:layout_gravity="right"/>
         </LinearLayout>
 
 
