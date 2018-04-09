@@ -58,7 +58,7 @@ public class StockQuotePresenterUnitTest {
 
 
     @Test
-    public void testCheckStockCallsSetsDisplayFieldsInView() throws Exception {
+    public void testLoadStockCallsSetsDisplayFieldsInView() throws Exception {
 
         stockQuotePresenter.loadStock();
 
@@ -89,7 +89,7 @@ public class StockQuotePresenterUnitTest {
 
 
     @Test
-    public void testAddStockCallsAddTickerSymbol() throws Exception {
+    public void testAddStockCallsAddTickerSymbolInRepositoyAndSetsStockInPortfolioInView() throws Exception {
 
         String tickerSymbol = "IBM";
 
@@ -109,7 +109,7 @@ public class StockQuotePresenterUnitTest {
     }
 
     @Test
-    public void testAddStockCallsDeleteTickerSymbol() throws Exception {
+    public void testDeleteStockCallsDeleteTickerSymbolInRepositoyAndSetsStockNotInPortfolioInView() throws Exception {
 
         String tickerSymbol = "IBM";
 
@@ -130,7 +130,7 @@ public class StockQuotePresenterUnitTest {
 
 
     @Test
-    public void testAddStockCallsAddTickerSymbolShowsError() throws Exception {
+    public void testAddStockCallsAddTickerSymbolInRepositoryAndShowsErrorInView() throws Exception {
 
         String tickerSymbol = "IBM";
 

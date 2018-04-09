@@ -56,7 +56,7 @@ public class PortfolioPresenterUnitTest {
     }
 
     @Test
-    public void testGetPortfolioCallsShowStocks() throws Exception {
+    public void testLoadStocksCallsGetAllTickerSymbolsInRepositoryAndShowStocksInView() throws Exception {
 
         List<String> stockSearchList = new ArrayList<>();
         stockSearchList.add("IBM");
@@ -91,7 +91,7 @@ public class PortfolioPresenterUnitTest {
     }
 
     @Test
-    public void testGetPortfolioNetworkErrorCallsLoadingError() throws Exception {
+    public void testLoadStocksCallsGetAllStocksinRepositoryAndCallsLoadingErrorInView() throws Exception {
 
         List<String> stockSearchList = new ArrayList<>();
         stockSearchList.add("IBM");
@@ -122,7 +122,7 @@ public class PortfolioPresenterUnitTest {
     }
 
     @Test
-    public void testGetPortfolioCallsShowEmptyPortfolioMessageOnEmptyPortfolio() throws Exception {
+    public void testLoadStocksCallsGetAllTickerSymbolsInRepositoryAndShowEmptyPortfolioMessageOnEmptyPortfolioInView() throws Exception {
 
         portfolioPresenter.loadStocks();
 
@@ -137,7 +137,7 @@ public class PortfolioPresenterUnitTest {
     }
 
     @Test
-    public void testPortfolioDatabaseErrorCallsLoadingFailure() throws Exception {
+    public void testLoadStocksCallsGetAllTickerSymbolInRepositoryAndCallsLoadingFailureInView() throws Exception {
 
         portfolioPresenter.loadStocks();
 
@@ -152,7 +152,7 @@ public class PortfolioPresenterUnitTest {
     }
 
     @Test
-    public void testPortfolioCallsSelectIndividualStockQuote() throws Exception {
+    public void testSelectIndividualStockQuoteCallsShowStockQuoteInView() throws Exception {
 
         portfolioPresenter.selectIndividualStockQuote(mockStockQuote);
 
