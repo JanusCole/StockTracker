@@ -10,6 +10,7 @@ public interface PortfolioContract {
         void setPresenter(PortfolioContract.Presenter portfolioPresenter);
         void showStocks(List<StockQuote> stockQuotes);
         void showLoadingIndicator();
+        void dismissLoadingIndicator();
         void showLoadingError();
         void showStockQuote(StockQuote stockQuote);
         void showEmptyPortfolioMessage();

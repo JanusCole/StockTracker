@@ -115,14 +115,17 @@ public class StockSearchFragment extends Fragment implements StockSearchContract
     }
 
     @Override
-    public void showNotFoundError() {
+    public void dismissLoadingIndicator() {
         networkActivityDialog.dismiss();
+    }
+
+    @Override
+    public void showNotFoundError() {
         displayErrorMessageAlertDialog(getString(R.string.stock_not_found_message), getActivity(), getContext());
     }
 
     @Override
     public void showLoadingError() {
-        networkActivityDialog.dismiss();
         displayErrorMessageAlertDialog(getString(R.string.network_error_message), getActivity(), getContext());
     }
 }

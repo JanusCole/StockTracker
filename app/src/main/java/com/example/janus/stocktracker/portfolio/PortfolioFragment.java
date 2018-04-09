@@ -69,7 +69,6 @@ public class PortfolioFragment extends Fragment implements StocksRecyclerViewAda
 
     @Override
     public void showStocks(List<StockQuote> stockQuotes) {
-        networkActivityDialog.dismiss();
         stocksRecyclerViewAdapter = new StocksRecyclerViewAdapter(stockQuotes, this);
         stockRecyclerView.setAdapter(stocksRecyclerViewAdapter);
     }
@@ -77,6 +76,11 @@ public class PortfolioFragment extends Fragment implements StocksRecyclerViewAda
     @Override
     public void showLoadingIndicator() {
         networkActivityDialog.show();
+    }
+
+    @Override
+    public void dismissLoadingIndicator() {
+        networkActivityDialog.dismiss();
     }
 
     public void displayErrorMessageAlertDialog(String alertMessage, Activity activity, Context context) {
@@ -120,13 +124,11 @@ public class PortfolioFragment extends Fragment implements StocksRecyclerViewAda
 
     @Override
     public void showLoadingError() {
-        networkActivityDialog.dismiss();
         displayErrorMessageAlertDialog(getString(R.string.portfolio_loading_error_message), getActivity(), getContext());
     }
 
     @Override
     public void showEmptyPortfolioMessage() {
-        networkActivityDialog.dismiss();
         displayErrorMessageAlertDialog(getString(R.string.empty_portfolio_message), getActivity(), getContext());
     }
 

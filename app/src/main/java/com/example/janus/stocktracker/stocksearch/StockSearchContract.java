@@ -9,6 +9,7 @@ public interface StockSearchContract {
         void setPresenter(StockSearchContract.Presenter stockSearchPresenter);
         void showStockQuoteUI(StockQuote stockQuote);
         void showLoadingIndicator();
+        void dismissLoadingIndicator();
         void showNotFoundError();
         void showLoadingError();
     }

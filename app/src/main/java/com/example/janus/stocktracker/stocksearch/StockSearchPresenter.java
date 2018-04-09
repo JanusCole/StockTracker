@@ -27,8 +27,10 @@ public class StockSearchPresenter implements StockSearchContract.Presenter {
             public void onStockQuoteLoaded(StockQuote stockQuote) {
 
                 if (stockQuote == null) {
+                    stockSearchView.dismissLoadingIndicator();
                     stockSearchView.showNotFoundError();
                 } else {
+                    stockSearchView.dismissLoadingIndicator();
                     stockSearchView.showStockQuoteUI(stockQuote);
                 }
 
@@ -36,6 +38,7 @@ public class StockSearchPresenter implements StockSearchContract.Presenter {
 
             @Override
             public void onDataNotAvailable() {
+                stockSearchView.dismissLoadingIndicator();
                 stockSearchView.showLoadingError();
             }
         });

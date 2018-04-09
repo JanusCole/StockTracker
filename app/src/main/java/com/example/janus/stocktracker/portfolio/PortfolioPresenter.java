@@ -32,6 +32,7 @@ public class PortfolioPresenter implements PortfolioContract.Presenter  {
             @Override
             public void onTickerSymbolsLoaded(List<String> tickerSymbols) {
                 if (tickerSymbols.isEmpty()) {
+                    portfolioView.dismissLoadingIndicator();
                     portfolioView.showEmptyPortfolioMessage();
                 } else {
                     getStockQuotes(tickerSymbols);
@@ -40,6 +41,7 @@ public class PortfolioPresenter implements PortfolioContract.Presenter  {
 
             @Override
             public void onDataNotAvailable() {
+                portfolioView.dismissLoadingIndicator();
                 portfolioView.showLoadingError();
             }
         });
@@ -56,11 +58,13 @@ public class PortfolioPresenter implements PortfolioContract.Presenter  {
         stockQuoteDataSource.getStockQuotes(tickerSymbols, new StockQuoteDataSource.GetStockQuotesCallback() {
             @Override
             public void onStockQuotesLoaded(List<StockQuote> stockQuotes) {
+                portfolioView.dismissLoadingIndicator();
                 portfolioView.showStocks(stockQuotes);
             }
 
             @Override
             public void onDataNotAvailable() {
+                portfolioView.dismissLoadingIndicator();
                 portfolioView.showLoadingError();
             }
         });
