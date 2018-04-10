@@ -2,7 +2,7 @@ package com.example.janus.stocktracker.portfolio;
 
 import com.example.janus.stocktracker.data.database.TickerSymbolsDataSource;
 import com.example.janus.stocktracker.data.stockquotes.StockQuote;
-import com.example.janus.stocktracker.data.stockquotes.StockQuoteDataSource;
+import com.example.janus.stocktracker.data.stockquotes.StockQuoteService;
 
 import java.util.List;
 
@@ -10,9 +10,9 @@ public class PortfolioPresenter implements PortfolioContract.Presenter  {
 
     private PortfolioContract.View portfolioView;
     private TickerSymbolsDataSource tickerSymbolDataSource;
-    private StockQuoteDataSource stockQuoteDataSource;
+    private StockQuoteService stockQuoteDataSource;
 
-    public PortfolioPresenter(PortfolioContract.View portfolioView, TickerSymbolsDataSource tickerSymbolDataSource, StockQuoteDataSource stockQuoteDataSource) {
+    public PortfolioPresenter(PortfolioContract.View portfolioView, TickerSymbolsDataSource tickerSymbolDataSource, StockQuoteService stockQuoteDataSource) {
 
         this.portfolioView = portfolioView;
         this.portfolioView.setPresenter(this);
@@ -55,7 +55,7 @@ public class PortfolioPresenter implements PortfolioContract.Presenter  {
 
     private void getStockQuotes (List<String> tickerSymbols) {
 
-        stockQuoteDataSource.getStockQuotes(tickerSymbols, new StockQuoteDataSource.GetStockQuotesCallback() {
+        stockQuoteDataSource.getStockQuotes(tickerSymbols, new StockQuoteService.GetStockQuotesCallback() {
             @Override
             public void onStockQuotesLoaded(List<StockQuote> stockQuotes) {
                 portfolioView.dismissLoadingIndicator();

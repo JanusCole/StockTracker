@@ -2,7 +2,7 @@ package com.example.janus.stocktracker.data.stockquotes;
 
 import java.util.List;
 
-public interface StockQuoteDataSource {
+public interface StockQuoteService {
 
     interface GetStockQuotesCallback {
 

@@ -9,7 +9,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import com.example.janus.stocktracker.data.stockquotes.StockQuote;
-import com.example.janus.stocktracker.data.stockquotes.StockQuotesAPI;
+import com.example.janus.stocktracker.data.stockquotes.StockQuotesWebAPI;
 import com.squareup.okhttp.mockwebserver.MockResponse;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
 
@@ -38,7 +38,7 @@ public class StockQuotesAPIUnitTest {
 
         mockWebServer.enqueue(new MockResponse().setBody(""));
 
-        StockQuotesAPI retrofitStockQuote = new StockQuotesAPI();
+        StockQuotesWebAPI retrofitStockQuote = new StockQuotesWebAPI();
         retrofitStockQuote.setBASE_URL(mockWebServer.url("").toString());
 
         Retrofit.Builder retrofitBuilder = new Retrofit.Builder()
@@ -46,7 +46,7 @@ public class StockQuotesAPIUnitTest {
                 .addConverterFactory(GsonConverterFactory.create());
 
         Retrofit retrofit = retrofitBuilder.build();
-        StockQuotesAPI.StockQuoteInterface stockQuoteClient = retrofit.create(StockQuotesAPI.StockQuoteInterface.class);
+        StockQuotesWebAPI.StockQuoteInterface stockQuoteClient = retrofit.create(StockQuotesWebAPI.StockQuoteInterface.class);
 
         Call<StockQuote> stockQuoteCall = stockQuoteClient.getStockQuote("IBM");
 
@@ -69,7 +69,7 @@ public class StockQuotesAPIUnitTest {
 
         mockWebServer.enqueue(new MockResponse().setBody("{symbol:IBM"));
 
-        StockQuotesAPI retrofitStockQuote = new StockQuotesAPI();
+        StockQuotesWebAPI retrofitStockQuote = new StockQuotesWebAPI();
         retrofitStockQuote.setBASE_URL(mockWebServer.url("").toString());
 
         Retrofit.Builder retrofitBuilder = new Retrofit.Builder()
@@ -77,7 +77,7 @@ public class StockQuotesAPIUnitTest {
                 .addConverterFactory(GsonConverterFactory.create());
 
         Retrofit retrofit = retrofitBuilder.build();
-        StockQuotesAPI.StockQuoteInterface stockQuoteClient = retrofit.create(StockQuotesAPI.StockQuoteInterface.class);
+        StockQuotesWebAPI.StockQuoteInterface stockQuoteClient = retrofit.create(StockQuotesWebAPI.StockQuoteInterface.class);
 
         Call<StockQuote> stockQuoteCall = stockQuoteClient.getStockQuote("IBM");
 
@@ -100,7 +100,7 @@ public class StockQuotesAPIUnitTest {
 
         mockWebServer.enqueue(new MockResponse().setBody(retroFiteResponse));
 
-        StockQuotesAPI retrofitStockQuote = new StockQuotesAPI();
+        StockQuotesWebAPI retrofitStockQuote = new StockQuotesWebAPI();
         retrofitStockQuote.setBASE_URL(mockWebServer.url("").toString());
 
         Retrofit.Builder retrofitBuilder = new Retrofit.Builder()
@@ -108,7 +108,7 @@ public class StockQuotesAPIUnitTest {
                 .addConverterFactory(GsonConverterFactory.create());
 
         Retrofit retrofit = retrofitBuilder.build();
-        StockQuotesAPI.StockQuoteInterface stockQuoteClient = retrofit.create(StockQuotesAPI.StockQuoteInterface.class);
+        StockQuotesWebAPI.StockQuoteInterface stockQuoteClient = retrofit.create(StockQuotesWebAPI.StockQuoteInterface.class);
 
         Call<StockQuote> stockQuoteCall = stockQuoteClient.getStockQuote("IBM");
 

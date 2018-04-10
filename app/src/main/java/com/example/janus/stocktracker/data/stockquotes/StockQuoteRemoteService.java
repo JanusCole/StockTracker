@@ -11,19 +11,19 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class StockQuoteRemoteDataSource implements StockQuoteDataSource {
+public class StockQuoteRemoteService implements StockQuoteService {
 
-    private static StockQuoteRemoteDataSource INSTANCE = null;
+    private static StockQuoteRemoteService INSTANCE = null;
 
-    protected StockQuotesAPI stockQuotesAPI;
+    protected StockQuotesWebAPI stockQuotesAPI;
 
-    private StockQuoteRemoteDataSource(StockQuotesAPI stockQuotesAPI) {
+    private StockQuoteRemoteService(StockQuotesWebAPI stockQuotesAPI) {
         this.stockQuotesAPI = stockQuotesAPI;
     }
 
-    public static StockQuoteRemoteDataSource getInstance (StockQuotesAPI stockQuotesAPI) {
+    public static StockQuoteRemoteService getInstance (StockQuotesWebAPI stockQuotesAPI) {
         if (INSTANCE == null) {
-            INSTANCE = new StockQuoteRemoteDataSource(stockQuotesAPI);
+            INSTANCE = new StockQuoteRemoteService(stockQuotesAPI);
         }
 
         return INSTANCE;
@@ -44,7 +44,7 @@ public class StockQuoteRemoteDataSource implements StockQuoteDataSource {
                         .addConverterFactory(GsonConverterFactory.create());
 
                 Retrofit retrofit = retrofitBuilder.build();
-                StockQuotesAPI.StockQuoteInterface stockQuoteClient = retrofit.create(StockQuotesAPI.StockQuoteInterface.class);
+                StockQuotesWebAPI.StockQuoteInterface stockQuoteClient = retrofit.create(StockQuotesWebAPI.StockQuoteInterface.class);
 
                 List<StockQuote> stockQuotesArrayList = new ArrayList<>();
 
@@ -103,7 +103,7 @@ public class StockQuoteRemoteDataSource implements StockQuoteDataSource {
                         .addConverterFactory(GsonConverterFactory.create());
 
                 Retrofit retrofit = retrofitBuilder.build();
-                StockQuotesAPI.StockQuoteInterface stockQuoteClient = retrofit.create(StockQuotesAPI.StockQuoteInterface.class);
+                StockQuotesWebAPI.StockQuoteInterface stockQuoteClient = retrofit.create(StockQuotesWebAPI.StockQuoteInterface.class);
 
                 Call<StockQuote> stockQuoteCall = stockQuoteClient.getStockQuote(stockTicker);
 

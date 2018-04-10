@@ -11,9 +11,9 @@ import android.view.MenuItem;
 import com.example.janus.stocktracker.R;
 import com.example.janus.stocktracker.data.database.TickerSymbolsLocalDataSource;
 import com.example.janus.stocktracker.data.database.PortfolioDBOpenHelper;
-import com.example.janus.stocktracker.data.stockquotes.StockQuoteRemoteDataSource;
-import com.example.janus.stocktracker.data.stockquotes.StockQuoteDataSource;
-import com.example.janus.stocktracker.data.stockquotes.StockQuotesAPI;
+import com.example.janus.stocktracker.data.stockquotes.StockQuoteRemoteService;
+import com.example.janus.stocktracker.data.stockquotes.StockQuoteService;
+import com.example.janus.stocktracker.data.stockquotes.StockQuotesWebAPI;
 import com.example.janus.stocktracker.data.database.TickerSymbolsRepository;
 import com.example.janus.stocktracker.splashscreen.SplashScreen;
 import com.example.janus.stocktracker.stocksearch.StockSearchActivity;
@@ -39,7 +39,7 @@ public class PortfolioActivity extends AppCompatActivity {
 // Set up the PortfolioPresenter
         PortfolioDBOpenHelper portfolioDBOpenHelper = new PortfolioDBOpenHelper(this);
         TickerSymbolsRepository portfolioSource = TickerSymbolsRepository.getInstance(TickerSymbolsLocalDataSource.getInstance(portfolioDBOpenHelper));
-        StockQuoteDataSource stockQuoteDataSource = StockQuoteRemoteDataSource.getInstance(new StockQuotesAPI());
+        StockQuoteService stockQuoteDataSource = StockQuoteRemoteService.getInstance(new StockQuotesWebAPI());
         portfolioPresenter = new PortfolioPresenter(portfolioFragment, portfolioSource, stockQuoteDataSource);
 
 // Set up the bottom navigation bar

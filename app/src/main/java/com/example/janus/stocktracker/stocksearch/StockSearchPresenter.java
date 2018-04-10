@@ -1,14 +1,14 @@
 package com.example.janus.stocktracker.stocksearch;
 
 import com.example.janus.stocktracker.data.stockquotes.StockQuote;
-import com.example.janus.stocktracker.data.stockquotes.StockQuoteDataSource;
+import com.example.janus.stocktracker.data.stockquotes.StockQuoteService;
 
 public class StockSearchPresenter implements StockSearchContract.Presenter {
 
     private StockSearchContract.View stockSearchView;
-    private StockQuoteDataSource stockQuoteDataSource;
+    private StockQuoteService stockQuoteDataSource;
 
-    public StockSearchPresenter(StockSearchContract.View stockSearchView, StockQuoteDataSource stockQuoteDataSource) {
+    public StockSearchPresenter(StockSearchContract.View stockSearchView, StockQuoteService stockQuoteDataSource) {
 
         this.stockSearchView = stockSearchView;
         this.stockSearchView.setPresenter(this);
@@ -22,7 +22,7 @@ public class StockSearchPresenter implements StockSearchContract.Presenter {
 
         stockSearchView.showLoadingIndicator();
 
-        stockQuoteDataSource.getStockQuote(tickerSymbol, new StockQuoteDataSource.GetStockQuoteCallback() {
+        stockQuoteDataSource.getStockQuote(tickerSymbol, new StockQuoteService.GetStockQuoteCallback() {
             @Override
             public void onStockQuoteLoaded(StockQuote stockQuote) {
 

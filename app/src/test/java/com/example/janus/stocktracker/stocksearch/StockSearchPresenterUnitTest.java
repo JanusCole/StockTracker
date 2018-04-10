@@ -1,11 +1,7 @@
 package com.example.janus.stocktracker.stocksearch;
 
-import com.example.janus.stocktracker.data.database.TickerSymbolsDataSource;
-import com.example.janus.stocktracker.data.database.TickerSymbolsRepository;
 import com.example.janus.stocktracker.data.stockquotes.StockQuote;
-import com.example.janus.stocktracker.data.stockquotes.StockQuoteDataSource;
-import com.example.janus.stocktracker.portfolio.PortfolioContract;
-import com.example.janus.stocktracker.portfolio.PortfolioPresenter;
+import com.example.janus.stocktracker.data.stockquotes.StockQuoteService;
 
 import org.junit.After;
 import org.junit.Before;
@@ -15,9 +11,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
@@ -37,7 +30,7 @@ public class StockSearchPresenterUnitTest {
     private StockSearchContract.View mockStockSearchView;
 
     @Mock
-    private StockQuoteDataSource mockStockQuoteDataSource;
+    private StockQuoteService mockStockQuoteDataSource;
 
     // This is the Class under test
     private StockSearchContract.Presenter stockSearchPresenter;
@@ -46,7 +39,7 @@ public class StockSearchPresenterUnitTest {
     public void setUp() throws Exception {
 
         mockStockSearchView = mock(StockSearchContract.View.class);
-        mockStockQuoteDataSource = mock(StockQuoteDataSource.class);
+        mockStockQuoteDataSource = mock(StockQuoteService.class);
 
         mockStockQuote = mock(StockQuote.class);
 
@@ -63,8 +56,8 @@ public class StockSearchPresenterUnitTest {
 
         stockSearchPresenter.searchStock(tickerSymbol);
 
-        ArgumentCaptor<StockQuoteDataSource.GetStockQuoteCallback> mLoadStockQuoteCallbackCaptor =
-                ArgumentCaptor.forClass(StockQuoteDataSource.GetStockQuoteCallback.class);
+        ArgumentCaptor<StockQuoteService.GetStockQuoteCallback> mLoadStockQuoteCallbackCaptor =
+                ArgumentCaptor.forClass(StockQuoteService.GetStockQuoteCallback.class);
 
         ArgumentCaptor<String> mTickerToSearch = ArgumentCaptor.forClass(String.class);
 
@@ -84,8 +77,8 @@ public class StockSearchPresenterUnitTest {
 
         stockSearchPresenter.searchStock(tickerSymbol);
 
-        ArgumentCaptor<StockQuoteDataSource.GetStockQuoteCallback> mLoadStockQuoteCallbackCaptor =
-                ArgumentCaptor.forClass(StockQuoteDataSource.GetStockQuoteCallback.class);
+        ArgumentCaptor<StockQuoteService.GetStockQuoteCallback> mLoadStockQuoteCallbackCaptor =
+                ArgumentCaptor.forClass(StockQuoteService.GetStockQuoteCallback.class);
 
         ArgumentCaptor<String> mTickerToSearch = ArgumentCaptor.forClass(String.class);
 
@@ -103,8 +96,8 @@ public class StockSearchPresenterUnitTest {
 
         stockSearchPresenter.searchStock(tickerSymbol);
 
-        ArgumentCaptor<StockQuoteDataSource.GetStockQuoteCallback> mLoadStockQuoteCallbackCaptor =
-                ArgumentCaptor.forClass(StockQuoteDataSource.GetStockQuoteCallback.class);
+        ArgumentCaptor<StockQuoteService.GetStockQuoteCallback> mLoadStockQuoteCallbackCaptor =
+                ArgumentCaptor.forClass(StockQuoteService.GetStockQuoteCallback.class);
 
         ArgumentCaptor<String> mTickerToSearch = ArgumentCaptor.forClass(String.class);
 
