@@ -3,6 +3,8 @@ package com.example.janus.stocktracker;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
+import com.example.janus.stocktracker.data.database.PortfolioDBContract;
+import com.example.janus.stocktracker.data.database.PortfolioDBOpenHelper;
 import com.example.janus.stocktracker.data.database.TickerSymbolsRepository;
 import com.example.janus.stocktracker.data.stockquotes.StockQuote;
 import com.example.janus.stocktracker.data.stockquotes.StockQuoteService;
@@ -25,6 +27,7 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.intent.Checks.checkNotNull;
+import static android.support.test.espresso.matcher.RootMatchers.isDialog;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
@@ -46,6 +49,7 @@ public class PortfolioActivityTest {
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
+        deletePortfolio();
     }
 
     // Test Screen Startup
@@ -81,6 +85,24 @@ public class PortfolioActivityTest {
 
         onView(withText("AAPL")).check(matches(isDisplayed()));
         onView(withText("62.00")).check(matches(isDisplayed()));
+
+    }
+
+    @Test
+    public void testEmptyPortfolio() throws Exception {
+
+        onView(withText("Your portfolio is empty"))
+                .inRoot(isDialog())
+                .check(matches(isDisplayed()));
+
+    }
+
+
+    public void deletePortfolio () {
+
+        PortfolioDBOpenHelper portfolioDBOpenHelper = new PortfolioDBOpenHelper(mActivityRule.getActivity());
+
+        portfolioDBOpenHelper.getWritableDatabase().execSQL("DELETE FROM " + PortfolioDBContract.PortfolioEntry.TABLE_NAME);
 
     }
 

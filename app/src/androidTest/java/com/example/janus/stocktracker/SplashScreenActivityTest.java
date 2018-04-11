@@ -34,7 +34,7 @@ public class SplashScreenActivityTest {
 
     @Before
     public void setUp() throws Exception {
-        deletePortfolio();
+
     }
 
     // Test Screen Startup
@@ -51,30 +51,10 @@ public class SplashScreenActivityTest {
 
     }
 
-    @Test
-      public void testEmptyPortfolio() throws Exception {
-
-          onView(withId(R.id.action_portfolio)).perform(click());
-
-          onView(withText("Your portfolio is empty"))
-                  .inRoot(isDialog())
-                  .check(matches(isDisplayed()));
-
-          onView(withId(R.id.okButton_AlertDialog)).perform(click());
 
 
-      }
-
-    public void deletePortfolio () {
-
-        PortfolioDBOpenHelper portfolioDBOpenHelper = new PortfolioDBOpenHelper(mActivityRule.getActivity());
-
-        portfolioDBOpenHelper.getWritableDatabase().execSQL("DELETE FROM " + PortfolioDBContract.PortfolioEntry.TABLE_NAME);
-
-    }
 
     @After
     public void tearDown() throws Exception {
-        deletePortfolio();
     }
 }
