@@ -37,6 +37,7 @@ public class SplashScreenActivityTest {
         deletePortfolio();
     }
 
+    // Test Screen Startup
 
     @Test
     public void testMainActivityExists() throws Exception {
@@ -50,24 +51,7 @@ public class SplashScreenActivityTest {
 
     }
 
-
-      @Test
-      public void testSplashScreenButton() throws Exception {
-          onView(withId(R.id.action_splash_screen)).perform(click());
-
-          onView(withId(R.id.splashScreenFragment)).check(matches((isDisplayed())));
-
-      }
-
     @Test
-    public void testSearchStockButton() throws Exception {
-        onView(withId(R.id.action_search_ticker)).perform(click());
-
-        onView(withId(R.id.searchStocksFragment)).check(matches((isDisplayed())));
-
-    }
-
-      @Test
       public void testEmptyPortfolio() throws Exception {
 
           onView(withId(R.id.action_portfolio)).perform(click());

@@ -145,4 +145,6 @@ public class PortfolioFragment extends Fragment implements StocksRecyclerViewAda
         portfolioPresenter.selectIndividualStockQuote(stockQuote);
     }
 
+
+
 }

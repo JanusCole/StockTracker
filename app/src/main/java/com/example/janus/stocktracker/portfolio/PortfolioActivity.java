@@ -3,6 +3,7 @@ package com.example.janus.stocktracker.portfolio;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.VisibleForTesting;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -22,6 +23,7 @@ public class PortfolioActivity extends AppCompatActivity {
 
     private PortfolioContract.Presenter portfolioPresenter;
 
+    PortfolioFragment portfolioFragment;
     BottomNavigationView bottomNavigationView;
 
     @Override
@@ -30,7 +32,7 @@ public class PortfolioActivity extends AppCompatActivity {
         setContentView(R.layout.portfolio_activity);
 
 // Create the Portfolio Fragment
-        PortfolioFragment portfolioFragment = new PortfolioFragment();
+        portfolioFragment = new PortfolioFragment();
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.portfolioFrameLaout, portfolioFragment);
@@ -70,4 +72,13 @@ public class PortfolioActivity extends AppCompatActivity {
 
     }
 
+    @VisibleForTesting
+    public void setPortfolioPresenter(PortfolioContract.Presenter portfolioPresenter) {
+        this.portfolioPresenter = portfolioPresenter;
+    }
+
+    @VisibleForTesting
+    public PortfolioFragment getPortfolioFragment() {
+        return portfolioFragment;
+    }
 }
