@@ -23,8 +23,8 @@ public class PortfolioActivity extends AppCompatActivity {
 
     private PortfolioContract.Presenter portfolioPresenter;
 
-    PortfolioFragment portfolioFragment;
-    BottomNavigationView bottomNavigationView;
+    private PortfolioFragment portfolioFragment;
+    private BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,5 +80,9 @@ public class PortfolioActivity extends AppCompatActivity {
     @VisibleForTesting
     public PortfolioFragment getPortfolioFragment() {
         return portfolioFragment;
+    }
+
+    public PortfolioContract.Presenter getPortfolioPresenter() {
+        return portfolioPresenter;
     }
 }

@@ -3,6 +3,7 @@ package com.example.janus.stocktracker.stockquote;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.VisibleForTesting;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -23,7 +24,8 @@ public class StockQuoteActivity extends AppCompatActivity {
 
     private StockQuoteContract.Presenter stockQuotePresenter;
 
-    BottomNavigationView bottomNavigationView;
+    private StockQuoteFragment stockQuoteFragment;
+    private BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +36,7 @@ public class StockQuoteActivity extends AppCompatActivity {
         StockQuote stockQuote = (StockQuote) getIntent().getSerializableExtra(STOCK_QUOTE);
 
 // Create the StockSearch Fragment
-        StockQuoteFragment stockQuoteFragment = new StockQuoteFragment();
+        stockQuoteFragment = new StockQuoteFragment();
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.stockQuoteFrameLaout, stockQuoteFragment);
@@ -72,4 +74,14 @@ public class StockQuoteActivity extends AppCompatActivity {
 
     }
 
+    @VisibleForTesting
+    public StockQuoteFragment getStockQuoteFragment() {
+        return stockQuoteFragment;
+    }
+
+    @VisibleForTesting
+    public void setStockQuotePresenter(StockQuoteContract.Presenter stockQuotePresenter) {
+
+        this.stockQuotePresenter = stockQuotePresenter;
+    }
 }

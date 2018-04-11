@@ -69,8 +69,7 @@ public class PortfolioFragment extends Fragment implements StocksRecyclerViewAda
 
     @Override
     public void showStocks(List<StockQuote> stockQuotes) {
-        stocksRecyclerViewAdapter = new StocksRecyclerViewAdapter(stockQuotes, this);
-        stockRecyclerView.setAdapter(stocksRecyclerViewAdapter);
+        stocksRecyclerViewAdapter.addStocks(stockQuotes);
     }
 
     @Override

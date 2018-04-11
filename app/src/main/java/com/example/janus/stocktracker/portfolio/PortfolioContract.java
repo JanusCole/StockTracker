@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface PortfolioContract {
 
-    public interface View {
+    interface View {
         void setPresenter(PortfolioContract.Presenter portfolioPresenter);
         void showStocks(List<StockQuote> stockQuotes);
         void showLoadingIndicator();
@@ -16,7 +16,7 @@ public interface PortfolioContract {
         void showEmptyPortfolioMessage();
     }
 
-    public interface Presenter {
+    interface Presenter {
         void loadStocks();
         void selectIndividualStockQuote(StockQuote stockQuote);
     }

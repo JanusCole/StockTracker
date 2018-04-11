@@ -19,7 +19,7 @@ public class StockSearchActivity extends AppCompatActivity {
 
     private StockSearchContract.Presenter stockSearchPresenter;
 
-    BottomNavigationView bottomNavigationView;
+    private BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
