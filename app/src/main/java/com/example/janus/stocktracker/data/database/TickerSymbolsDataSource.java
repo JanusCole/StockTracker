@@ -8,14 +8,14 @@ public interface TickerSymbolsDataSource {
 
         void onTickerSymbolsLoaded(List<String> tickerSymbols);
 
-        void onDataNotAvailable();
+        void onDataBaseError();
     }
 
     interface GetTickerSymbolCallback {
 
         void onTickerSymbolRetrieved(String tickerSymbol);
 
-        void onDataNotAvailable();
+        void onDataBaseError();
     }
 
     interface DeleteTickerSymbolCallback {

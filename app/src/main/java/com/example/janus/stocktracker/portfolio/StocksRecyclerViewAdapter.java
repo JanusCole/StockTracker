@@ -92,6 +92,7 @@ public class StocksRecyclerViewAdapter extends RecyclerView.Adapter<StocksRecycl
     }
 
     public void addStocks(List<StockQuote> newStockQuotes) {
+        stockQuotes.clear();
         stockQuotes.addAll(newStockQuotes);
         notifyDataSetChanged();
     }

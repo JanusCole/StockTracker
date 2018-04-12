@@ -40,7 +40,7 @@ public class PortfolioPresenter implements PortfolioContract.Presenter  {
             }
 
             @Override
-            public void onDataNotAvailable() {
+            public void onDataBaseError() {
                 portfolioView.dismissLoadingIndicator();
                 portfolioView.showLoadingError();
             }

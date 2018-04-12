@@ -11,7 +11,7 @@ import android.view.MenuItem;
 import com.example.janus.stocktracker.R;
 import com.example.janus.stocktracker.data.stockquotes.StockQuoteRemoteService;
 import com.example.janus.stocktracker.data.stockquotes.StockQuoteService;
-import com.example.janus.stocktracker.data.stockquotes.StockQuotesWebAPI;
+import com.example.janus.stocktracker.data.stockquotes.StockQuotesWebClient;
 import com.example.janus.stocktracker.portfolio.PortfolioActivity;
 import com.example.janus.stocktracker.splashscreen.SplashScreen;
 
@@ -34,7 +34,7 @@ public class StockSearchActivity extends AppCompatActivity {
         fragmentTransaction.commit();
 
 // Set up the StockSearchPresenter
-        StockQuoteService stockQuoteDataSource = StockQuoteRemoteService.getInstance(new StockQuotesWebAPI());
+        StockQuoteService stockQuoteDataSource = StockQuoteRemoteService.getInstance(new StockQuotesWebClient());
         stockSearchPresenter = new StockSearchPresenter(stockSearchFragment, stockQuoteDataSource);
 
 // Set up the bottom navigation bar

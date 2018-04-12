@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.janus.stocktracker.R;
+import com.example.janus.stocktracker.util.FormattedMessages;
 
 import java.text.DecimalFormat;
 
@@ -152,44 +153,6 @@ public class StockQuoteFragment extends Fragment implements StockQuoteContract.V
             priceChangePercentageDisplay.setTextColor(color);
 
     }
-    public void displayErrorMessageAlertDialog(String alertMessage, Activity activity, Context context) {
-
-        LayoutInflater inflater = activity.getLayoutInflater();
-        View dialogView = inflater.inflate(R.layout.custom_alert_dialog, null);
-
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context)
-                .setCancelable(false)
-                .setView(dialogView);
-
-        TextView alertDialogMessage = (TextView) dialogView.findViewById(R.id.messageTextView_AlertDialog);
-        alertDialogMessage.setText(alertMessage);
-
-        final AlertDialog errorMessageAlertDialog = alertDialogBuilder.create();
-        errorMessageAlertDialog.setCanceledOnTouchOutside(true);
-
-        Button dialogButton = (Button) dialogView.findViewById(R.id.okButton_AlertDialog);
-        dialogButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                errorMessageAlertDialog.dismiss();
-            }
-        });
-
-        errorMessageAlertDialog.show();
-    }
-
-    // Method for setting up the network busy message
-    public AlertDialog showNetworkActivityAlert(LayoutInflater inflater,Context context) {
-
-        View dialogView = inflater.inflate(R.layout.busy_dialog, null);
-
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context)
-                .setCancelable(false)
-                .setView(dialogView);
-
-        return alertDialogBuilder.create();
-
-    }
 
     @Override
     public void showStockNotInPortfolio() {
@@ -205,6 +168,6 @@ public class StockQuoteFragment extends Fragment implements StockQuoteContract.V
 
     @Override
     public void showDatabaseError() {
-        displayErrorMessageAlertDialog(getString(R.string.database_error_message), getActivity(), getContext());
+        FormattedMessages.displayErrorMessageAlertDialog(getString(R.string.database_error_message), getActivity(), getContext());
     }
 }

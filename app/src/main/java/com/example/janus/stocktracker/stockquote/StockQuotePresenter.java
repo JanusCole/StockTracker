@@ -88,7 +88,7 @@ public class StockQuotePresenter implements StockQuoteContract.Presenter {
             }
 
             @Override
-            public void onDataNotAvailable() {
+            public void onDataBaseError() {
                 stockQuoteView.showStockNotInPortfolio();
             }
         });

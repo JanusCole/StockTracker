@@ -2,6 +2,9 @@ package com.example.janus.stocktracker.data.stockquotes;
 
 import android.os.AsyncTask;
 
+import com.example.janus.stocktracker.util.AppExecutors;
+
+import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,13 +18,17 @@ public class StockQuoteRemoteService implements StockQuoteService {
 
     private static StockQuoteRemoteService INSTANCE = null;
 
-    protected StockQuotesWebAPI stockQuotesAPI;
+    private StockQuotesWebClient stockQuotesAPI;
 
-    private StockQuoteRemoteService(StockQuotesWebAPI stockQuotesAPI) {
+    AppExecutors ioThread;
+    List<StockQuote> stockQuotesArrayList = new ArrayList<>();
+
+    private StockQuoteRemoteService(StockQuotesWebClient stockQuotesAPI) {
         this.stockQuotesAPI = stockQuotesAPI;
+        ioThread = new AppExecutors();
     }
 
-    public static StockQuoteRemoteService getInstance (StockQuotesWebAPI stockQuotesAPI) {
+    public static StockQuoteRemoteService getInstance (StockQuotesWebClient stockQuotesAPI) {
         if (INSTANCE == null) {
             INSTANCE = new StockQuoteRemoteService(stockQuotesAPI);
         }
@@ -30,110 +37,107 @@ public class StockQuoteRemoteService implements StockQuoteService {
     }
 
     @Override
-    public void getStockQuotes(List<String> tickerSymbols, final GetStockQuotesCallback getStockQuoteCallback) {
+    public void getStockQuotes(final List<String> tickerSymbols, final GetStockQuotesCallback getStockQuoteCallback) {
 
-        new AsyncTask<List<String>, Void, List<StockQuote>>() {
-
+        Runnable runnable = new Runnable() {
             @Override
-            protected List<StockQuote> doInBackground(List<String>... params) {
-
-                List<String> stockTickers = params[0];
+            public void run() {
 
                 Retrofit.Builder retrofitBuilder = new Retrofit.Builder()
                         .baseUrl(stockQuotesAPI.getBASE_URL())
                         .addConverterFactory(GsonConverterFactory.create());
 
                 Retrofit retrofit = retrofitBuilder.build();
-                StockQuotesWebAPI.StockQuoteInterface stockQuoteClient = retrofit.create(StockQuotesWebAPI.StockQuoteInterface.class);
+                StockQuotesWebClient.StockQuoteInterface stockQuoteClient = retrofit.create(StockQuotesWebClient.StockQuoteInterface.class);
 
-                List<StockQuote> stockQuotesArrayList = new ArrayList<>();
+                stockQuotesArrayList.clear();
 
-                for (String stockTicker : stockTickers) {
+                for (String stockTicker : tickerSymbols) {
 
-                    if (!isCancelled()) {
+                    Call<StockQuote> stockQuoteCall = stockQuoteClient.getStockQuote(stockTicker);
 
-                        Call<StockQuote> stockQuoteCall = stockQuoteClient.getStockQuote(stockTicker);
-
-                        Response<StockQuote> stockQuote = null;
-
-                        try {
-                            stockQuote = stockQuoteCall.execute();
-
-                        } catch (Exception e) {
-                            cancel(true);
-                        }
-
+                    try {
+                        final Response<StockQuote> stockQuote = stockQuoteCall.execute();
                         if (stockQuote.code() == HttpURLConnection.HTTP_OK) {
                             stockQuotesArrayList.add(stockQuote.body());
                         } else {
-                            cancel(true);
+                            ioThread.mainThread().execute(new Runnable() {
+                                @Override
+                                public void run() {
+                                    getStockQuoteCallback.onDataNotAvailable();
+                                }
+                            });
+
                         }
+
+
+                    } catch (Exception e) {
+                        ioThread.mainThread().execute(new Runnable() {
+                            @Override
+                            public void run() {
+                                getStockQuoteCallback.onDataNotAvailable();
+                            }
+                        });
                     }
 
                 }
-                return stockQuotesArrayList;
+
+                ioThread.mainThread().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        getStockQuoteCallback.onStockQuotesLoaded(stockQuotesArrayList);
+                    }
+                });
 
             }
+        };
 
-            @Override
-            protected void onPostExecute(List<StockQuote> stockQuotes) {
-                getStockQuoteCallback.onStockQuotesLoaded(stockQuotes);
-            }
-
-            @Override
-            protected void onCancelled() {
-                getStockQuoteCallback.onDataNotAvailable();
-            }
-        }.execute(tickerSymbols);
+        ioThread.networkIO().execute(runnable);
 
     }
 
     @Override
-    public void getStockQuote(String tickerSymbol, final GetStockQuoteCallback getStockQuoteCallback) {
+    public void getStockQuote(final String tickerSymbol, final GetStockQuoteCallback getStockQuoteCallback) {
 
-        new AsyncTask<String, Void, StockQuote> () {
-
+        Runnable runnable = new Runnable() {
             @Override
-            protected StockQuote doInBackground(String... params) {
-
-                String stockTicker = params[0];
-
+            public void run() {
                 Retrofit.Builder retrofitBuilder = new Retrofit.Builder()
                         .baseUrl(stockQuotesAPI.getBASE_URL())
                         .addConverterFactory(GsonConverterFactory.create());
 
                 Retrofit retrofit = retrofitBuilder.build();
-                StockQuotesWebAPI.StockQuoteInterface stockQuoteClient = retrofit.create(StockQuotesWebAPI.StockQuoteInterface.class);
+                StockQuotesWebClient.StockQuoteInterface stockQuoteClient = retrofit.create(StockQuotesWebClient.StockQuoteInterface.class);
 
-                Call<StockQuote> stockQuoteCall = stockQuoteClient.getStockQuote(stockTicker);
-
-                Response<StockQuote> stockQuote = null;
+                Call<StockQuote> stockQuoteCall = stockQuoteClient.getStockQuote(tickerSymbol);
 
                 try {
-                    stockQuote = stockQuoteCall.execute();
+                    final Response<StockQuote> stockQuote = stockQuoteCall.execute();
 
-                } catch (Exception e) {
-                    cancel(true);
+                    ioThread.mainThread().execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            if ((stockQuote.code() != HttpURLConnection.HTTP_OK) && (stockQuote.code() != HttpURLConnection.HTTP_NOT_FOUND)) {
+                                getStockQuoteCallback.onDataNotAvailable();
+                            } else {
+                                getStockQuoteCallback.onStockQuoteLoaded(stockQuote.body());
+                            }
+                        }
+                    });
+
+                } catch (IOException e) {
+                    ioThread.mainThread().execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            getStockQuoteCallback.onDataNotAvailable();
+                        }
+                    });
                 }
 
-                if ((stockQuote.code() != HttpURLConnection.HTTP_OK) && (stockQuote.code() != HttpURLConnection.HTTP_NOT_FOUND)){
-                    cancel(true);
-                }
-
-                return stockQuote.body();
-
             }
+        };
 
-            @Override
-            protected void onPostExecute(StockQuote stockQuote) {
-                getStockQuoteCallback.onStockQuoteLoaded(stockQuote);
-            }
-
-            @Override
-            protected void onCancelled() {
-                getStockQuoteCallback.onDataNotAvailable();
-            }
-        }.execute(tickerSymbol);
+        ioThread.networkIO().execute(runnable);
 
     }
 

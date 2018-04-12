@@ -142,7 +142,7 @@ public class PortfolioPresenterUnitTest {
                 ArgumentCaptor.forClass(TickerSymbolsDataSource.LoadTickerSymbolsCallback.class);
 
         verify(mockTickerSymbolsRepository).getAllTickerSymbols(mLoadTickerSymbolsCallbackCaptor.capture());
-        mLoadTickerSymbolsCallbackCaptor.getValue().onDataNotAvailable();
+        mLoadTickerSymbolsCallbackCaptor.getValue().onDataBaseError();
 
         verify(mockPortfolioView).showLoadingError();
 

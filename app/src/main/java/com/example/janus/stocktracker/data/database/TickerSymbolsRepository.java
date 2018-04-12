@@ -48,8 +48,8 @@ public class TickerSymbolsRepository implements TickerSymbolsDataSource {
                 }
 
                 @Override
-                public void onDataNotAvailable() {
-                    loadTickerSymbolsCallback.onDataNotAvailable();
+                public void onDataBaseError() {
+                    loadTickerSymbolsCallback.onDataBaseError();
                 }
             });
         }
@@ -108,8 +108,8 @@ public class TickerSymbolsRepository implements TickerSymbolsDataSource {
                 }
 
                 @Override
-                public void onDataNotAvailable() {
-                    getTickerSymbolCallback.onDataNotAvailable();
+                public void onDataBaseError() {
+                    getTickerSymbolCallback.onDataBaseError();
                 }
             });
         }

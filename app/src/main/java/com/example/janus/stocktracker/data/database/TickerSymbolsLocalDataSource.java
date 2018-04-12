@@ -5,6 +5,8 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.os.AsyncTask;
 
+import com.example.janus.stocktracker.util.AppExecutors;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,8 +16,12 @@ public class TickerSymbolsLocalDataSource implements TickerSymbolsDataSource {
 
     private PortfolioDBOpenHelper portfolioDBOpenHelper;
 
+    AppExecutors ioThread;
+    List<String> tickerSymbols = new ArrayList<>();
+
     private TickerSymbolsLocalDataSource(PortfolioDBOpenHelper portfolioDBOpenHelper) {
         this.portfolioDBOpenHelper = portfolioDBOpenHelper;
+        ioThread = new AppExecutors();
     }
 
     public static TickerSymbolsLocalDataSource getInstance(PortfolioDBOpenHelper portfolioDBOpenHelper) {
@@ -31,17 +37,14 @@ public class TickerSymbolsLocalDataSource implements TickerSymbolsDataSource {
     @Override
     public void getAllTickerSymbols(final LoadTickerSymbolsCallback loadTickerSymbolsCallback) {
 
-        new AsyncTask<Void, Void, List<String>> () {
-
+        Runnable runnable = new Runnable() {
             @Override
-            protected List<String> doInBackground(Void... params) {
+            public void run() {
 
-                List<String> tickerSymbolList = new ArrayList<>();
-
-                Cursor portfolioCursor = null;
+                tickerSymbols.clear();
 
                 try {
-                    portfolioCursor = portfolioDBOpenHelper.getReadableDatabase().query(PortfolioDBContract.PortfolioEntry.TABLE_NAME,
+                    Cursor portfolioCursor = portfolioDBOpenHelper.getReadableDatabase().query(PortfolioDBContract.PortfolioEntry.TABLE_NAME,
                             new String[]{PortfolioDBContract.PortfolioEntry.COLUMN_NAME_STOCK},
                             null,
                             null,
@@ -49,45 +52,46 @@ public class TickerSymbolsLocalDataSource implements TickerSymbolsDataSource {
                             null,
                             PortfolioDBContract.PortfolioEntry.COLUMN_NAME_STOCK);
 
-                } catch (SQLException e) {
-                    cancel(true);
-                }
+                    if ((portfolioCursor != null) && (portfolioCursor.getCount() != 0)) {
+                        portfolioCursor.moveToFirst();
+                        int stockTickerIndex = portfolioCursor.getColumnIndex(PortfolioDBContract.PortfolioEntry.COLUMN_NAME_STOCK);
 
-                if ((!isCancelled()) && (portfolioCursor != null) && (portfolioCursor.getCount() != 0)) {
-                    portfolioCursor.moveToFirst();
-                    int stockTickerIndex = portfolioCursor.getColumnIndex(PortfolioDBContract.PortfolioEntry.COLUMN_NAME_STOCK);
-
-                    do {
-                        tickerSymbolList.add(portfolioCursor.getString(stockTickerIndex));
+                        do {
+                            tickerSymbols.add(portfolioCursor.getString(stockTickerIndex));
+                        }
+                        while (portfolioCursor.moveToNext());
                     }
-                    while (portfolioCursor.moveToNext());
+
+
+                } catch (SQLException e) {
+                    ioThread.mainThread().execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            loadTickerSymbolsCallback.onDataBaseError();
+                        }
+                    });
                 }
 
-                return tickerSymbolList;
-            }
+                ioThread.mainThread().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        loadTickerSymbolsCallback.onTickerSymbolsLoaded(tickerSymbols);
+                    }
+                });
 
-            @Override
-            protected void onPostExecute(List<String> tickerSymbols) {
-                loadTickerSymbolsCallback.onTickerSymbolsLoaded(tickerSymbols);
             }
+        };
 
-            @Override
-            protected void onCancelled() {
-                loadTickerSymbolsCallback.onDataNotAvailable();
-            }
-
-        }.execute();
+        ioThread.diskIO().execute(runnable);
 
     }
 
     @Override
-    public void addTickerSymbol(String tickerSymbol, final AddTickerSymbolCallback addTickerSymbolCallback) {
+    public void addTickerSymbol(final String tickerSymbol, final AddTickerSymbolCallback addTickerSymbolCallback) {
 
-        new AsyncTask<String, Void, Void> () {
-
+        Runnable runnable = new Runnable() {
             @Override
-            protected Void doInBackground(String... params) {
-                String tickerSymbol = params[0];
+            public void run() {
 
                 ContentValues contentValues = new ContentValues();
                 contentValues.put(PortfolioDBContract.PortfolioEntry.COLUMN_NAME_STOCK, tickerSymbol);
@@ -95,33 +99,34 @@ public class TickerSymbolsLocalDataSource implements TickerSymbolsDataSource {
                 try {
                     portfolioDBOpenHelper.getWritableDatabase().insertOrThrow(PortfolioDBContract.PortfolioEntry.TABLE_NAME, null, contentValues);
                 } catch (SQLException e) {
-                    cancel(true);
+                    ioThread.mainThread().execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            addTickerSymbolCallback.onDataBaseError();
+                        }
+                    });
                 }
 
-                return null;
-            }
+                ioThread.mainThread().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        addTickerSymbolCallback.onTickerSymbolAdded();
+                    }
+                });
 
-            @Override
-            protected void onPostExecute(Void aVoid) {
-                addTickerSymbolCallback.onTickerSymbolAdded();
             }
+        };
 
-            @Override
-            protected void onCancelled() {
-                addTickerSymbolCallback.onDataBaseError();
-            }
-        }.execute(tickerSymbol);
+        ioThread.diskIO().execute(runnable);
 
     }
 
     @Override
-    public void deleteTickerSymbol(String tickerSymbol, final DeleteTickerSymbolCallback deleteTickerSymbolCallback) {
+    public void deleteTickerSymbol(final String tickerSymbol, final DeleteTickerSymbolCallback deleteTickerSymbolCallback) {
 
-        new AsyncTask<String, Void, Void> () {
-
+        Runnable runnable = new Runnable() {
             @Override
-            protected Void doInBackground(String... params) {
-                String tickerSymbol = params[0];
+            public void run() {
 
                 int deletionResult = 0;
 
@@ -130,44 +135,46 @@ public class TickerSymbolsLocalDataSource implements TickerSymbolsDataSource {
                             PortfolioDBContract.PortfolioEntry.COLUMN_NAME_STOCK + " = ?",
                             new String [] {tickerSymbol});
                 } catch (SQLException e) {
-                    cancel(true);
+                    ioThread.mainThread().execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            deleteTickerSymbolCallback.onDataBaseError();
+                        }
+                    });
                 }
 
                 if (deletionResult != 1) {
-                    cancel(true);
+                    ioThread.mainThread().execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            deleteTickerSymbolCallback.onDataBaseError();
+                        }
+                    });
                 }
 
-                return null;
-            }
+                ioThread.mainThread().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        deleteTickerSymbolCallback.onTickerSymbolDeleted();
+                    }
+                });
 
-            @Override
-            protected void onPostExecute(Void aVoid) {
-                deleteTickerSymbolCallback.onTickerSymbolDeleted();
             }
+        };
 
-            @Override
-            protected void onCancelled() {
-                deleteTickerSymbolCallback.onDataBaseError();
-            }
-        }.execute(tickerSymbol);
+        ioThread.diskIO().execute(runnable);
 
     }
 
     @Override
-    public void getTickerSymbol(String tickerSymbol, final GetTickerSymbolCallback getTickerSymbolCallback) {
+    public void getTickerSymbol(final String tickerSymbol, final GetTickerSymbolCallback getTickerSymbolCallback) {
 
-        new AsyncTask<String, Void, String> () {
-
+        Runnable runnable = new Runnable() {
             @Override
-            protected String doInBackground(String... params) {
-
-                String tickerSymbol = params[0];
-                String tickerSymbolResult = null;
-
-                Cursor portfolioCursor = null;
+            public void run() {
 
                 try {
-                    portfolioCursor = portfolioDBOpenHelper.getReadableDatabase().query(PortfolioDBContract.PortfolioEntry.TABLE_NAME,
+                    final Cursor portfolioCursor = portfolioDBOpenHelper.getReadableDatabase().query(PortfolioDBContract.PortfolioEntry.TABLE_NAME,
                             new String [] {PortfolioDBContract.PortfolioEntry.COLUMN_NAME_STOCK},
                             PortfolioDBContract.PortfolioEntry.COLUMN_NAME_STOCK + " = ?",
                             new String [] {tickerSymbol},
@@ -175,30 +182,31 @@ public class TickerSymbolsLocalDataSource implements TickerSymbolsDataSource {
                             null,
                             null);
 
+                    if ((portfolioCursor != null) && (portfolioCursor.getCount() != 0)) {
+                        portfolioCursor.moveToFirst();
+                        final int stockTickerIndex = portfolioCursor.getColumnIndex(PortfolioDBContract.PortfolioEntry.COLUMN_NAME_STOCK);
+                        ioThread.mainThread().execute(new Runnable() {
+                            @Override
+                            public void run() {
+                                getTickerSymbolCallback.onTickerSymbolRetrieved(portfolioCursor.getString(stockTickerIndex));
+                            }
+                        });
+
+                    }
+
                 } catch (SQLException e) {
-                    cancel(true);
+                    ioThread.mainThread().execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            getTickerSymbolCallback.onDataBaseError();
+                        }
+                    });
                 }
 
-                if ((!isCancelled()) && (portfolioCursor != null) && (portfolioCursor.getCount() != 0)) {
-                    portfolioCursor.moveToFirst();
-                    int stockTickerIndex = portfolioCursor.getColumnIndex(PortfolioDBContract.PortfolioEntry.COLUMN_NAME_STOCK);
-                    tickerSymbolResult = portfolioCursor.getString(stockTickerIndex);
-                }
-
-                return tickerSymbolResult;
             }
+        };
 
-            @Override
-            protected void onPostExecute(String tickerSymbol) {
-                getTickerSymbolCallback.onTickerSymbolRetrieved(tickerSymbol);
-            }
-
-            @Override
-            protected void onCancelled() {
-                getTickerSymbolCallback.onDataNotAvailable();
-            }
-
-        }.execute(tickerSymbol);
+        ioThread.diskIO().execute(runnable);
 
     }
 
