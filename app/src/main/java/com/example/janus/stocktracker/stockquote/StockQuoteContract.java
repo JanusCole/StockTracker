@@ -2,6 +2,8 @@ package com.example.janus.stocktracker.stockquote;
 
 import com.example.janus.stocktracker.stockquote.StockQuotePresenter;
 
+// Defines the relationship between the Stock Quote View and it's Presenter
+
 public interface StockQuoteContract {
 
     interface View {

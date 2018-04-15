@@ -1,73 +1,69 @@
 package com.example.janus.stocktracker.portfolio;
 
-import com.example.janus.stocktracker.data.database.TickerSymbolsDataSource;
+import com.example.janus.stocktracker.data.stockquotes.PortfolioQuoteService;
 import com.example.janus.stocktracker.data.stockquotes.StockQuote;
-import com.example.janus.stocktracker.data.stockquotes.StockQuoteService;
 
 import java.util.List;
+
+// This is the Presenter for the Portfoio display.It gets called when the View starts. It calls a
+// service that gets a list of stock tickers from the portfolio database which, in turn, calls a stock quote
+// service for each one. A list of StockQuote objects is returned representing to the user's portfolio
 
 public class PortfolioPresenter implements PortfolioContract.Presenter  {
 
     private PortfolioContract.View portfolioView;
-    private TickerSymbolsDataSource tickerSymbolDataSource;
-    private StockQuoteService stockQuoteDataSource;
 
-    public PortfolioPresenter(PortfolioContract.View portfolioView, TickerSymbolsDataSource tickerSymbolDataSource, StockQuoteService stockQuoteDataSource) {
+    private PortfolioQuoteService portfolioQuoteService;
+
+    public PortfolioPresenter(PortfolioContract.View portfolioView, PortfolioQuoteService portfolioQuoteService) {
 
         this.portfolioView = portfolioView;
         this.portfolioView.setPresenter(this);
 
-        this.tickerSymbolDataSource = tickerSymbolDataSource;
-
-        this.stockQuoteDataSource = stockQuoteDataSource;
+        this.portfolioQuoteService = portfolioQuoteService;
 
     }
 
     @Override
-    public void loadStocks() {
+    public void loadPortfolio() {
 
         portfolioView.showLoadingIndicator();
 
-        tickerSymbolDataSource.getAllTickerSymbols(new TickerSymbolsDataSource.LoadTickerSymbolsCallback() {
+        // Call the portfolio stock quotes service. This returns a List of StockQuote objects
+        portfolioQuoteService.getPortfolioQuotes(new PortfolioQuoteService.GetPortfolioQuotesCallback() {
             @Override
-            public void onTickerSymbolsLoaded(List<String> tickerSymbols) {
-                if (tickerSymbols.isEmpty()) {
+            public void onStockQuotesLoaded(List<StockQuote> stockQuotes) {
+
+                if (stockQuotes.isEmpty()) {
                     portfolioView.dismissLoadingIndicator();
                     portfolioView.showEmptyPortfolioMessage();
                 } else {
-                    getStockQuotes(tickerSymbols);
+                    portfolioView.dismissLoadingIndicator();
+                    portfolioView.showStocks(stockQuotes);
                 }
             }
 
+            // Display error if the database was not available
             @Override
             public void onDataBaseError() {
                 portfolioView.dismissLoadingIndicator();
                 portfolioView.showLoadingError();
             }
-        });
-    }
 
-    @Override
-    public void selectIndividualStockQuote(StockQuote stockQuote) {
-        portfolioView.showStockQuote(stockQuote);
-
-    }
-
-    private void getStockQuotes (List<String> tickerSymbols) {
-
-        stockQuoteDataSource.getStockQuotes(tickerSymbols, new StockQuoteService.GetStockQuotesCallback() {
-            @Override
-            public void onStockQuotesLoaded(List<StockQuote> stockQuotes) {
-                portfolioView.dismissLoadingIndicator();
-                portfolioView.showStocks(stockQuotes);
-            }
-
+            // Display an error message of the stock quote service had a networking error
             @Override
             public void onDataNotAvailable() {
                 portfolioView.dismissLoadingIndicator();
                 portfolioView.showLoadingError();
             }
         });
+
+    }
+
+    // Handle event where the user selects an individual stock from the portfolio for display
+    @Override
+    public void selectIndividualStockQuote(StockQuote stockQuote) {
+        portfolioView.showIndividualStockQuote(stockQuote);
 
     }
 

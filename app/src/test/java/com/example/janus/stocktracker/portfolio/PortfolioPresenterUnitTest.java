@@ -1,5 +1,6 @@
 package com.example.janus.stocktracker.portfolio;
 
+import com.example.janus.stocktracker.data.stockquotes.PortfolioQuoteService;
 import com.example.janus.stocktracker.data.database.TickerSymbolsDataSource;
 import com.example.janus.stocktracker.data.database.TickerSymbolsRepository;
 import com.example.janus.stocktracker.data.stockquotes.StockQuote;
@@ -35,6 +36,7 @@ public class PortfolioPresenterUnitTest {
     @Mock
     private TickerSymbolsDataSource mockTickerSymbolsRepository;
     private StockQuoteService mockStockQuoteDataSource;
+    private PortfolioQuoteService mockPortfolioQuoteService;
 
     // This is the Class under test
     private PortfolioContract.Presenter portfolioPresenter;
@@ -45,10 +47,11 @@ public class PortfolioPresenterUnitTest {
         mockPortfolioView = mock(PortfolioContract.View.class);
         mockTickerSymbolsRepository = mock(TickerSymbolsRepository.class);
         mockStockQuoteDataSource = mock(StockQuoteService.class);
+        mockPortfolioQuoteService = mock(PortfolioQuoteService.class);
 
         mockStockQuote = mock(StockQuote.class);
 
-        portfolioPresenter = new PortfolioPresenter(mockPortfolioView, mockTickerSymbolsRepository, mockStockQuoteDataSource);
+        portfolioPresenter = new PortfolioPresenter(mockPortfolioView, mockPortfolioQuoteService);
 
     }
 
@@ -62,7 +65,7 @@ public class PortfolioPresenterUnitTest {
         List<StockQuote> stockQuotesList = new ArrayList<>();
         stockQuotesList.add(mockStockQuote);
 
-        portfolioPresenter.loadStocks();
+        portfolioPresenter.loadPortfolio();
 
         ArgumentCaptor<TickerSymbolsDataSource.LoadTickerSymbolsCallback> mLoadTickerSymbolsCallbackCaptor =
                 ArgumentCaptor.forClass(TickerSymbolsDataSource.LoadTickerSymbolsCallback.class);
@@ -94,7 +97,7 @@ public class PortfolioPresenterUnitTest {
         stockSearchList.add("IBM");
         stockSearchList.add("CAT");
 
-        portfolioPresenter.loadStocks();
+        portfolioPresenter.loadPortfolio();
 
         ArgumentCaptor<TickerSymbolsDataSource.LoadTickerSymbolsCallback> mockLoadTickerSymbolsCallbackCaptor =
                 ArgumentCaptor.forClass(TickerSymbolsDataSource.LoadTickerSymbolsCallback.class);
@@ -121,7 +124,7 @@ public class PortfolioPresenterUnitTest {
     @Test
     public void testLoadStocksCallsGetAllTickerSymbolsInRepositoryAndShowEmptyPortfolioMessageOnEmptyPortfolioInView() throws Exception {
 
-        portfolioPresenter.loadStocks();
+        portfolioPresenter.loadPortfolio();
 
         ArgumentCaptor<TickerSymbolsDataSource.LoadTickerSymbolsCallback> mLoadTickerSymbolsCallbackCaptor =
                 ArgumentCaptor.forClass(TickerSymbolsDataSource.LoadTickerSymbolsCallback.class);
@@ -136,7 +139,7 @@ public class PortfolioPresenterUnitTest {
     @Test
     public void testLoadStocksCallsGetAllTickerSymbolInRepositoryAndCallsLoadingFailureInView() throws Exception {
 
-        portfolioPresenter.loadStocks();
+        portfolioPresenter.loadPortfolio();
 
         ArgumentCaptor<TickerSymbolsDataSource.LoadTickerSymbolsCallback> mLoadTickerSymbolsCallbackCaptor =
                 ArgumentCaptor.forClass(TickerSymbolsDataSource.LoadTickerSymbolsCallback.class);
@@ -153,7 +156,7 @@ public class PortfolioPresenterUnitTest {
 
         portfolioPresenter.selectIndividualStockQuote(mockStockQuote);
 
-        verify(mockPortfolioView).showStockQuote(mockStockQuote);
+        verify(mockPortfolioView).showIndividualStockQuote(mockStockQuote);
 
     }
 

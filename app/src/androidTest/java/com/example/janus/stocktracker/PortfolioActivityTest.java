@@ -16,7 +16,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 
 import org.mockito.MockitoAnnotations;
 
@@ -76,7 +75,7 @@ public class PortfolioActivityTest {
                 testStockQuotes.add(testAAPLStockQuote);
                 testStockQuotes.add(testIBMStockQuote);
 
-                mActivityRule.getActivity().getPortfolioFragment().showStocks(testStockQuotes);
+                mActivityRule.getActivity().getPortfolioView().showStocks(testStockQuotes);
             }
         });
 

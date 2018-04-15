@@ -22,13 +22,13 @@ import com.example.janus.stocktracker.stocksearch.StockSearchContract;
 
 import java.io.Serializable;
 
+// This is a utility class for making nicely formatted messages
 
 public class FormattedMessages {
 
-    public static void displayErrorMessageAlertDialog(String alertMessage, Activity activity, Context context) {
+    public static void displayErrorMessageAlertDialog(String alertMessage, LayoutInflater layoutInflater, Context context) {
 
-        LayoutInflater inflater = activity.getLayoutInflater();
-        View dialogView = inflater.inflate(R.layout.custom_alert_dialog, null);
+        View dialogView = layoutInflater.inflate(R.layout.custom_alert_dialog, null);
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context)
                 .setCancelable(false)
@@ -51,8 +51,9 @@ public class FormattedMessages {
         errorMessageAlertDialog.show();
     }
 
+
     // Method for setting up the network busy message
-    public static AlertDialog showNetworkActivityAlert(LayoutInflater inflater,Context context) {
+    public static AlertDialog getNetworkActivityAlert(LayoutInflater inflater, Context context) {
 
         View dialogView = inflater.inflate(R.layout.busy_dialog, null);
 

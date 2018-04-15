@@ -3,12 +3,13 @@ package com.example.janus.stocktracker.data.database;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.SQLException;
-import android.os.AsyncTask;
 
 import com.example.janus.stocktracker.util.AppExecutors;
 
 import java.util.ArrayList;
 import java.util.List;
+
+// This is the class for interating with thte ticker symbol database. It does CRD (not U) processing off the main UI thread
 
 public class TickerSymbolsLocalDataSource implements TickerSymbolsDataSource {
 
@@ -16,14 +17,16 @@ public class TickerSymbolsLocalDataSource implements TickerSymbolsDataSource {
 
     private PortfolioDBOpenHelper portfolioDBOpenHelper;
 
-    AppExecutors ioThread;
+    AppExecutors ioThreads;
     List<String> tickerSymbols = new ArrayList<>();
 
+    // Private constructor for the singleton
     private TickerSymbolsLocalDataSource(PortfolioDBOpenHelper portfolioDBOpenHelper) {
         this.portfolioDBOpenHelper = portfolioDBOpenHelper;
-        ioThread = new AppExecutors();
+        ioThreads = new AppExecutors();
     }
 
+    // Public getInstance for the singleton
     public static TickerSymbolsLocalDataSource getInstance(PortfolioDBOpenHelper portfolioDBOpenHelper) {
 
         if (INSTANCE == null) {
@@ -64,7 +67,7 @@ public class TickerSymbolsLocalDataSource implements TickerSymbolsDataSource {
 
 
                 } catch (SQLException e) {
-                    ioThread.mainThread().execute(new Runnable() {
+                    ioThreads.mainThread().execute(new Runnable() {
                         @Override
                         public void run() {
                             loadTickerSymbolsCallback.onDataBaseError();
@@ -72,7 +75,7 @@ public class TickerSymbolsLocalDataSource implements TickerSymbolsDataSource {
                     });
                 }
 
-                ioThread.mainThread().execute(new Runnable() {
+                ioThreads.mainThread().execute(new Runnable() {
                     @Override
                     public void run() {
                         loadTickerSymbolsCallback.onTickerSymbolsLoaded(tickerSymbols);
@@ -82,7 +85,7 @@ public class TickerSymbolsLocalDataSource implements TickerSymbolsDataSource {
             }
         };
 
-        ioThread.diskIO().execute(runnable);
+        ioThreads.diskIO().execute(runnable);
 
     }
 
@@ -99,7 +102,7 @@ public class TickerSymbolsLocalDataSource implements TickerSymbolsDataSource {
                 try {
                     portfolioDBOpenHelper.getWritableDatabase().insertOrThrow(PortfolioDBContract.PortfolioEntry.TABLE_NAME, null, contentValues);
                 } catch (SQLException e) {
-                    ioThread.mainThread().execute(new Runnable() {
+                    ioThreads.mainThread().execute(new Runnable() {
                         @Override
                         public void run() {
                             addTickerSymbolCallback.onDataBaseError();
@@ -107,7 +110,7 @@ public class TickerSymbolsLocalDataSource implements TickerSymbolsDataSource {
                     });
                 }
 
-                ioThread.mainThread().execute(new Runnable() {
+                ioThreads.mainThread().execute(new Runnable() {
                     @Override
                     public void run() {
                         addTickerSymbolCallback.onTickerSymbolAdded();
@@ -117,7 +120,7 @@ public class TickerSymbolsLocalDataSource implements TickerSymbolsDataSource {
             }
         };
 
-        ioThread.diskIO().execute(runnable);
+        ioThreads.diskIO().execute(runnable);
 
     }
 
@@ -135,7 +138,7 @@ public class TickerSymbolsLocalDataSource implements TickerSymbolsDataSource {
                             PortfolioDBContract.PortfolioEntry.COLUMN_NAME_STOCK + " = ?",
                             new String [] {tickerSymbol});
                 } catch (SQLException e) {
-                    ioThread.mainThread().execute(new Runnable() {
+                    ioThreads.mainThread().execute(new Runnable() {
                         @Override
                         public void run() {
                             deleteTickerSymbolCallback.onDataBaseError();
@@ -144,7 +147,7 @@ public class TickerSymbolsLocalDataSource implements TickerSymbolsDataSource {
                 }
 
                 if (deletionResult != 1) {
-                    ioThread.mainThread().execute(new Runnable() {
+                    ioThreads.mainThread().execute(new Runnable() {
                         @Override
                         public void run() {
                             deleteTickerSymbolCallback.onDataBaseError();
@@ -152,7 +155,7 @@ public class TickerSymbolsLocalDataSource implements TickerSymbolsDataSource {
                     });
                 }
 
-                ioThread.mainThread().execute(new Runnable() {
+                ioThreads.mainThread().execute(new Runnable() {
                     @Override
                     public void run() {
                         deleteTickerSymbolCallback.onTickerSymbolDeleted();
@@ -162,7 +165,7 @@ public class TickerSymbolsLocalDataSource implements TickerSymbolsDataSource {
             }
         };
 
-        ioThread.diskIO().execute(runnable);
+        ioThreads.diskIO().execute(runnable);
 
     }
 
@@ -185,7 +188,7 @@ public class TickerSymbolsLocalDataSource implements TickerSymbolsDataSource {
                     if ((portfolioCursor != null) && (portfolioCursor.getCount() != 0)) {
                         portfolioCursor.moveToFirst();
                         final int stockTickerIndex = portfolioCursor.getColumnIndex(PortfolioDBContract.PortfolioEntry.COLUMN_NAME_STOCK);
-                        ioThread.mainThread().execute(new Runnable() {
+                        ioThreads.mainThread().execute(new Runnable() {
                             @Override
                             public void run() {
                                 getTickerSymbolCallback.onTickerSymbolRetrieved(portfolioCursor.getString(stockTickerIndex));
@@ -195,7 +198,7 @@ public class TickerSymbolsLocalDataSource implements TickerSymbolsDataSource {
                     }
 
                 } catch (SQLException e) {
-                    ioThread.mainThread().execute(new Runnable() {
+                    ioThreads.mainThread().execute(new Runnable() {
                         @Override
                         public void run() {
                             getTickerSymbolCallback.onDataBaseError();
@@ -206,7 +209,7 @@ public class TickerSymbolsLocalDataSource implements TickerSymbolsDataSource {
             }
         };
 
-        ioThread.diskIO().execute(runnable);
+        ioThreads.diskIO().execute(runnable);
 
     }
 

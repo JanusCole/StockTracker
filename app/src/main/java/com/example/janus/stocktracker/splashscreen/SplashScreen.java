@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
@@ -12,6 +11,7 @@ import com.example.janus.stocktracker.R;
 import com.example.janus.stocktracker.portfolio.PortfolioActivity;
 import com.example.janus.stocktracker.stocksearch.StockSearchActivity;
 
+// This is a simple splash screen that displays a stock chart image
 
 public class SplashScreen extends AppCompatActivity{
 
@@ -19,10 +19,6 @@ public class SplashScreen extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        FragmentTransaction splashFragmentTransaction = getSupportFragmentManager().beginTransaction();
-        splashFragmentTransaction.replace(R.id.mainDisplayFrameLaout, new SplashScreenFragment());
-        splashFragmentTransaction.commit();
 
 // Set up the bottom navigation bar
         BottomNavigationView bottomNavigationView = (BottomNavigationView)
@@ -47,6 +43,7 @@ public class SplashScreen extends AppCompatActivity{
                                 startActivity(portfolioIntent);
                                 break;
                         }
+
                         return false;
                     }
                 });

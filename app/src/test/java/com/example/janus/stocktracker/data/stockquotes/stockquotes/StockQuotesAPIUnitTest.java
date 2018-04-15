@@ -9,7 +9,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import com.example.janus.stocktracker.data.stockquotes.StockQuote;
-import com.example.janus.stocktracker.data.stockquotes.StockQuotesWebClient;
 import com.squareup.okhttp.mockwebserver.MockResponse;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
 

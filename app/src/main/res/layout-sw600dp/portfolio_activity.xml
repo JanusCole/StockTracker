@@ -27,12 +27,19 @@
             android:textSize="35sp"
             android:gravity="center_horizontal" />
 
-        <FrameLayout
+        <LinearLayout android:orientation="vertical"
+            android:id="@+id/displayMultipleStocksFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/linearLayout"
-            android:layout_alignParentEnd="true"
-            android:id="@+id/portfolioFrameLaout"></FrameLayout>
+            xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/displayStocksRecyclerView" />
+
+        </LinearLayout>
 
 
     </LinearLayout>

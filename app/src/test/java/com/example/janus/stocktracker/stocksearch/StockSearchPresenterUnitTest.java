@@ -12,6 +12,9 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -56,15 +59,19 @@ public class StockSearchPresenterUnitTest {
 
         stockSearchPresenter.searchStock(tickerSymbol);
 
-        ArgumentCaptor<StockQuoteService.GetStockQuoteCallback> mLoadStockQuoteCallbackCaptor =
-                ArgumentCaptor.forClass(StockQuoteService.GetStockQuoteCallback.class);
+        List <StockQuote> returnResults = new ArrayList<>();
+        returnResults.add(stockQuote);
 
-        ArgumentCaptor<String> mTickerToSearch = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<StockQuoteService.GetStockQuotesCallback> mLoadStockQuoteCallbackCaptor =
+                ArgumentCaptor.forClass(StockQuoteService.GetStockQuotesCallback.class);
 
-        verify(mockStockQuoteDataSource).getStockQuote(mTickerToSearch.capture(), mLoadStockQuoteCallbackCaptor.capture());
-        mLoadStockQuoteCallbackCaptor.getValue().onStockQuoteLoaded(stockQuote);
+        ArgumentCaptor<List<String>> mTickersToSearch = ArgumentCaptor.forClass(List.class);
+        ArgumentCaptor<List<StockQuote>> returnedStockQuotes = ArgumentCaptor.forClass(List.class);
 
-        assertEquals("IBM", mTickerToSearch.getValue());
+        verify(mockStockQuoteDataSource).getStockQuotes(mTickersToSearch.capture(), mLoadStockQuoteCallbackCaptor.capture());
+        mLoadStockQuoteCallbackCaptor.getValue().onStockQuotesLoaded(returnResults);
+
+        assertEquals("IBM", returnedStockQuotes.getValue().get(0).getSymbol());
 
         verify(mockStockSearchView).showStockQuoteUI(stockQuote);
 
@@ -77,13 +84,13 @@ public class StockSearchPresenterUnitTest {
 
         stockSearchPresenter.searchStock(tickerSymbol);
 
-        ArgumentCaptor<StockQuoteService.GetStockQuoteCallback> mLoadStockQuoteCallbackCaptor =
-                ArgumentCaptor.forClass(StockQuoteService.GetStockQuoteCallback.class);
+        ArgumentCaptor<StockQuoteService.GetStockQuotesCallback> mLoadStockQuoteCallbackCaptor =
+                ArgumentCaptor.forClass(StockQuoteService.GetStockQuotesCallback.class);
 
-        ArgumentCaptor<String> mTickerToSearch = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<List<String>> mTickersToSearch = ArgumentCaptor.forClass(List.class);
 
-        verify(mockStockQuoteDataSource).getStockQuote(mTickerToSearch.capture(), mLoadStockQuoteCallbackCaptor.capture());
-        mLoadStockQuoteCallbackCaptor.getValue().onStockQuoteLoaded(null);
+        verify(mockStockQuoteDataSource).getStockQuotes(mTickersToSearch.capture(), mLoadStockQuoteCallbackCaptor.capture());
+        mLoadStockQuoteCallbackCaptor.getValue().onStockQuotesLoaded(new ArrayList<StockQuote>());
 
         verify(mockStockSearchView).showNotFoundError();
 
@@ -96,12 +103,12 @@ public class StockSearchPresenterUnitTest {
 
         stockSearchPresenter.searchStock(tickerSymbol);
 
-        ArgumentCaptor<StockQuoteService.GetStockQuoteCallback> mLoadStockQuoteCallbackCaptor =
-                ArgumentCaptor.forClass(StockQuoteService.GetStockQuoteCallback.class);
+        ArgumentCaptor<StockQuoteService.GetStockQuotesCallback> mLoadStockQuoteCallbackCaptor =
+                ArgumentCaptor.forClass(StockQuoteService.GetStockQuotesCallback.class);
 
-        ArgumentCaptor<String> mTickerToSearch = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<List<String>> mTickersToSearch = ArgumentCaptor.forClass(List.class);
 
-        verify(mockStockQuoteDataSource).getStockQuote(mTickerToSearch.capture(), mLoadStockQuoteCallbackCaptor.capture());
+        verify(mockStockQuoteDataSource).getStockQuotes(mTickersToSearch.capture(), mLoadStockQuoteCallbackCaptor.capture());
         mLoadStockQuoteCallbackCaptor.getValue().onDataNotAvailable();
 
         verify(mockStockSearchView).showLoadingError();

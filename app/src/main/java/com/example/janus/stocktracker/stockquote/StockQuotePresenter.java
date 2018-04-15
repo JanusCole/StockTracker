@@ -5,6 +5,9 @@ import android.graphics.Color;
 import com.example.janus.stocktracker.data.database.TickerSymbolsDataSource;
 import com.example.janus.stocktracker.data.stockquotes.StockQuote;
 
+// This class accepts a Stock Quote object and tells the View how to displaqy it. It also determines if the stock
+// is currently in the user's portfolio and updates the add/remove buttons accordingly.
+
 public class StockQuotePresenter implements StockQuoteContract.Presenter {
 
     private StockQuoteContract.View stockQuoteView;
@@ -23,6 +26,7 @@ public class StockQuotePresenter implements StockQuoteContract.Presenter {
 
     }
 
+    // Display stock quote information, calculate the pecentage price change and set the gain/loss color
     @Override
     public void loadStock() {
         stockQuoteView.setTickerSymbol(stockQuote.getSymbol());
@@ -44,6 +48,7 @@ public class StockQuotePresenter implements StockQuoteContract.Presenter {
 
     }
 
+    // perform CRD (not U) functions on the user's portolfio
     @Override
     public void addStock(String tickerSymbol) {
         tickerSymbolDataSource.addTickerSymbol(tickerSymbol, new TickerSymbolsDataSource.AddTickerSymbolCallback() {

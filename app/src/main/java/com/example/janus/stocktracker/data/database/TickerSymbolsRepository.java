@@ -7,19 +7,24 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+// Repository for stock ticker symbols saved as Strings.
+
 public class TickerSymbolsRepository implements TickerSymbolsDataSource {
 
     private static TickerSymbolsRepository INSTANCE = null;
 
     private TickerSymbolsDataSource tickerSymbolsDataSource;
 
+    // This is the cache of ticker symbols saved as Strings
     private Set<String> tickerSymbolCache = new HashSet<>();
     private boolean cacheIsDirty = true;
 
+    // Private constructor for the singleton
     private TickerSymbolsRepository(TickerSymbolsDataSource tickerSymbolsDataSource) {
         this.tickerSymbolsDataSource = tickerSymbolsDataSource;
     }
 
+    // Public getInstance for the singleton
     public static TickerSymbolsRepository getInstance (TickerSymbolsDataSource tickerSymbolsDataSource) {
 
         if (INSTANCE == null) {
@@ -34,8 +39,11 @@ public class TickerSymbolsRepository implements TickerSymbolsDataSource {
     @Override
     public void getAllTickerSymbols(final LoadTickerSymbolsCallback loadTickerSymbolsCallback) {
 
+        // If the cache is available, send it back as the result
         if (!cacheIsDirty) {
-            loadTickerSymbolsCallback.onTickerSymbolsLoaded(new ArrayList<String>(tickerSymbolCache));
+            loadTickerSymbolsCallback.onTickerSymbolsLoaded(new ArrayList<>(tickerSymbolCache));
+
+        // ...otherwise query the database for the list of stock ticker symbols
         } else {
 
             tickerSymbolsDataSource.getAllTickerSymbols(new LoadTickerSymbolsCallback() {

@@ -3,6 +3,8 @@ package com.example.janus.stocktracker.stocksearch;
 import com.example.janus.stocktracker.data.stockquotes.StockQuote;
 import com.example.janus.stocktracker.stocksearch.StockSearchPresenter;
 
+// This defines the relationship between the Stock Search View and its Presenter
+
 public interface StockSearchContract {
 
     interface View {
