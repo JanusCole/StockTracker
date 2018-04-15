@@ -17,13 +17,13 @@ public class TickerSymbolsLocalDataSource implements TickerSymbolsDataSource {
 
     private PortfolioDBOpenHelper portfolioDBOpenHelper;
 
-    AppExecutors ioThreads;
+    AppExecutors appExecutors;
     List<String> tickerSymbols = new ArrayList<>();
 
     // Private constructor for the singleton
     private TickerSymbolsLocalDataSource(PortfolioDBOpenHelper portfolioDBOpenHelper) {
         this.portfolioDBOpenHelper = portfolioDBOpenHelper;
-        ioThreads = new AppExecutors();
+        appExecutors = new AppExecutors();
     }
 
     // Public getInstance for the singleton
@@ -67,7 +67,7 @@ public class TickerSymbolsLocalDataSource implements TickerSymbolsDataSource {
 
 
                 } catch (SQLException e) {
-                    ioThreads.mainThread().execute(new Runnable() {
+                    appExecutors.mainThread().execute(new Runnable() {
                         @Override
                         public void run() {
                             loadTickerSymbolsCallback.onDataBaseError();
@@ -75,7 +75,7 @@ public class TickerSymbolsLocalDataSource implements TickerSymbolsDataSource {
                     });
                 }
 
-                ioThreads.mainThread().execute(new Runnable() {
+                appExecutors.mainThread().execute(new Runnable() {
                     @Override
                     public void run() {
                         loadTickerSymbolsCallback.onTickerSymbolsLoaded(tickerSymbols);
@@ -85,7 +85,7 @@ public class TickerSymbolsLocalDataSource implements TickerSymbolsDataSource {
             }
         };
 
-        ioThreads.diskIO().execute(runnable);
+        appExecutors.diskIO().execute(runnable);
 
     }
 
@@ -102,7 +102,7 @@ public class TickerSymbolsLocalDataSource implements TickerSymbolsDataSource {
                 try {
                     portfolioDBOpenHelper.getWritableDatabase().insertOrThrow(PortfolioDBContract.PortfolioEntry.TABLE_NAME, null, contentValues);
                 } catch (SQLException e) {
-                    ioThreads.mainThread().execute(new Runnable() {
+                    appExecutors.mainThread().execute(new Runnable() {
                         @Override
                         public void run() {
                             addTickerSymbolCallback.onDataBaseError();
@@ -110,7 +110,7 @@ public class TickerSymbolsLocalDataSource implements TickerSymbolsDataSource {
                     });
                 }
 
-                ioThreads.mainThread().execute(new Runnable() {
+                appExecutors.mainThread().execute(new Runnable() {
                     @Override
                     public void run() {
                         addTickerSymbolCallback.onTickerSymbolAdded();
@@ -120,7 +120,7 @@ public class TickerSymbolsLocalDataSource implements TickerSymbolsDataSource {
             }
         };
 
-        ioThreads.diskIO().execute(runnable);
+        appExecutors.diskIO().execute(runnable);
 
     }
 
@@ -138,7 +138,7 @@ public class TickerSymbolsLocalDataSource implements TickerSymbolsDataSource {
                             PortfolioDBContract.PortfolioEntry.COLUMN_NAME_STOCK + " = ?",
                             new String [] {tickerSymbol});
                 } catch (SQLException e) {
-                    ioThreads.mainThread().execute(new Runnable() {
+                    appExecutors.mainThread().execute(new Runnable() {
                         @Override
                         public void run() {
                             deleteTickerSymbolCallback.onDataBaseError();
@@ -147,7 +147,7 @@ public class TickerSymbolsLocalDataSource implements TickerSymbolsDataSource {
                 }
 
                 if (deletionResult != 1) {
-                    ioThreads.mainThread().execute(new Runnable() {
+                    appExecutors.mainThread().execute(new Runnable() {
                         @Override
                         public void run() {
                             deleteTickerSymbolCallback.onDataBaseError();
@@ -155,7 +155,7 @@ public class TickerSymbolsLocalDataSource implements TickerSymbolsDataSource {
                     });
                 }
 
-                ioThreads.mainThread().execute(new Runnable() {
+                appExecutors.mainThread().execute(new Runnable() {
                     @Override
                     public void run() {
                         deleteTickerSymbolCallback.onTickerSymbolDeleted();
@@ -165,7 +165,7 @@ public class TickerSymbolsLocalDataSource implements TickerSymbolsDataSource {
             }
         };
 
-        ioThreads.diskIO().execute(runnable);
+        appExecutors.diskIO().execute(runnable);
 
     }
 
@@ -188,7 +188,7 @@ public class TickerSymbolsLocalDataSource implements TickerSymbolsDataSource {
                     if ((portfolioCursor != null) && (portfolioCursor.getCount() != 0)) {
                         portfolioCursor.moveToFirst();
                         final int stockTickerIndex = portfolioCursor.getColumnIndex(PortfolioDBContract.PortfolioEntry.COLUMN_NAME_STOCK);
-                        ioThreads.mainThread().execute(new Runnable() {
+                        appExecutors.mainThread().execute(new Runnable() {
                             @Override
                             public void run() {
                                 getTickerSymbolCallback.onTickerSymbolRetrieved(portfolioCursor.getString(stockTickerIndex));
@@ -198,7 +198,7 @@ public class TickerSymbolsLocalDataSource implements TickerSymbolsDataSource {
                     }
 
                 } catch (SQLException e) {
-                    ioThreads.mainThread().execute(new Runnable() {
+                    appExecutors.mainThread().execute(new Runnable() {
                         @Override
                         public void run() {
                             getTickerSymbolCallback.onDataBaseError();
@@ -209,7 +209,7 @@ public class TickerSymbolsLocalDataSource implements TickerSymbolsDataSource {
             }
         };
 
-        ioThreads.diskIO().execute(runnable);
+        appExecutors.diskIO().execute(runnable);
 
     }
 

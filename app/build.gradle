@@ -15,10 +15,6 @@ android {
 
     buildTypes {
 
-        all {
-            buildConfigField ("String", "BASEURL", '"https://api.iextrading.com"')
-        }
-
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'

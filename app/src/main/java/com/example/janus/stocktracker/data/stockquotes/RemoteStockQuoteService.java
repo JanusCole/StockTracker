@@ -1,6 +1,8 @@
 package com.example.janus.stocktracker.data.stockquotes;
 
-import com.example.janus.stocktracker.BuildConfig;
+import android.support.annotation.VisibleForTesting;
+import android.support.test.espresso.IdlingResource;
+
 import com.example.janus.stocktracker.util.AppExecutors;
 
 import java.net.HttpURLConnection;
@@ -18,16 +20,18 @@ public class RemoteStockQuoteService implements StockQuoteService {
 
     private static RemoteStockQuoteService INSTANCE = null;
 
-    AppExecutors ioThreads;
+    private AppExecutors appExecutors;
 
-    public interface StockQuoteInterface {
+    private String BASE_URL = "https://api.iextrading.com";
+
+    private interface StockQuoteInterface {
         @GET("/1.0/stock/{stockTicker}/quote")
         Call<StockQuote> getStockQuote(@Path("stockTicker") String stockTicker);
     }
 
     // Private constructor for singleton
     private RemoteStockQuoteService() {
-        ioThreads = new AppExecutors();
+        appExecutors = new AppExecutors();
     }
 
     // Public getInstance for singleton
@@ -50,7 +54,7 @@ public class RemoteStockQuoteService implements StockQuoteService {
 
                 // Create the Retrofit client
                 Retrofit.Builder retrofitBuilder = new Retrofit.Builder()
-                        .baseUrl(BuildConfig.BASEURL)
+                        .baseUrl(BASE_URL)
                         .addConverterFactory(GsonConverterFactory.create());
 
                 Retrofit retrofit = retrofitBuilder.build();
@@ -70,7 +74,7 @@ public class RemoteStockQuoteService implements StockQuoteService {
                                 stockQuotesArrayList.add(stockQuote.body());
                             }
                         } else {
-                            ioThreads.mainThread().execute(new Runnable() {
+                            appExecutors.mainThread().execute(new Runnable() {
                                 @Override
                                 public void run() {
                                     getStockQuoteCallback.onDataNotAvailable();
@@ -81,7 +85,7 @@ public class RemoteStockQuoteService implements StockQuoteService {
 
 
                     } catch (Exception e) {
-                        ioThreads.mainThread().execute(new Runnable() {
+                        appExecutors.mainThread().execute(new Runnable() {
                             @Override
                             public void run() {
                                 getStockQuoteCallback.onDataNotAvailable();
@@ -93,7 +97,7 @@ public class RemoteStockQuoteService implements StockQuoteService {
 
                 final List<StockQuote> stockQuotesSearchResult = new ArrayList<>(stockQuotesArrayList);
 
-                ioThreads.mainThread().execute(new Runnable() {
+                appExecutors.mainThread().execute(new Runnable() {
                     @Override
                     public void run() {
                         getStockQuoteCallback.onStockQuotesLoaded(stockQuotesSearchResult);
@@ -103,8 +107,12 @@ public class RemoteStockQuoteService implements StockQuoteService {
             }
         };
 
-        ioThreads.networkIO().execute(runnable);
+        appExecutors.networkIO().execute(runnable);
 
     }
 
+    @VisibleForTesting
+    public void setBASE_URL(String BASE_URL) {
+        this.BASE_URL = BASE_URL;
+    }
 }

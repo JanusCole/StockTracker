@@ -69,10 +69,9 @@ public class StockSearchPresenterUnitTest {
         ArgumentCaptor<List<StockQuote>> returnedStockQuotes = ArgumentCaptor.forClass(List.class);
 
         verify(mockStockQuoteDataSource).getStockQuotes(mTickersToSearch.capture(), mLoadStockQuoteCallbackCaptor.capture());
+        assertEquals("IBM", mTickersToSearch.getValue().get(0));
+
         mLoadStockQuoteCallbackCaptor.getValue().onStockQuotesLoaded(returnResults);
-
-        assertEquals("IBM", returnedStockQuotes.getValue().get(0).getSymbol());
-
         verify(mockStockSearchView).showStockQuoteUI(stockQuote);
 
     }
@@ -90,8 +89,9 @@ public class StockSearchPresenterUnitTest {
         ArgumentCaptor<List<String>> mTickersToSearch = ArgumentCaptor.forClass(List.class);
 
         verify(mockStockQuoteDataSource).getStockQuotes(mTickersToSearch.capture(), mLoadStockQuoteCallbackCaptor.capture());
-        mLoadStockQuoteCallbackCaptor.getValue().onStockQuotesLoaded(new ArrayList<StockQuote>());
+        assertEquals("IBM", mTickersToSearch.getValue().get(0));
 
+        mLoadStockQuoteCallbackCaptor.getValue().onStockQuotesLoaded(new ArrayList<StockQuote>());
         verify(mockStockSearchView).showNotFoundError();
 
     }
@@ -109,8 +109,9 @@ public class StockSearchPresenterUnitTest {
         ArgumentCaptor<List<String>> mTickersToSearch = ArgumentCaptor.forClass(List.class);
 
         verify(mockStockQuoteDataSource).getStockQuotes(mTickersToSearch.capture(), mLoadStockQuoteCallbackCaptor.capture());
-        mLoadStockQuoteCallbackCaptor.getValue().onDataNotAvailable();
+        assertEquals("IBM", mTickersToSearch.getValue().get(0));
 
+        mLoadStockQuoteCallbackCaptor.getValue().onDataNotAvailable();
         verify(mockStockSearchView).showLoadingError();
 
     }

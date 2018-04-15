@@ -56,7 +56,7 @@ public class PortfolioPresenterUnitTest {
     }
 
     @Test
-    public void testLoadStocksCallsGetAllTickerSymbolsInRepositoryAndShowStocksInView() throws Exception {
+    public void testLoadStocksCallsGetPortfolioQuotesInPortfolioQuoteServiceAndShowStocksInView() throws Exception {
 
         List<String> stockSearchList = new ArrayList<>();
         stockSearchList.add("IBM");
@@ -67,70 +67,42 @@ public class PortfolioPresenterUnitTest {
 
         portfolioPresenter.loadPortfolio();
 
-        ArgumentCaptor<TickerSymbolsDataSource.LoadTickerSymbolsCallback> mLoadTickerSymbolsCallbackCaptor =
-                ArgumentCaptor.forClass(TickerSymbolsDataSource.LoadTickerSymbolsCallback.class);
+        ArgumentCaptor<PortfolioQuoteService.GetPortfolioQuotesCallback> mGetPortfolioQuotesCallbackCaptor =
+                ArgumentCaptor.forClass(PortfolioQuoteService.GetPortfolioQuotesCallback.class);
 
-        verify(mockTickerSymbolsRepository).getAllTickerSymbols(mLoadTickerSymbolsCallbackCaptor.capture());
-        mLoadTickerSymbolsCallbackCaptor.getValue().onTickerSymbolsLoaded(stockSearchList);
+        verify(mockPortfolioQuoteService).getPortfolioQuotes(mGetPortfolioQuotesCallbackCaptor.capture());
 
-
-        ArgumentCaptor<StockQuoteService.GetStockQuotesCallback> mLoadStockQuotesCallbackCaptor =
-                ArgumentCaptor.forClass(StockQuoteService.GetStockQuotesCallback.class);
-
-        ArgumentCaptor<List<String>> mStockListCaptor =
-                ArgumentCaptor.forClass(List.class);
-
-        verify(mockStockQuoteDataSource).getStockQuotes(mStockListCaptor.capture(), mLoadStockQuotesCallbackCaptor.capture());
-        mLoadStockQuotesCallbackCaptor.getValue().onStockQuotesLoaded(stockQuotesList);
-
-        assertEquals("IBM", mStockListCaptor.getValue().get(0));
-        assertEquals("CAT", mStockListCaptor.getValue().get(1));
-
+        mGetPortfolioQuotesCallbackCaptor.getValue().onStockQuotesLoaded(stockQuotesList);
         verify(mockPortfolioView).showStocks(stockQuotesList);
 
     }
 
     @Test
-    public void testLoadStocksCallsGetAllStocksinRepositoryAndCallsLoadingErrorInView() throws Exception {
-
-        List<String> stockSearchList = new ArrayList<>();
-        stockSearchList.add("IBM");
-        stockSearchList.add("CAT");
+    public void testLoadStocksCallsPortfolioQuoteServiceAndCallsLoadingErrorInView() throws Exception {
 
         portfolioPresenter.loadPortfolio();
 
-        ArgumentCaptor<TickerSymbolsDataSource.LoadTickerSymbolsCallback> mockLoadTickerSymbolsCallbackCaptor =
-                ArgumentCaptor.forClass(TickerSymbolsDataSource.LoadTickerSymbolsCallback.class);
+        ArgumentCaptor<PortfolioQuoteService.GetPortfolioQuotesCallback> mGetPortfolioQuotesCallbackCaptor =
+                ArgumentCaptor.forClass(PortfolioQuoteService.GetPortfolioQuotesCallback.class);
 
-        verify(mockTickerSymbolsRepository).getAllTickerSymbols(mockLoadTickerSymbolsCallbackCaptor.capture());
-        mockLoadTickerSymbolsCallbackCaptor.getValue().onTickerSymbolsLoaded(stockSearchList);
+        verify(mockPortfolioQuoteService).getPortfolioQuotes(mGetPortfolioQuotesCallbackCaptor.capture());
 
-        ArgumentCaptor<StockQuoteService.GetStockQuotesCallback> mLoadStockQuotesCallbackCaptor =
-                ArgumentCaptor.forClass(StockQuoteService.GetStockQuotesCallback.class);
-
-        ArgumentCaptor<List<String>> mStockListCaptor =
-                ArgumentCaptor.forClass(List.class);
-
-        verify(mockStockQuoteDataSource).getStockQuotes(mStockListCaptor.capture(), mLoadStockQuotesCallbackCaptor.capture());
-        mLoadStockQuotesCallbackCaptor.getValue().onDataNotAvailable();
-
-        assertEquals("IBM", mStockListCaptor.getValue().get(0));
-        assertEquals("CAT", mStockListCaptor.getValue().get(1));
-
+        mGetPortfolioQuotesCallbackCaptor.getValue().onDataNotAvailable();
         verify(mockPortfolioView).showLoadingError();
 
     }
 
     @Test
-    public void testLoadStocksCallsGetAllTickerSymbolsInRepositoryAndShowEmptyPortfolioMessageOnEmptyPortfolioInView() throws Exception {
+    public void testLoadStocksCallsPortfolioQuoteServiceAndShowEmptyPortfolioMessageOnEmptyPortfolioInView() throws Exception {
 
         portfolioPresenter.loadPortfolio();
 
-        ArgumentCaptor<TickerSymbolsDataSource.LoadTickerSymbolsCallback> mLoadTickerSymbolsCallbackCaptor =
-                ArgumentCaptor.forClass(TickerSymbolsDataSource.LoadTickerSymbolsCallback.class);
+        ArgumentCaptor<PortfolioQuoteService.GetPortfolioQuotesCallback> mGetPortfolioQuotesCallbackCaptor =
+                ArgumentCaptor.forClass(PortfolioQuoteService.GetPortfolioQuotesCallback.class);
 
-        verify(mockTickerSymbolsRepository).getAllTickerSymbols(mLoadTickerSymbolsCallbackCaptor.capture());
-        mLoadTickerSymbolsCallbackCaptor.getValue().onTickerSymbolsLoaded(new ArrayList<String>());
+        verify(mockPortfolioQuoteService).getPortfolioQuotes(mGetPortfolioQuotesCallbackCaptor.capture());
+
+        mGetPortfolioQuotesCallbackCaptor.getValue().onStockQuotesLoaded(new ArrayList<StockQuote>());
 
         verify(mockPortfolioView).showEmptyPortfolioMessage();
 
@@ -141,11 +113,12 @@ public class PortfolioPresenterUnitTest {
 
         portfolioPresenter.loadPortfolio();
 
-        ArgumentCaptor<TickerSymbolsDataSource.LoadTickerSymbolsCallback> mLoadTickerSymbolsCallbackCaptor =
-                ArgumentCaptor.forClass(TickerSymbolsDataSource.LoadTickerSymbolsCallback.class);
+        ArgumentCaptor<PortfolioQuoteService.GetPortfolioQuotesCallback> mGetPortfolioQuotesCallbackCaptor =
+                ArgumentCaptor.forClass(PortfolioQuoteService.GetPortfolioQuotesCallback.class);
 
-        verify(mockTickerSymbolsRepository).getAllTickerSymbols(mLoadTickerSymbolsCallbackCaptor.capture());
-        mLoadTickerSymbolsCallbackCaptor.getValue().onDataBaseError();
+        verify(mockPortfolioQuoteService).getPortfolioQuotes(mGetPortfolioQuotesCallbackCaptor.capture());
+
+        mGetPortfolioQuotesCallbackCaptor.getValue().onDataBaseError();
 
         verify(mockPortfolioView).showLoadingError();
 

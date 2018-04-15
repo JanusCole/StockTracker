@@ -45,14 +45,6 @@ public class SplashScreenActivityTest {
 
     }
 
-    @Test
-    public void testSplashScreenAtStartup() throws Exception {
-        onView(withId(R.id.splashScreenFragment)).check(matches((isDisplayed())));
-
-    }
-
-
-
 
     @After
     public void tearDown() throws Exception {
