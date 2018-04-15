@@ -20,6 +20,7 @@ import com.example.janus.stocktracker.portfolio.PortfolioActivity;
 import com.example.janus.stocktracker.data.database.TickerSymbolsRepository;
 import com.example.janus.stocktracker.splashscreen.SplashScreen;
 import com.example.janus.stocktracker.stocksearch.StockSearchActivity;
+import com.example.janus.stocktracker.util.BottomNavigationMap;
 import com.example.janus.stocktracker.util.FormattedMessages;
 
 import java.text.DecimalFormat;
@@ -78,20 +79,8 @@ public class StockQuoteActivity extends AppCompatActivity  implements StockQuote
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                        switch (item.getItemId()) {
-                            case R.id.action_search_ticker:
-                                Intent stockSearchIntent = new Intent(getApplicationContext(), StockSearchActivity.class);
-                                startActivity(stockSearchIntent);
-                                break;
-                            case R.id.action_splash_screen:
-                                Intent mainActivityIntent = new Intent(getApplicationContext(), SplashScreen.class);
-                                startActivity(mainActivityIntent);
-                                break;
-                            case R.id.action_portfolio:
-                                Intent portfolioIntent = new Intent(getApplicationContext(), PortfolioActivity.class);
-                                startActivity(portfolioIntent);
-                                break;
-                        }
+                        Intent stockSearchIntent = new Intent(getApplicationContext(), BottomNavigationMap.NAVIGATION_MAP.get(item.getItemId()));
+                        startActivity(stockSearchIntent);
                         return false;
                     }
                 });
