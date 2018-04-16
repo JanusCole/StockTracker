@@ -2,6 +2,8 @@ package com.example.janus.stocktracker.data.stockquotes;
 
 import android.support.annotation.VisibleForTesting;
 import android.support.test.espresso.IdlingResource;
+import android.support.test.espresso.idling.CountingIdlingResource;
+import android.util.Log;
 
 import com.example.janus.stocktracker.util.AppExecutors;
 
@@ -24,6 +26,8 @@ public class RemoteStockQuoteService implements StockQuoteService {
 
     private String BASE_URL = "https://api.iextrading.com";
 
+    private CountingIdlingResource idlingResource = new CountingIdlingResource("StockQuoteService");
+
     private interface StockQuoteInterface {
         @GET("/1.0/stock/{stockTicker}/quote")
         Call<StockQuote> getStockQuote(@Path("stockTicker") String stockTicker);
@@ -45,6 +49,8 @@ public class RemoteStockQuoteService implements StockQuoteService {
 
     @Override
     public void getStockQuotes(final List<String> tickerSymbols, final GetStockQuotesCallback getStockQuoteCallback) {
+
+        idlingResource.increment();
 
         // Performed in a thread because the source does not perform batched requests and so for multiple stock searches,
         // it needs to run synchronously in a loop
@@ -77,6 +83,7 @@ public class RemoteStockQuoteService implements StockQuoteService {
                             appExecutors.mainThread().execute(new Runnable() {
                                 @Override
                                 public void run() {
+                                    idlingResource.decrement();
                                     getStockQuoteCallback.onDataNotAvailable();
                                 }
                             });
@@ -88,6 +95,7 @@ public class RemoteStockQuoteService implements StockQuoteService {
                         appExecutors.mainThread().execute(new Runnable() {
                             @Override
                             public void run() {
+                                idlingResource.decrement();
                                 getStockQuoteCallback.onDataNotAvailable();
                             }
                         });
@@ -100,9 +108,12 @@ public class RemoteStockQuoteService implements StockQuoteService {
                 appExecutors.mainThread().execute(new Runnable() {
                     @Override
                     public void run() {
+                        idlingResource.decrement();
                         getStockQuoteCallback.onStockQuotesLoaded(stockQuotesSearchResult);
                     }
                 });
+
+
 
             }
         };
@@ -114,5 +125,10 @@ public class RemoteStockQuoteService implements StockQuoteService {
     @VisibleForTesting
     public void setBASE_URL(String BASE_URL) {
         this.BASE_URL = BASE_URL;
+    }
+
+    @VisibleForTesting
+    public CountingIdlingResource getIdlingResource() {
+        return idlingResource;
     }
 }

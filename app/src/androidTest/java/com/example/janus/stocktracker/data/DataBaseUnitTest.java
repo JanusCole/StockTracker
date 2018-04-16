@@ -1,4 +1,4 @@
-package com.example.janus.stocktracker;
+package com.example.janus.stocktracker.data;
 
 import android.content.ContentValues;
 import android.database.Cursor;
