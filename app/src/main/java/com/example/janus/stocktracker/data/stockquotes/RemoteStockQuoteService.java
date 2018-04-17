@@ -54,48 +54,11 @@ public class RemoteStockQuoteService implements StockQuoteService {
             @Override
             public void run() {
 
-                // Create the Retrofit client
-                Retrofit.Builder retrofitBuilder = new Retrofit.Builder()
-                        .baseUrl(BASE_URL)
-                        .addConverterFactory(GsonConverterFactory.create());
-
-                Retrofit retrofit = retrofitBuilder.build();
-                StockQuoteInterface stockQuoteClient = retrofit.create(StockQuoteInterface.class);
+                StockQuoteInterface stockQuoteClient = createRetrofitClient();
 
                 List<StockQuote> stockQuotesArrayList = new ArrayList<>();
+                callRetrofitForTickerSymbolList(stockQuoteClient, stockQuotesArrayList, tickerSymbols, getStockQuoteCallback);
 
-                // This is done with a loop beacuse the source does not perform batched requests
-                for (String stockTicker : tickerSymbols) {
-
-                    Call<StockQuote> stockQuoteCall = stockQuoteClient.getStockQuote(stockTicker);
-
-                    try {
-                        final Response<StockQuote> stockQuote = stockQuoteCall.execute();
-                        if ((stockQuote.code() == HttpURLConnection.HTTP_OK) || (stockQuote.code() == HttpURLConnection.HTTP_NOT_FOUND)) {
-                            if (stockQuote.body() != null) {
-                                stockQuotesArrayList.add(stockQuote.body());
-                            }
-                        } else {
-                            appExecutors.mainThread().execute(new Runnable() {
-                                @Override
-                                public void run() {
-                                    getStockQuoteCallback.onDataNotAvailable();
-                                }
-                            });
-
-                        }
-
-
-                    } catch (Exception e) {
-                        appExecutors.mainThread().execute(new Runnable() {
-                            @Override
-                            public void run() {
-                                getStockQuoteCallback.onDataNotAvailable();
-                            }
-                        });
-                    }
-
-                }
 
                 final List<StockQuote> stockQuotesSearchResult = new ArrayList<>(stockQuotesArrayList);
 
@@ -106,13 +69,55 @@ public class RemoteStockQuoteService implements StockQuoteService {
                     }
                 });
 
-
-
             }
         };
 
         appExecutors.networkIO().execute(runnable);
 
+    }
+
+    private void callRetrofitForTickerSymbolList(StockQuoteInterface stockQuoteClient, List<StockQuote> stockQuotesArrayList, List<String> tickerSymbols, final GetStockQuotesCallback getStockQuoteCallback) {
+        // This is done with a loop beacuse the source does not perform batched requests
+        for (String stockTicker : tickerSymbols) {
+            Call<StockQuote> stockQuoteCall = stockQuoteClient.getStockQuote(stockTicker);
+            callRetrofitClient(stockQuotesArrayList, getStockQuoteCallback, stockQuoteCall);
+        }
+    }
+
+    private void callRetrofitClient(List<StockQuote> stockQuotesArrayList, final GetStockQuotesCallback getStockQuoteCallback, Call<StockQuote> stockQuoteCall) {
+
+        try {
+            final Response<StockQuote> stockQuote = stockQuoteCall.execute();
+            if ((stockQuote.code() == HttpURLConnection.HTTP_OK) || (stockQuote.code() == HttpURLConnection.HTTP_NOT_FOUND)) {
+                if (stockQuote.body() != null) {
+                    stockQuotesArrayList.add(stockQuote.body());
+                }
+            } else {
+                appExecutors.mainThread().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        getStockQuoteCallback.onDataNotAvailable();
+                    }
+                });
+
+            }
+        } catch (Exception e) {
+            appExecutors.mainThread().execute(new Runnable() {
+                @Override
+                public void run() {
+                    getStockQuoteCallback.onDataNotAvailable();
+                }
+            });
+        }
+    }
+
+    private StockQuoteInterface createRetrofitClient() {
+        Retrofit.Builder retrofitBuilder = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create());
+
+        Retrofit retrofit = retrofitBuilder.build();
+        return retrofit.create(StockQuoteInterface.class);
     }
 
     @VisibleForTesting

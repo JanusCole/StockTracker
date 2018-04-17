@@ -36,16 +36,7 @@ public class StockSearchPresenter implements StockSearchContract.Presenter {
         stockQuoteService.getStockQuotes(searchTickerSymbols, new StockQuoteService.GetStockQuotesCallback() {
             @Override
             public void onStockQuotesLoaded(List<StockQuote> stockQuotes) {
-
-                // Empty List returned means the stock ticker was not found
-                if (stockQuotes.size() == 0) {
-                    stockSearchView.dismissLoadingIndicator();
-                    stockSearchView.showNotFoundError();
-                } else {
-                    stockSearchView.dismissLoadingIndicator();
-                    stockSearchView.showStockQuoteUI(stockQuotes.get(0));
-                }
-
+                returnStockQuoteResult(stockQuotes);
             }
 
             // Tell the view to display a message if a network error occurred
@@ -56,5 +47,16 @@ public class StockSearchPresenter implements StockSearchContract.Presenter {
             }
         });
 
+    }
+
+    private void returnStockQuoteResult(List<StockQuote> stockQuotes) {
+        // Empty List returned means the stock ticker was not found
+        if (stockQuotes.size() == 0) {
+            stockSearchView.dismissLoadingIndicator();
+            stockSearchView.showNotFoundError();
+        } else {
+            stockSearchView.dismissLoadingIndicator();
+            stockSearchView.showStockQuoteUI(stockQuotes.get(0));
+        }
     }
 }

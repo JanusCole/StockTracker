@@ -32,22 +32,26 @@ public class PortfolioQuoteService {
         tickerSymbolDataSource.getAllTickerSymbols(new TickerSymbolsDataSource.LoadTickerSymbolsCallback() {
             @Override
             public void onTickerSymbolsLoaded(List<String> tickerSymbols) {
-                stockQuoteDataSource.getStockQuotes(tickerSymbols, new StockQuoteService.GetStockQuotesCallback() {
-                    @Override
-                    public void onStockQuotesLoaded(List<StockQuote> stockQuotes) {
-                        callback.onStockQuotesLoaded(stockQuotes);
-                    }
-
-                    @Override
-                    public void onDataNotAvailable() {
-                        callback.onDataNotAvailable();
-                    }
-                });
+                getStockQuotes(tickerSymbols, callback);
             }
 
             @Override
             public void onDataBaseError() {
                 callback.onDataBaseError();
+            }
+        });
+    }
+
+    private void getStockQuotes(List<String> tickerSymbols, final GetPortfolioQuotesCallback callback) {
+        stockQuoteDataSource.getStockQuotes(tickerSymbols, new StockQuoteService.GetStockQuotesCallback() {
+            @Override
+            public void onStockQuotesLoaded(List<StockQuote> stockQuotes) {
+                callback.onStockQuotesLoaded(stockQuotes);
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+                callback.onDataNotAvailable();
             }
         });
     }

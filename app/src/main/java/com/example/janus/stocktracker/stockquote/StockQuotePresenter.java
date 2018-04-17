@@ -29,9 +29,22 @@ public class StockQuotePresenter implements StockQuoteContract.Presenter {
     // Display stock quote information, calculate the pecentage price change and set the gain/loss color
     @Override
     public void loadStock() {
-        stockQuoteView.setTickerSymbol(stockQuote.getSymbol());
-        stockQuoteView.setCompanyName(stockQuote.getCompanyName());
-        stockQuoteView.setSector(stockQuote.getSector());
+
+        setTextFields();
+        setNumericFields();
+        setGainLossColor();
+
+        checkStock(stockQuote.getSymbol());
+
+    }
+
+    private void setGainLossColor() {
+        if (stockQuote.getLatestPrice() < stockQuote.getOpen()) {
+            stockQuoteView.setPriceChangeColor(Color.RED);
+        }
+    }
+
+    private void setNumericFields() {
         stockQuoteView.setLatestPrice(stockQuote.getLatestPrice());
         stockQuoteView.setPriceChange(stockQuote.getLatestPrice() - stockQuote.getOpen());
         stockQuoteView.setOpenPrice(stockQuote.getOpen());
@@ -39,13 +52,12 @@ public class StockQuotePresenter implements StockQuoteContract.Presenter {
         stockQuoteView.setLatestVolume(stockQuote.getLatestVolume());
 
         stockQuoteView.setPriceChangePercent(100 * (stockQuote.getLatestPrice() - stockQuote.getOpen())/stockQuote.getOpen());
+    }
 
-        if (stockQuote.getLatestPrice() < stockQuote.getOpen()) {
-            stockQuoteView.setPriceChangeColor(Color.RED);
-        }
-
-        checkStock(stockQuote.getSymbol());
-
+    private void setTextFields() {
+        stockQuoteView.setTickerSymbol(stockQuote.getSymbol());
+        stockQuoteView.setCompanyName(stockQuote.getCompanyName());
+        stockQuoteView.setSector(stockQuote.getSector());
     }
 
     // perform CRD (not U) functions on the user's portolfio

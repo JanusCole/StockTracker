@@ -33,14 +33,7 @@ public class PortfolioPresenter implements PortfolioContract.Presenter  {
         portfolioQuoteService.getPortfolioQuotes(new PortfolioQuoteService.GetPortfolioQuotesCallback() {
             @Override
             public void onStockQuotesLoaded(List<StockQuote> stockQuotes) {
-
-                if (stockQuotes.isEmpty()) {
-                    portfolioView.dismissLoadingIndicator();
-                    portfolioView.showEmptyPortfolioMessage();
-                } else {
-                    portfolioView.dismissLoadingIndicator();
-                    portfolioView.showStocks(stockQuotes);
-                }
+                returnStockQuotes(stockQuotes);
             }
 
             // Display error if the database was not available
@@ -58,6 +51,16 @@ public class PortfolioPresenter implements PortfolioContract.Presenter  {
             }
         });
 
+    }
+
+    private void returnStockQuotes(List<StockQuote> stockQuotes) {
+        if (stockQuotes.isEmpty()) {
+            portfolioView.dismissLoadingIndicator();
+            portfolioView.showEmptyPortfolioMessage();
+        } else {
+            portfolioView.dismissLoadingIndicator();
+            portfolioView.showStocks(stockQuotes);
+        }
     }
 
     // Handle event where the user selects an individual stock from the portfolio for display
