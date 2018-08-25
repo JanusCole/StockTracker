@@ -19,6 +19,7 @@ import com.example.janus.stocktracker.data.stockquotes.RemoteStockQuoteService;
 import com.example.janus.stocktracker.data.stockquotes.StockQuoteService;
 import com.example.janus.stocktracker.portfolio.PortfolioActivity;
 import com.example.janus.stocktracker.splashscreen.SplashScreen;
+import com.example.janus.stocktracker.BaseActivity;
 import com.example.janus.stocktracker.stockquote.StockQuoteActivity;
 import com.example.janus.stocktracker.util.BottomNavigationMap;
 import com.example.janus.stocktracker.util.FormattedMessages;
@@ -28,7 +29,7 @@ import java.io.Serializable;
 // This is the activity that allows the user to search for a specific stock ticker symbol. It shows just an EditText field
 // for the ticker symbol to be searched and a search button.
 
-public class StockSearchActivity extends AppCompatActivity implements StockSearchContract.View {
+public class StockSearchActivity extends BaseActivity implements StockSearchContract.View {
 
     private StockSearchContract.Presenter stockSearchPresenter;
 
@@ -36,12 +37,11 @@ public class StockSearchActivity extends AppCompatActivity implements StockSearc
 
     private EditText searchStockTicker;
     private Button searchButton;
-    private BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.stock_search_activity);
+        super.setContentView(R.layout.stock_search_activity);
 
     // Set up the fields involed in the stock search function
         setupSearchUI();
@@ -50,19 +50,6 @@ public class StockSearchActivity extends AppCompatActivity implements StockSearc
     // Set up the StockSearchPresenter
         StockQuoteService stockQuoteDataSource = RemoteStockQuoteService.getInstance();
         stockSearchPresenter = new StockSearchPresenter(this, stockQuoteDataSource);
-
-    // Set up the bottom navigation bar
-        bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
-
-        bottomNavigationView.setOnNavigationItemSelectedListener(
-                new BottomNavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                        Intent stockSearchIntent = new Intent(getApplicationContext(), BottomNavigationMap.NAVIGATION_MAP.get(item.getItemId()));
-                        startActivity(stockSearchIntent);
-                        return false;
-                    }
-                });
 
     }
 
