@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.janus.stocktracker.BaseActivity;
 import com.example.janus.stocktracker.R;
 import com.example.janus.stocktracker.data.database.TickerSymbolsLocalDataSource;
 import com.example.janus.stocktracker.data.database.PortfolioDBOpenHelper;
@@ -28,7 +29,7 @@ import java.text.DecimalFormat;
 // This class displays a single stock quote, received through the intent. It also shows if the stock
 // is currently in the portfolio and displays a button to add or remove it.
 
-public class StockQuoteActivity extends AppCompatActivity  implements StockQuoteContract.View {
+public class StockQuoteActivity extends BaseActivity implements StockQuoteContract.View {
 
     public static final String STOCK_QUOTE = "stock_quote";
 
@@ -43,8 +44,6 @@ public class StockQuoteActivity extends AppCompatActivity  implements StockQuote
     private TextView closePriceDisplay;
     private TextView latestVolumeDisplay;
     private TextView priceChangePercentageDisplay;
-
-    private BottomNavigationView bottomNavigationView;
 
     // Only one of these buttons will be visible at a time depending on whether the current stock is in the portfolio database
     private Button addStockButton;
@@ -71,20 +70,6 @@ public class StockQuoteActivity extends AppCompatActivity  implements StockQuote
         TickerSymbolsRepository portfolioSource = TickerSymbolsRepository.getInstance(TickerSymbolsLocalDataSource.getInstance(portfolioDBOpenHelper));
         stockQuotePresenter = new StockQuotePresenter(this, stockQuote, portfolioSource);
         stockQuotePresenter.loadStock();
-
-        // Set up the bottom navigation bar
-        bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
-
-        bottomNavigationView.setOnNavigationItemSelectedListener(
-                new BottomNavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                        Intent stockSearchIntent = new Intent(getApplicationContext(), BottomNavigationMap.NAVIGATION_MAP.get(item.getItemId()));
-                        startActivity(stockSearchIntent);
-                        return false;
-                    }
-                });
-
     }
 
     private void findPortfolioButtons() {

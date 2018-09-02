@@ -11,6 +11,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 
+import com.example.janus.stocktracker.BaseActivity;
 import com.example.janus.stocktracker.R;
 import com.example.janus.stocktracker.data.stockquotes.PortfolioQuoteService;
 import com.example.janus.stocktracker.data.database.TickerSymbolsLocalDataSource;
@@ -31,14 +32,13 @@ import java.util.List;
 
 // This displays current stock quotes for the user's portfolio
 
-public class PortfolioActivity extends AppCompatActivity implements StocksRecyclerViewAdapter.OnItemSelectedListener, PortfolioContract.View {
+public class PortfolioActivity extends BaseActivity implements StocksRecyclerViewAdapter.OnItemSelectedListener, PortfolioContract.View {
 
     private PortfolioContract.Presenter portfolioPresenter;
 
     private StocksRecyclerViewAdapter stocksRecyclerViewAdapter;
 
     private AlertDialog networkActivityDialog;
-    private BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,21 +50,6 @@ public class PortfolioActivity extends AppCompatActivity implements StocksRecycl
         networkActivityDialog = FormattedMessages.getNetworkActivityAlert(getLayoutInflater(), this);
 
         setUpPortfolioPresenter();
-
-        // Set up the bottom navigation bar
-        bottomNavigationView = (BottomNavigationView)
-                findViewById(R.id.bottom_navigation);
-
-        bottomNavigationView.setOnNavigationItemSelectedListener(
-                new BottomNavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                        Intent stockSearchIntent = new Intent(getApplicationContext(), BottomNavigationMap.NAVIGATION_MAP.get(item.getItemId()));
-                        startActivity(stockSearchIntent);
-                        return false;
-                    }
-                });
-
     }
 
     private void setUpPortfolioPresenter() {
