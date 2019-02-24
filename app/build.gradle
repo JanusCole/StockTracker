@@ -1,13 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "26.0.1"
+    compileSdkVersion 27
 
     defaultConfig {
         applicationId "com.example.janus.stocktracker"
         minSdkVersion 21
-        targetSdkVersion 25
+        targetSdkVersion 27
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -24,50 +23,50 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    compile 'com.android.support:appcompat-v7:25.0.0'
-    compile 'com.android.support:design:25.0.0'
-    compile 'com.android.support:support-v4:25.0.0'
-    compile 'com.android.support:recyclerview-v7:25.3.1'
+    implementation 'com.android.support:appcompat-v7:27.1.1'
+    implementation 'com.android.support:design:27.1.1'
+    implementation 'com.android.support:support-v4:27.1.1'
+    implementation 'com.android.support:recyclerview-v7:27.1.1'
 
-    compile "com.squareup.retrofit2:retrofit:2.3.0"
-    compile "com.squareup.retrofit2:converter-gson:2.3.0"
+    implementation "com.squareup.retrofit2:retrofit:2.3.0"
+    implementation "com.squareup.retrofit2:converter-gson:2.3.0"
 
-    compile 'com.android.support.test.espresso:espresso-idling-resource:2.2.1'
+    implementation 'com.android.support.test.espresso:espresso-idling-resource:2.2.1'
 
-    testCompile 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.12'
 
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.1') {
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.1') {
         exclude group: 'com.android.support', module: 'support-annotations'
     }
 
-    androidTestCompile ('com.android.support.test.espresso:espresso-contrib:2.2.1') {
+    androidTestImplementation ('com.android.support.test.espresso:espresso-contrib:2.2.1') {
         exclude module: 'support-v4'
     }
 
-    androidTestCompile('com.android.support.test.espresso:espresso-intents:2.2') {
+    androidTestImplementation('com.android.support.test.espresso:espresso-intents:2.2') {
         exclude group: 'com.android.support', module: 'support-annotations'
     }
-    androidTestCompile 'com.android.support:support-annotations:25.3.1'
-    androidTestCompile 'com.android.support.test:rules:0.3'
+    androidTestImplementation 'com.android.support:support-annotations:27.1.1'
+    androidTestImplementation 'com.android.support.test:rules:0.3'
 
-    androidTestCompile ('com.squareup.okhttp:mockwebserver:2.7.0')
-    androidTestCompile('com.squareup.okio:okio:1.13.0')
+    androidTestImplementation ('com.squareup.okhttp:mockwebserver:2.7.0')
+    androidTestImplementation('com.squareup.okio:okio:1.13.0')
 
-    androidTestCompile('com.android.support:recyclerview-v7:25.3.1')
+    androidTestImplementation('com.android.support:recyclerview-v7:27.1.1')
 
-    testCompile ('com.squareup.okhttp:mockwebserver:2.7.0')
-    testCompile('com.squareup.okio:okio:1.13.0')
+    testImplementation ('com.squareup.okhttp:mockwebserver:2.7.0')
+    testImplementation('com.squareup.okio:okio:1.13.0')
 
-    testCompile('com.android.support.test:runner:0.2') {
+    testImplementation('com.android.support.test:runner:0.2') {
         exclude group: 'com.android.support', module: 'support-annotations'
     }
     // required if you want to use Mockito for unit tests
-    testCompile 'org.mockito:mockito-core:2.7.22'
+    testImplementation 'org.mockito:mockito-core:2.7.22'
     // required if you want to use Mockito for Android tests
-    androidTestCompile 'org.mockito:mockito-android:2.7.22'
+    androidTestImplementation 'org.mockito:mockito-android:2.7.22'
 
-    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
-    compile 'com.android.support.test.espresso:espresso-idling-resource:2.2.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:2.2.2'
+    implementation 'com.android.support.test.espresso:espresso-idling-resource:2.2.2'
 }
