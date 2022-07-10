@@ -15,3 +15,10 @@ Search Stocks By Ticker Symbol
 
 ![stocktrackersearch](https://user-images.githubusercontent.com/30201754/35749062-4b8482f2-081e-11e8-95a3-f9142ec03023.png)
 
+## Important!!
+
+In order to run the code, you'll need to get an api key from [Alpha Vantage](https://www.alphavantage.co/) and store it in an environment variable on your system called ALPHA_VANTAGE_APIKEY. Otherwise, gradle will not sync and you will get the following error:
+
+<span style="color:red">
+Parameter specified as non-null is null: method com.android.build.gradle.internal.dsl.BuildType.buildConfigField, parameter value
+</span>
