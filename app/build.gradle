@@ -15,7 +15,7 @@ android {
 
     buildTypes {
         all {
-            buildConfigField ("String", "APIKEY", System.getenv("ALPHA_VANTAGE_APIKEY"))
+            buildConfigField ("String", "APIKEY", "\"${System.getenv("ALPHA_VANTAGE_APIKEY")}\"")
         }
 
         release {

@@ -51,7 +51,7 @@ public class StockSearchPresenter implements StockSearchContract.Presenter {
 
     private void returnStockQuoteResult(List<StockQuote> stockQuotes) {
         // Empty List returned means the stock ticker was not found
-        if (stockQuotes.size() == 0) {
+        if ((stockQuotes.size() == 0) || (stockQuotes.get(0).getSymbol() == null)) {
             stockSearchView.dismissLoadingIndicator();
             stockSearchView.showNotFoundError();
         } else {
