@@ -1,15 +1,14 @@
-# Janus Cole <img src="http://www.januscole.com/wp-content/uploads/2017/09/giantRobot.png" width="100"> 
+<img src="JanusColeLogo.png"> 
 
 ## StockTracker for Android
 
-Originally coded in 2017, this is a showcase app to demonstrate Android frameworks and best practices from the mid-2010's.
+Originally coded in 2017, this is a showcase app to demonstrate Android frameworks and design patterns from the mid-2010's.
 
 In this repo you'll find:
 *   A multi-activity architecture employing the **[Model-View-Presenter](https://www.raywenderlich.com/7026-getting-started-with-mvp-model-view-presenter-on-android)** design pattern.
 *   Access to a REST api, using Square's **[Retrofit2](https://square.github.io/retrofit/)** library.
 *   Persistence using an **[SQLite](https://developer.android.com/training/data-storage/sqlite)** database.
 *   Web and database calls using **[Thread Executors](https://developer.android.com/reference/java/util/concurrent/Executor)** for asynchronous operations.
-*   A collection of unit and instrument tests using **[JUnit](https://developer.android.com/training/testing/instrumented-tests/androidx-test-libraries/runner)** and **[Espresso](https://developer.android.com/training/testing/espresso/)**.
 
 ### Screen Shots
 
