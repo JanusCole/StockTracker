@@ -43,7 +43,7 @@ public class StockSearchActivity extends BaseActivity implements StockSearchCont
         super.onCreate(savedInstanceState);
         super.setContentView(R.layout.stock_search_activity);
 
-    // Set up the fields involed in the stock search function
+    // Set up the fields involved in the stock search function
         setupSearchUI();
 
 
@@ -110,6 +110,7 @@ public class StockSearchActivity extends BaseActivity implements StockSearchCont
     // Display error messages
     @Override
     public void showNotFoundError() {
+        searchStockTicker.setText("");
         FormattedMessages.displayErrorMessageAlertDialog(getString(R.string.stock_not_found_message), getLayoutInflater(), this);
     }
 

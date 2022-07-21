@@ -136,7 +136,7 @@ public class TickerSymbolsLocalDataSource implements TickerSymbolsDataSource {
                 try {
                     deletionResult = portfolioDBOpenHelper.getWritableDatabase().delete(PortfolioDBContract.PortfolioEntry.TABLE_NAME,
                             PortfolioDBContract.PortfolioEntry.COLUMN_NAME_STOCK + " = ?",
-                            new String [] {tickerSymbol});
+                            new String[]{tickerSymbol});
                 } catch (SQLException e) {
                     appExecutors.mainThread().execute(new Runnable() {
                         @Override
@@ -178,20 +178,25 @@ public class TickerSymbolsLocalDataSource implements TickerSymbolsDataSource {
 
                 try {
                     final Cursor portfolioCursor = portfolioDBOpenHelper.getReadableDatabase().query(PortfolioDBContract.PortfolioEntry.TABLE_NAME,
-                            new String [] {PortfolioDBContract.PortfolioEntry.COLUMN_NAME_STOCK},
+                            new String[]{PortfolioDBContract.PortfolioEntry.COLUMN_NAME_STOCK},
                             PortfolioDBContract.PortfolioEntry.COLUMN_NAME_STOCK + " = ?",
-                            new String [] {tickerSymbol},
+                            new String[]{tickerSymbol},
                             null,
                             null,
                             null);
 
-                    if ((portfolioCursor != null) && (portfolioCursor.getCount() != 0)) {
-                        portfolioCursor.moveToFirst();
-                        final int stockTickerIndex = portfolioCursor.getColumnIndex(PortfolioDBContract.PortfolioEntry.COLUMN_NAME_STOCK);
+                    if (portfolioCursor != null) {
+                        if (portfolioCursor.getCount() != 0) {
+                            portfolioCursor.moveToFirst();
+                        }
+                        final String returnTickerSymbol = portfolioCursor.getCount() != 0 ?
+                                portfolioCursor.getString(portfolioCursor.getColumnIndex(
+                                        PortfolioDBContract.PortfolioEntry.COLUMN_NAME_STOCK)) :
+                                null;
                         appExecutors.mainThread().execute(new Runnable() {
                             @Override
                             public void run() {
-                                getTickerSymbolCallback.onTickerSymbolRetrieved(portfolioCursor.getString(stockTickerIndex));
+                                getTickerSymbolCallback.onTickerSymbolRetrieved(returnTickerSymbol);
                             }
                         });
 

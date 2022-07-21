@@ -1,9 +1,6 @@
 package com.example.janus.stocktracker.data.stockquotes;
-
+import com.example.janus.stocktracker.BuildConfig;
 import android.support.annotation.VisibleForTesting;
-import android.support.test.espresso.IdlingResource;
-import android.support.test.espresso.idling.CountingIdlingResource;
-import android.util.Log;
 
 import com.example.janus.stocktracker.util.AppExecutors;
 
@@ -16,7 +13,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
-import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public class RemoteStockQuoteService implements StockQuoteService {
 
@@ -24,11 +21,14 @@ public class RemoteStockQuoteService implements StockQuoteService {
 
     private AppExecutors appExecutors;
 
-    private String BASE_URL = "https://api.iextrading.com";
+    private String BASE_URL = "https://www.alphavantage.co/";
+
+    private String APIKEY = BuildConfig.APIKEY;
 
     private interface StockQuoteInterface {
-        @GET("/1.0/stock/{stockTicker}/quote")
-        Call<StockQuote> getStockQuote(@Path("stockTicker") String stockTicker);
+        @GET("query?function=OVERVIEW")
+        Call<StockQuote> getStockQuote(@Query("symbol") String stockTicker,
+                                       @Query("apikey") String apikey);
     }
 
     // Private constructor for singleton
@@ -79,7 +79,7 @@ public class RemoteStockQuoteService implements StockQuoteService {
     private void callRetrofitForTickerSymbolList(StockQuoteInterface stockQuoteClient, List<StockQuote> stockQuotesArrayList, List<String> tickerSymbols, final GetStockQuotesCallback getStockQuoteCallback) {
         // This is done with a loop beacuse the source does not perform batched requests
         for (String stockTicker : tickerSymbols) {
-            Call<StockQuote> stockQuoteCall = stockQuoteClient.getStockQuote(stockTicker);
+            Call<StockQuote> stockQuoteCall = stockQuoteClient.getStockQuote(stockTicker, APIKEY);
             callRetrofitClient(stockQuotesArrayList, getStockQuoteCallback, stockQuoteCall);
         }
     }

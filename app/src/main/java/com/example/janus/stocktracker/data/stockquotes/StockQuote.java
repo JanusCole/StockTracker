@@ -1,37 +1,32 @@
 package com.example.janus.stocktracker.data.stockquotes;
 
-        import android.os.Parcel;
-        import android.os.Parcelable;
-
-        import java.io.Serializable;
+import com.google.gson.annotations.SerializedName;
+import java.io.Serializable;
 
 public class StockQuote implements Serializable {
 
 // This takes the result of the stock quote search
 
+    @SerializedName("Symbol")
     private String symbol;
 
+    @SerializedName("Name")
     private String companyName;
 
+    @SerializedName("Sector")
     private String sector;
 
+    @SerializedName("52WeekLow")
     private double open;
 
+    @SerializedName("52WeekHigh")
     private double close;
 
+    @SerializedName("50DayMovingAverage")
     private double latestPrice;
 
+    @SerializedName("SharesOutstanding")
     private long latestVolume;
-
-    public StockQuote(String symbol, String companyName, String sector, double open, double close, double latestPrice, long latestVolume) {
-        this.symbol = symbol;
-        this.companyName = companyName;
-        this.sector = sector;
-        this.open = open;
-        this.close = close;
-        this.latestPrice = latestPrice;
-        this.latestVolume = latestVolume;
-    }
 
     // Getters
     public String getSymbol() {
